@@ -1,0 +1,289 @@
+<p-toast position="top-center"></p-toast>
+
+<div class="p-fluid">
+  <form [formGroup]="formUser" (ngSubmit)="onSubmit()">
+    <!--identificationType & username-->
+    <div class="formgrid grid">
+      <!--identificationType-->
+      <div class="field xl:col-6 lg:col-6 md:col-12 sm:col-12">
+        <label for="identificationType" appLabel label="Tipo de documento:"
+               [required]="isRequired(identificationTypeField)"
+               [valid]="identificationTypeField.valid"
+               [touched]="identificationTypeField.touched"
+               [dirty]="identificationTypeField.dirty">
+        </label>
+        <p-dropdown id="identificationType"
+                    formControlName="identificationType"
+                    [options]="identificationTypes"
+                    [filter]="true"
+                    filterBy="name"
+                    placeholder="Seleccione">
+          <ng-template pTemplate="selectedItem">
+            <div *ngIf="identificationTypeField.value">
+              <div>{{identificationTypeField.value?.name}}</div>
+            </div>
+          </ng-template>
+          <ng-template let-item pTemplate="item">
+            <div>
+              <div>{{item.name}}</div>
+            </div>
+          </ng-template>
+        </p-dropdown>
+        <small appErrorMessage
+               [errors]="identificationTypeField.errors"
+               [touched]="identificationTypeField.touched"
+               [dirty]="identificationTypeField.dirty">
+        </small>
+      </div>
+      <!--username-->
+      <div class="field xl:col-6 lg:col-6 md:col-12 sm:col-12">
+        <label for="username" appLabel label="Número de documento:"
+               [required]="isRequired(usernameField)"
+               [valid]="usernameField.valid"
+               [touched]="usernameField.touched"
+               [dirty]="usernameField.dirty">
+        </label>
+        <input pInputText id="username" formControlName="username">
+        <small appErrorMessage
+               [errors]="identificationTypeField.errors"
+               [touched]="identificationTypeField.touched"
+               [dirty]="identificationTypeField.dirty">
+        </small>
+      </div>
+    </div>
+
+    <!--name & lastname-->
+    <div class="formgrid grid">
+      <!--name-->
+      <div class="field xl:col-6 lg:col-6 md:col-12 sm:col-12">
+        <label for="name" appLabel label="Nombres:"
+               [required]="isRequired(nameField)"
+               [valid]="nameField.valid"
+               [touched]="nameField.touched"
+               [dirty]="nameField.dirty">
+        </label>
+        <input pInputText id="name" formControlName="name">
+        <small appErrorMessage
+               [errors]="nameField.errors"
+               [touched]="nameField.touched"
+               [dirty]="nameField.dirty">
+        </small>
+      </div>
+      <!--lastname-->
+      <div class="field xl:col-6 lg:col-6 md:col-12 sm:col-12">
+        <label for="lastname" appLabel label="Apellidos:"
+               [required]="isRequired(lastnameField)"
+               [valid]="lastnameField.valid"
+               [touched]="lastnameField.touched"
+               [dirty]="lastnameField.dirty">
+        </label>
+        <input pInputText id="lastname" formControlName="lastname">
+        <small appErrorMessage
+               [errors]="lastnameField.errors"
+               [touched]="lastnameField.touched"
+               [dirty]="lastnameField.dirty">
+        </small>
+      </div>
+    </div>
+
+    <!--email-->
+    <div class="field">
+      <label for="email" appLabel label="Correo electrónico institucional:"
+             [required]="isRequired(emailField)"
+             [valid]="emailField.valid"
+             [touched]="emailField.touched"
+             [dirty]="emailField.dirty">
+      </label>
+      <input pInputText id="email" formControlName="email">
+      <small appErrorMessage
+             [errors]="emailField.errors"
+             [touched]="emailField.touched"
+             [dirty]="emailField.dirty">
+      </small>
+    </div>
+
+    <!--automaticPassword & passwordChanged-->
+    <div *ngIf="!idField.value">
+      <!--automaticPassword-->
+      <div class="field">
+        <p-inputSwitch id="automaticPassword"
+                       (onChange)="generateAutomaticPassword($event)"></p-inputSwitch>
+        <small class="ml-2"> Generar una contraseña automáticamente</small>
+      </div>
+      <div *ngIf="!automaticPassword.value" class="field">
+        <label for="password">Contraseña:</label>
+        <p-password id="password" formControlName="password"
+                    mediumLabel="Nivel medio"
+                    promptLabel="Escriba su contraseña"
+                    strongLabel="Fuerte" [toggleMask]="true"
+                    weakLabel="Débil">
+        </p-password>
+        <small appErrorMessage
+               [errors]="passwordField.errors"
+               [touched]="passwordField.touched"
+               [dirty]="passwordField.dirty">
+        </small>
+      </div>
+
+      <!--passwordChanged-->
+      <div class="field">
+        <p-inputSwitch id="passwordChanged" formControlName="passwordChanged"></p-inputSwitch>
+        <small class="ml-2"> Pedir al usuario que cambie su contraseña cuando inicie sesión</small>
+      </div>
+    </div>
+
+    <!--addPhone()-->
+    <div class="formgrid grid">
+      <!--addPhone()-->
+      <div class="field xl:col-12 lg:col-12 md:col-12 sm:col-12">
+        <button pButton pRipple type="button" label="Añadir Teléfono"
+                class="p-button-secondary p-button-rounded"
+                icon="pi pi-plus"
+                (click)="addPhone()"></button>
+      </div>
+    </div>
+
+    <!--phones-->
+    <div formArrayName="phones">
+      <div *ngFor="let phone of phonesField.controls; let i = index;" [formGroupName]="i">
+        <!--title & removePhone()-->
+        <div class="field text-center">
+          <!--title-->
+          <label [for]="'phone'+i" appLabel [label]="'Teléfono ' + (i + 1) + ':'"
+                 [required]="isRequired(phonesField.controls[i])"
+                 [valid]="phonesField.controls[i].valid"
+                 [touched]="phonesField.controls[i].touched"
+                 [dirty]="phonesField.controls[i].dirty"></label>
+
+          <!--removePhone()-->
+          <button pButton pRipple type="button"
+                  class="p-button-danger p-button-rounded ml-2"
+                  iconPos="right"
+                  icon="pi pi-trash"
+                  (click)="removePhone(i)"></button>
+        </div>
+
+        <!--phoneOperator & phoneTypes-->
+        <div class="formgrid grid">
+          <!--phoneOperator-->
+          <div class="field xl:col-6 lg:col-6 md:col-12 sm:col-12">
+            <p-dropdown [id]="'phoneOperator'+i" formControlName="operator"
+                        [options]="phoneOperators"
+                        dataKey="id"
+                        [filter]="true"
+                        filterBy="name"
+                        placeholder="Operadora">
+              <ng-template pTemplate="selectedItem">
+                <div *ngIf="phonesField.value[i].operator">
+                  <div>
+                    {{phonesField.value[i].operator.name}}
+                  </div>
+                </div>
+              </ng-template>
+              <ng-template let-item pTemplate="item">
+                <div>
+                  {{item.name}}
+                </div>
+              </ng-template>
+            </p-dropdown>
+            <small appErrorMessage
+                   [errors]="phonesField.controls[i]?.get('operator')!.errors"
+                   [touched]="phonesField.controls[i]?.get('operator')!.touched"
+                   [dirty]="phonesField.controls[i]?.get('operator')!.dirty">
+            </small>
+          </div>
+          <!--phoneTypes-->
+          <div class="field xl:col-6 lg:col-6 md:col-12 sm:col-12">
+            <p-dropdown [id]="'phoneType'+i" formControlName="type"
+                        [options]="phoneTypes"
+                        dataKey="id"
+                        [filter]="true"
+                        filterBy="name"
+                        placeholder="Tipo">
+              <ng-template pTemplate="selectedItem">
+                <div
+                  *ngIf="phonesField.value[i].type">
+                  <div>
+                    {{phonesField.value[i].type.name}}
+                  </div>
+                </div>
+              </ng-template>
+              <ng-template let-item pTemplate="item">
+                <div>
+                  {{item.name}}
+                </div>
+              </ng-template>
+            </p-dropdown>
+            <small appErrorMessage
+                   [errors]="phonesField.controls[i]?.get('type')!.errors"
+                   [touched]="phonesField.controls[i]?.get('type')!.touched"
+                   [dirty]="phonesField.controls[i]?.get('type')!.dirty">
+            </small>
+          </div>
+        </div>
+
+        <!--phoneLocation & number & removePhone()-->
+        <div class="formgrid grid">
+          <!--phoneLocation-->
+          <div class="field xl:col-6 lg:col-6 md:col-12 sm:col-12">
+            <p-dropdown [id]="'phoneLocation'+i" formControlName="location"
+                        [options]="phoneLocations"
+                        dataKey="id"
+                        [filter]="true"
+                        filterBy="alpha2_code"
+                        placeholder="Cod. Area">
+              <ng-template pTemplate="selectedItem">
+                <div *ngIf="phonesField.value[i].location">
+                  <div>
+                    <i [class]="'flag-icon flag-icon-'+phonesField.value[i].location.alpha2Code"></i>
+                    {{phonesField.value[i].location.alpha2Code}}
+                    {{phonesField.value[i].location.callingCode}}
+                    {{phonesField.value[i].location.name}}
+                  </div>
+                </div>
+              </ng-template>
+              <ng-template let-item pTemplate="item">
+                <div>
+                  <i [class]="'flag-icon flag-icon-'+item.alpha2Code"></i>
+                  {{item.alpha2Code}}
+                  {{item.callingCode}}
+                  {{item.name}}
+                </div>
+              </ng-template>
+            </p-dropdown>
+            <small appErrorMessage
+                   [errors]="phonesField.controls[i]?.get('location')!.errors"
+                   [touched]="phonesField.controls[i]?.get('location')!.touched"
+                   [dirty]="phonesField.controls[i]?.get('location')!.dirty">
+            </small>
+          </div>
+          <!--number-->
+          <div class="field xl:col-6 lg:col-6 md:col-12 sm:col-12">
+            <input pInputText [id]="'number'+i" formControlName="number" pKeyFilter="int" placeholder="Ej. 0987654321">
+            <small appErrorMessage
+                   [errors]="phonesField.controls[i]?.get('number')!.errors"
+                   [touched]="phonesField.controls[i]?.get('number')!.touched"
+                   [dirty]="phonesField.controls[i]?.get('number')!.dirty">
+            </small>
+          </div>
+        </div>
+
+        <p-divider *ngIf="i<phonesField.length-1"></p-divider>
+
+      </div>
+    </div>
+
+    <p-divider></p-divider>
+
+    <!--onSubmit()-->
+    <div class="field">
+      <button pButton pRipple label="Guardar" class="p-button-rounded"
+              icon="pi pi-save"></button>
+    </div>
+
+    <!--progressBar-->
+    <div class="field" *ngIf="progressBar">
+      <p-progressBar mode="indeterminate"></p-progressBar>
+    </div>
+  </form>
+</div>
