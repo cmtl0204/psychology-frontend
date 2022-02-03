@@ -21,7 +21,7 @@ export class CoreHttpService {
 
   getCatalogues(type: string | undefined): Observable<ServerResponse> {
     const params = new HttpParams().append('type', String(type));
-    const url = this.API_URL + '/catalogue/catalogue';
+    const url = this.API_URL + '/core-catalogue/catalogue';
     return this.httpClient.get<ServerResponse>(url, {params})
       .pipe(
         map(response => response),

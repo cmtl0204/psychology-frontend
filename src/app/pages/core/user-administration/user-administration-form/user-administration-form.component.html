@@ -62,7 +62,7 @@
                [touched]="nameField.touched"
                [dirty]="nameField.dirty">
         </label>
-        <input pInputText id="name" formControlName="name">
+        <input pInputText id="name" formControlName="name" class="uppercase">
         <small appErrorMessage
                [errors]="nameField.errors"
                [touched]="nameField.touched"
@@ -77,7 +77,7 @@
                [touched]="lastnameField.touched"
                [dirty]="lastnameField.dirty">
         </label>
-        <input pInputText id="lastname" formControlName="lastname">
+        <input pInputText id="lastname" formControlName="lastname" class="uppercase">
         <small appErrorMessage
                [errors]="lastnameField.errors"
                [touched]="lastnameField.touched"
@@ -94,7 +94,7 @@
              [touched]="emailField.touched"
              [dirty]="emailField.dirty">
       </label>
-      <input pInputText id="email" formControlName="email">
+      <input pInputText id="email" formControlName="email" class="lowercase">
       <small appErrorMessage
              [errors]="emailField.errors"
              [touched]="emailField.touched"

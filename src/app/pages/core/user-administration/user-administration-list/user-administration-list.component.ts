@@ -59,6 +59,11 @@ export class UserAdministrationListComponent implements OnInit {
     this.paginator$.subscribe(response => {
       this.paginator = response;
     });
+    this.search.valueChanges.subscribe(response => {
+      if (response === '') {
+        this.loadUsers();
+      }
+    });
   }
 
   ngOnInit(): void {

@@ -38,9 +38,6 @@ export class UserAdministrationHttpService {
       .append('page', page)
       .append('search', search);
 
-    if (search) {
-      // params = params.append('search', search);
-    }
     return this.httpClient.get<ServerResponse>(url, {params})
       .pipe(
         map(response => response),
