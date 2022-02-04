@@ -20,6 +20,7 @@ export class PasswordResetComponent implements OnInit {
               private router: Router,
               private activatedRoute: ActivatedRoute) {
     this.form = this.newForm();
+    console.log('entro');
   }
 
   ngOnInit(): void {
