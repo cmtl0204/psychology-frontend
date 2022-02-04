@@ -13,6 +13,7 @@ export class ChatComponent implements OnInit {
   progressBar: boolean = false;
   progressBarAnswer: boolean = false;
   questions: any[] = [];
+  results: any[] = [];
   actualQuestion: number = 1;
 
   constructor(private formBuilder: FormBuilder) {
@@ -82,7 +83,10 @@ export class ChatComponent implements OnInit {
     setTimeout(() => {
       this.actualQuestion = question.id + 1;
       this.progressBarAnswer = false;
-    }, 2000);
+    }, 1000);
+    this.results.push({
+
+    });
   }
 
   test(event: any) {
