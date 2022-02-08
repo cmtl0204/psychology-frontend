@@ -28,6 +28,7 @@ import {CardModule} from "primeng/card";
 import {OverlayPanelModule} from "primeng/overlaypanel";
 import {ReactiveFormsModule} from "@angular/forms";
 import { SearchComponent } from './components/search/search.component';
+import {TermsCondititonsPipe} from '@shared/pipes/chat/terms-condititons.pipe';
 
 
 @NgModule({
@@ -43,7 +44,8 @@ import { SearchComponent } from './components/search/search.component';
     CertificatedPipe,
     WorkedPipe,
     ExtensionsPipe,
-    SearchComponent
+    SearchComponent,
+    TermsCondititonsPipe
   ],
   exports: [
     RolesPermissionsDirective,
@@ -58,6 +60,7 @@ import { SearchComponent } from './components/search/search.component';
     UploadFilesComponent,
     ViewFilesComponent,
     SearchComponent,
+    TermsCondititonsPipe
   ],
   imports: [
     CommonModule,

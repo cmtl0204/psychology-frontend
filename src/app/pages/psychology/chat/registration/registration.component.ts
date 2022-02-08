@@ -1,13 +1,15 @@
 import {Component, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {PrimeIcons} from 'primeng/api';
+import {CoreHttpService} from '@services/core';
+import {LocationModel} from '@models/core';
 
 @Component({
-  selector: 'app-chat',
-  templateUrl: './chat.component.html',
-  styleUrls: ['./chat.component.scss']
+  selector: 'app-registration',
+  templateUrl: './registration.component.html',
+  styleUrls: ['./registration.component.scss']
 })
-export class ChatComponent implements OnInit {
+export class RegistrationComponent implements OnInit {
   formChat: FormGroup;
   primeIcons = PrimeIcons;
   progressBar: boolean = false;
@@ -18,14 +20,16 @@ export class ChatComponent implements OnInit {
   results: any[] = [];
   actualQuestion: number = 1;
   numberQuestion: number = 1;
+  steps: number = 1;
+  public provinces: LocationModel[] = [];
 
-  constructor(private formBuilder: FormBuilder) {
+  constructor(private formBuilder: FormBuilder, private coreHttpService: CoreHttpService) {
     this.formChat = this.newFormChat;
 
     this.baseQuestions = [
       {
         id: 1,
-        value: 'En las últimas dos semanas, ¿te has sentido triste, deprimido o sin esperanzas?',
+        value: 'Hola, soy tu amigo Jorgebot, y te estaré realizando unas preguntas para conocer juntos sobre tu estado de ánimo en las últimas dos semanas. La información que me brindes será confidencial y se guardará de forma segura para proteger tu privacidad e integridad.',
         type: 'phq2',
         number: 1,
         answers: [
@@ -35,7 +39,7 @@ export class ChatComponent implements OnInit {
       },
       {
         id: 2,
-        value: 'En las últimas dos semanas, ¿Has perdido el interés o placer en hacer cosas que te hacían sentir bien?',
+        value: 'Antes de empezar, es importante que pueda saber tu edad. Selecciona la respuesta con tu edad',
         type: 'phq2',
         number: 2,
         answers: [
@@ -145,6 +149,7 @@ export class ChatComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.loadLocations();
     setTimeout(() => {
       this.scroll();
     }, 20);
@@ -153,11 +158,21 @@ export class ChatComponent implements OnInit {
 
   get newFormChat(): FormGroup {
     return this.formBuilder.group({
-      username: ['1234567890', [Validators.required]],
-      // username: [null, [Validators.required]],
-      password: ['12345678', [Validators.required]],
-      // password: [null, [Validators.required]],
+      termsConditions: [null, [Validators.required]],
+      age: [12, [Validators.required]],
+      name: [null, [Validators.required]],
+      province: [null, [Validators.required]],
     });
+  }
+
+  loadLocations() {
+    this.coreHttpService.getLocations('PROVINCE').subscribe(
+      response => {
+        this.provinces = response.data;
+      }, error => {
+        // this.messageService.error(error);
+      }
+    );
   }
 
   onSubmit() {
@@ -200,15 +215,11 @@ export class ChatComponent implements OnInit {
 
   }
 
-  test(event: any) {
-    console.log(event);
-  }
-
   scroll() {
-    const elements = document.getElementsByClassName('msg');
-    const last: any = elements[elements.length - 1];
-    //@ts-ignore
-    document.getElementById('container')?.scrollTop = last.offsetTop;
+    // const elements = document.getElementsByClassName('msg');
+    // const last: any = elements[elements.length - 1];
+    // //@ts-ignore
+    // document.getElementById('container')?.scrollTop = last.offsetTop;
   }
 
   validatePhq2() {
@@ -218,5 +229,40 @@ export class ChatComponent implements OnInit {
       }
       return acc;
     }, 0);
+  }
+
+  saveTermsConditions(value: boolean) {
+    this.progressBarAnswer = true;
+    setTimeout(() => {
+      this.termsConditionField.setValue(value);
+      if (value) {
+        this.steps++;
+      }
+      this.progressBarAnswer = false;
+    }, 1500);
+  }
+
+  saveAge() {
+    this.progressBarAnswer = true;
+    setTimeout(() => {
+      this.steps++;
+      this.progressBarAnswer = false;
+    }, 1500);
+  }
+
+  get termsConditionField() {
+    return this.formChat.controls['termsConditions'];
+  }
+
+  get ageField() {
+    return this.formChat.controls['age'];
+  }
+
+  get nameField() {
+    return this.formChat.controls['name'];
+  }
+
+  get provinceField() {
+    return this.formChat.controls['province'];
   }
 }

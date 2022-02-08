@@ -1,0 +1,163 @@
+<div class="app-messages">
+  <p-card>
+    <form [formGroup]="formChat" (ngSubmit)="onSubmit()" class="p-fluid">
+      <!--Terms and Conditions-->
+      <div class="formgrid grid">
+        <div class="field xl:col-2 lg:col-2 md:col-2 sm:col-2">
+          <p-avatar image="assets/images/components/psychology/chat/jorge.jpg"
+                    styleClass="mr-2 mt-3"
+                    size="xlarge"
+                    shape="circle"></p-avatar>
+        </div>
+        <p-panel class="field xl:col-10 lg:col-10 md:col-10 sm:col-10">
+          <p>Hola, soy tu amigo Jorgebot, y te estaré realizando unas preguntas para conocer juntos sobre tu estado de
+            ánimo en las últimas dos semanas. La información que me brindes será confidencial y se guardará de forma
+            segura para proteger tu privacidad e integridad.</p>
+          <div *ngIf="steps>1" class="field xl:col-12 lg:col-12 md:col-12 sm:col-12">
+            <p-messages severity="info">
+              <ng-template pTemplate>
+                <div class="ml-2">{{termsConditionField.value|termsConditions}}</div>
+              </ng-template>
+            </p-messages>
+          </div>
+        </p-panel>
+      </div>
+      <div *ngIf="steps===1" class="formgrid grid">
+        <div class="field xl:col-10 lg:col-10 md:col-10 sm:col-10 col-offset-2">
+          <button pButton type="button" label="Aceptar"
+                  class="p-button-lg"
+                  icon="pi pi-check"
+                  (click)="saveTermsConditions(true)"></button>
+        </div>
+        <div class="field xl:col-10 lg:col-10 md:col-10 sm:col-10 col-offset-2">
+          <button pButton type="button" label="Rechazar"
+                  class="p-button-lg p-button-help"
+                  icon="pi pi-ban"
+                  (click)="saveTermsConditions(false)"></button>
+        </div>
+      </div>
+
+      <div class="field">
+        <app-skeleton *ngIf="progressBarAnswer && steps===1" [type]="'point'"></app-skeleton>
+      </div>
+
+      <!--Age-->
+      <div *ngIf="steps>=2" class="formgrid grid">
+        <div class="field xl:col-2 lg:col-2 md:col-2 sm:col-2">
+          <p-avatar image="assets/images/components/psychology/chat/jorge.jpg"
+                    styleClass="mr-2 mt-3"
+                    size="xlarge"
+                    shape="circle"></p-avatar>
+        </div>
+        <p-panel class="field xl:col-10 lg:col-10 md:col-10 sm:col-10">
+          <p>Antes de empezar, es importante que pueda saber tu edad. Selecciona la respuesta con tu edad</p>
+          <div *ngIf="steps>2" class="field xl:col-12 lg:col-12 md:col-12 sm:col-12">
+            <p-messages severity="info">
+              <ng-template pTemplate>
+                <div class="ml-2">{{ageField.value}}</div>
+              </ng-template>
+            </p-messages>
+          </div>
+        </p-panel>
+        <div *ngIf="steps===2" class="field xl:col-10 lg:col-10 md:col-10 sm:col-10 col-offset-2">
+          <p-inputNumber formControlName="age"
+                         [showButtons]="true"
+                         buttonLayout="vertical"
+                         inputId="vertical"
+                         decrementButtonClass="p-button-info"
+                         incrementButtonClass="p-button-info"
+                         incrementButtonIcon="pi pi-plus"
+                         decrementButtonIcon="pi pi-minus">
+          </p-inputNumber>
+          <button pButton type="button" label="Continuar"
+                  class="p-button-primary mt-2"
+                  icon="pi pi-send"
+                  (click)="saveAge()"></button>
+        </div>
+      </div>
+
+      <div class="field">
+        <app-skeleton *ngIf="progressBarAnswer && steps===2" [type]="'point'"></app-skeleton>
+      </div>
+
+      <!--Name-->
+      <div *ngIf="steps>=3" class="formgrid grid">
+        <div class="field xl:col-2 lg:col-2 md:col-2 sm:col-2">
+          <p-avatar image="assets/images/components/psychology/chat/jorge.jpg"
+                    styleClass="mr-2 mt-3"
+                    size="xlarge"
+                    shape="circle"></p-avatar>
+        </div>
+        <p-panel class="field xl:col-10 lg:col-10 md:col-10 sm:col-10">
+          <p>Nombres</p>
+          <div *ngIf="steps>3" class="field xl:col-12 lg:col-12 md:col-12sm:col-12">
+            <p-messages severity="info">
+              <ng-template pTemplate>
+                <div class="ml-2">{{nameField.value}}</div>
+              </ng-template>
+            </p-messages>
+          </div>
+        </p-panel>
+
+        <div *ngIf="steps===3" class="field xl:col-10 lg:col-10 md:col-10 sm:col-10 col-offset-2">
+          <input type="text" pInputText formControlName="name">
+          <button pButton type="button" label="Continuar"
+                  class="p-button-primary mt-2"
+                  icon="pi pi-send"
+                  (click)="saveAge()"></button>
+        </div>
+      </div>
+      <div class="field">
+        <app-skeleton *ngIf="progressBarAnswer && steps===3" [type]="'point'"></app-skeleton>
+      </div>
+
+      <!--Address-->
+      <div *ngIf="steps>=4" class="formgrid grid">
+        <div class="field xl:col-2 lg:col-2 md:col-2 sm:col-2">
+          <p-avatar image="assets/images/components/psychology/chat/jorge.jpg"
+                    styleClass="mr-2 mt-3"
+                    size="xlarge"
+                    shape="circle"></p-avatar>
+        </div>
+        <p-panel class="field xl:col-10 lg:col-10 md:col-10 sm:col-10">
+          <p>Provincia y Canton</p>
+          <div *ngIf="steps>4" class="field xl:col-12 lg:col-12 md:col-12sm:col-12">
+            <p-messages severity="info">
+              <ng-template pTemplate>
+                <div class="ml-2">{{provinceField.value}}</div>
+              </ng-template>
+            </p-messages>
+          </div>
+        </p-panel>
+        <div *ngIf="steps===4" class="field xl:col-10 lg:col-10 md:col-10 sm:col-10 col-offset-2">
+          <p-dropdown id="province" formControlName="province"
+                      [options]="provinces"
+                      dataKey="id"
+                      [filter]="true"
+                      filterBy="name"
+                      placeholder="Provincia">
+            <ng-template pTemplate="selectedItem">
+              <div *ngIf="provinceField.value">
+                <div>
+                  {{provinceField.value.name}}
+                </div>
+              </div>
+            </ng-template>
+            <ng-template let-item pTemplate="item">
+              <div>
+                {{item.name}}
+              </div>
+            </ng-template>
+          </p-dropdown>
+          <button pButton type="button" label="Continuar"
+                  class="p-button-primary mt-2"
+                  icon="pi pi-send"
+                  (click)="saveAge()"></button>
+        </div>
+      </div>
+      <div class="field">
+        <app-skeleton *ngIf="progressBarAnswer && steps===4" [type]="'point'"></app-skeleton>
+      </div>
+    </form>
+  </p-card>
+</div>
