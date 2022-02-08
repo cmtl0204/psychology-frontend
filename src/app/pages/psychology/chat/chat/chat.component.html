@@ -1,3 +1,69 @@
 <div id="app-messages" class="app-messages">
-
+  <p-card>
+    <div *ngFor="let result of results">
+      <div class="formgrid grid mt-5">
+        <div class="field xl:col-2 lg:col-2 md:col-2 sm:col-12">
+          <!--          <p-badge [value]="result.question.number" styleClass="mr-2"></p-badge>-->
+          <p-avatar image="assets/images/components/psychology/chat/jorge.jpg"
+                    styleClass="mr-2"
+                    size="xlarge"
+                    shape="circle"></p-avatar>
+        </div>
+        <p-panel class="field xl:col-10 lg:col-10 md:col-10 sm:col-12 text-right">
+          <ng-template pTemplate="header">
+            <b>Pregunta {{result.number}}</b>
+          </ng-template>
+          <p>{{result.question.value}}</p>
+          <ng-template pTemplate="footer">
+            <button pButton type="button" [label]="result.answer.value"
+                    [class]="result.answer.class + ' p-button-lg'"
+                    [icon]="result.answer.icon"></button>
+          </ng-template>
+        </p-panel>
+      </div>
+    </div>
+    <p-panel *ngIf="flagDuel && actualQuestion>1">
+      <ng-template pTemplate="header">
+        <img src="assets/images/components/psychology/chat/congratulation.jpg" alt="" width="50%">
+      </ng-template>
+      <p>Los resultados serán enviados a su correo electrónico</p>
+    </p-panel>
+  </p-card>
+</div>
+<div class="app-messages">
+  <p-card>
+    <form [formGroup]="formChat" (ngSubmit)="onSubmit()" class="p-fluid">
+      <div *ngFor="let question of questions">
+        <div *ngIf="question.number===actualQuestion">
+          <div class="formgrid grid">
+            <div class="field xl:col-2 lg:col-2 md:col-2 sm:col-2">
+              <!--              <p-badge [value]="actualQuestion +'/' + questions?.length" styleClass="mr-2" size="xlarge"></p-badge>-->
+              <p-avatar image="assets/images/components/psychology/chat/jorge.jpg"
+                        styleClass="mr-2 mt-3"
+                        size="xlarge"
+                        shape="circle"></p-avatar>
+            </div>
+            <p-panel class="field xl:col-10 lg:col-10 md:col-10 sm:col-10">
+              <ng-template pTemplate="header">
+                Pregunta actual
+              </ng-template>
+              <p>{{question.value}}</p>
+            </p-panel>
+          </div>
+          <div class="formgrid grid">
+            <div *ngFor="let answer of question.answers"
+                 class="field xl:col-10 lg:col-10 md:col-10 sm:col-10 col-offset-2">
+              <button pButton type="button" [label]="answer.value"
+                      [class]="answer.class + ' p-button-lg'"
+                      [icon]="answer.icon"
+                      (click)="reply(question,answer)"></button>
+            </div>
+          </div>
+          <div class="field">
+            <app-skeleton *ngIf="progressBarAnswer" [type]="'point'"></app-skeleton>
+          </div>
+        </div>
+      </div>
+    </form>
+  </p-card>
 </div>

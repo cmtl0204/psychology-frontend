@@ -1,5 +1,14 @@
 <div class="card">
-  <div class="grid formgrid">
+  <div class="formgrid">
+    <div class="field col-12 md:col-12 sm:col-12" *ngIf="type==='point'">
+      <div class="flex align-items-end">
+        <small class="p-text-secondary mr-2">Escribiendo</small>
+        <p-skeleton shape="circle" size="0.5rem" styleClass="mr-2"></p-skeleton>
+        <p-skeleton shape="circle" size="0.5rem" styleClass="mr-2"></p-skeleton>
+        <p-skeleton shape="circle" size="0.5rem"></p-skeleton>
+      </div>
+    </div>
+
     <div class="field col-12 md:col-6" *ngIf="type==='form'">
       <p-skeleton styleClass="mb-2"></p-skeleton>
       <p-skeleton width="10rem" styleClass="mb-2"></p-skeleton>

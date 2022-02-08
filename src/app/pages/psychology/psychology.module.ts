@@ -15,28 +15,30 @@ import {ScrollPanelModule} from 'primeng/scrollpanel';
 import {PanelModule} from 'primeng/panel';
 import {ProgressBarModule} from 'primeng/progressbar';
 import {AvatarModule} from 'primeng/avatar';
+import {BadgeModule} from 'primeng/badge';
 
 @NgModule({
   declarations: [
     ChatComponent
   ],
-  imports: [
-    CommonModule,
-    PsychologyRoutingModule,
-    FormsModule,
-    ReactiveFormsModule,
-    InputTextModule,
-    ButtonModule,
-    CardModule,
-    SharedModule,
-    DividerModule,
-    RippleModule,
-    PasswordModule,
-    ScrollPanelModule,
-    PanelModule,
-    ProgressBarModule,
-    AvatarModule
-  ]
+    imports: [
+        CommonModule,
+        PsychologyRoutingModule,
+        FormsModule,
+        ReactiveFormsModule,
+        InputTextModule,
+        ButtonModule,
+        CardModule,
+        SharedModule,
+        DividerModule,
+        RippleModule,
+        PasswordModule,
+        ScrollPanelModule,
+        PanelModule,
+        ProgressBarModule,
+        AvatarModule,
+        BadgeModule
+    ]
 })
 export class PsychologyModule {
 }
