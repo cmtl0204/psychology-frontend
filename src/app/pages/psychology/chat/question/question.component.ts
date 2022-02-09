@@ -197,7 +197,7 @@ export class QuestionComponent implements OnInit {
         this.flagDuel = true;
         this.questions = this.baseQuestions.filter(question => question.type == 'duel');
       }
-    }, 1500);
+    }, 1000);
 
   }
 

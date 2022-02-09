@@ -1,8 +1,43 @@
 .app-messages {
-padding-right: 10px;
-padding-left: 10px;
-}
-.panel {
-  background: #EEF9FF;
+  padding: 10px 10px 12px;
 }
 
+.app-panel {
+  background: #E6E6FA;
+  padding-top: 20px;
+  padding-left: 20px;
+  padding-right: 20px;
+  border-radius: 15px 15px 15px 15px;
+}
+
+.panel-avatar {
+  background: #483D8B;
+  height: 70px;
+  width:  97%;
+  border-radius: 15px 15px 15px 15px;
+  position: fixed;
+}
+
+.text-jorge {
+  color: #fff;
+  font-size: 20px;
+}
+
+.panel-avatar img{
+  float: left;
+}
+
+.jorge-avatar {
+  border-radius: 50px;
+  padding: 10px;
+}
+
+.panel-question{
+  background: #efa94a;
+  border-radius: 15px 15px 15px 15px;
+}
+
+.panel-answer{
+  background: #fff;
+  border-radius: 15px 15px 15px 15px;
+}
