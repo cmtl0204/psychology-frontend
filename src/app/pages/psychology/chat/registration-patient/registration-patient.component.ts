@@ -3,6 +3,7 @@ import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {PrimeIcons} from 'primeng/api';
 import {CoreHttpService} from '@services/core';
 import {LocationModel} from '@models/core';
+import {PsychologyHttpService} from '@services/psychology/psychology-http.service';
 
 @Component({
   selector: 'app-registration-patient',
@@ -31,7 +32,9 @@ export class RegistrationPatientComponent implements OnInit {
   public provinces: LocationModel[] = [];
   public cantons: LocationModel[] = [];
 
-  constructor(private formBuilder: FormBuilder, private coreHttpService: CoreHttpService) {
+  constructor(private formBuilder: FormBuilder,
+              private coreHttpService: CoreHttpService,
+              private psychologyHttpService: PsychologyHttpService) {
     this.formPatient = this.newFormPatient;
 
     this.baseQuestions = [
@@ -198,60 +201,11 @@ export class RegistrationPatientComponent implements OnInit {
     );
   }
 
-  onSubmit() {
-    if (this.formPatient.valid) {
-      // this.login();
-    } else {
-      this.formPatient.markAllAsTouched();
-    }
-  }
-
-  reply(question: any, answer: any) {
-    this.progressBarAnswer = true;
-    setTimeout(() => {
-      this.results.push({
-        question, answer, number: this.numberQuestion, registeredAt: new Date()
-      });
-      this.numberQuestion++;
-      this.actualQuestion = question.number + 1;
-      this.progressBarAnswer = false;
-
-      if (this.results.length == 2) {
-        this.actualQuestion = 1;
-        const scorePhq2 = this.validatePhq2();
-
-        if (scorePhq2 > 0) {
-          this.questions = this.baseQuestions.filter(question => question.type == 'phq9a');
-        }
-
-        if (scorePhq2 == 0) {
-          this.questions = this.baseQuestions.filter(question => question.type == 'psc17');
-        }
-      }
-
-      if (!this.flagDuel && this.actualQuestion > this.questions.length && this.results.length > 2) {
-        this.actualQuestion = 1;
-        this.flagDuel = true;
-        this.questions = this.baseQuestions.filter(question => question.type == 'duel');
-      }
-    }, 1500);
-
-  }
-
   scroll() {
     // const elements = document.getElementsByClassName('msg');
     // const last: any = elements[elements.length - 1];
     // //@ts-ignore
     // document.getElementById('container')?.scrollTop = last.offsetTop;
-  }
-
-  validatePhq2() {
-    return this.results.reduce((acc, item) => {
-      if (item.question.type == 'phq2') {
-        acc += item.answer.score
-      }
-      return acc;
-    }, 0);
   }
 
   saveIdentification() {
@@ -310,6 +264,7 @@ export class RegistrationPatientComponent implements OnInit {
       this.activatedTest.emit(true);
       this.progressBarAnswerOut.emit(false);
       this.steps++;
+      this.psychologyHttpService.savePatient(this.formPatient.value);
     }, Math.random() * (2000 - 1000) + 1000);
   }
 

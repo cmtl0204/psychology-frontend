@@ -1,0 +1,5 @@
+export {PatientModel} from './patient.model'
+export {TestModel} from './test.model'
+export {AnswerModel} from './answer.model'
+export {QuestionModel} from './question.model'
+export {ResultModel} from './result.model'

@@ -1,7 +1,10 @@
-import {Component, EventEmitter, OnInit, Output} from '@angular/core';
+import {Component, EventEmitter, OnDestroy, OnInit, Output} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {PrimeIcons} from 'primeng/api';
 import {MessageService} from '@services/core';
+import {Subject, takeUntil} from 'rxjs';
+import {PsychologyHttpService} from '@services/psychology/psychology-http.service';
+import {PatientModel, TestModel} from '@models/psychology';
 
 @Component({
   selector: 'app-question',
@@ -9,7 +12,7 @@ import {MessageService} from '@services/core';
   styleUrls: ['./question.component.scss']
 })
 
-export class QuestionComponent implements OnInit {
+export class QuestionComponent implements OnInit, OnDestroy {
   @Output() progressBarAnswerOut = new EventEmitter<boolean>();
   formChat: FormGroup;
   primeIcons = PrimeIcons;
@@ -23,8 +26,14 @@ export class QuestionComponent implements OnInit {
   numberQuestion: number = 1;
   currentDate: Date = new Date();
   time: any;
+  patient: PatientModel = {};
+  agent: PatientModel = {};
+  test: TestModel = {};
+  age: number = 0;
 
-  constructor(private formBuilder: FormBuilder, private messageService: MessageService) {
+  constructor(private formBuilder: FormBuilder,
+              private messageService: MessageService,
+              private psychologyHttpService: PsychologyHttpService) {
     this.formChat = this.newFormChat;
 
     this.baseQuestions = [
@@ -54,17 +63,17 @@ export class QuestionComponent implements OnInit {
         type: 'phq9a',
         number: 1,
         answers: [
-          {id: 3, value: 'Para nada', score: 0, class: 'p-button-primary', icon: 'pi pi-thumbs-up'},
-          {id: 4, value: 'Varios días (entre 1 a 6 días)', score: 1, class: 'p-button-info', icon: 'pi pi-thumbs-down'},
+          {id: 4, value: 'Para nada', score: 0, class: 'p-button-primary', icon: 'pi pi-thumbs-up'},
+          {id: 5, value: 'Varios días (entre 1 a 6 días)', score: 1, class: 'p-button-info', icon: 'pi pi-thumbs-down'},
           {
-            id: 5,
+            id: 6,
             value: 'La mitad de los días o más (entre 7 y 11 días)',
             score: 2,
             class: 'p-button-help',
             icon: 'pi pi-thumbs-down'
           },
           {
-            id: 6,
+            id: 7,
             value: 'Casi todos los días (12 días o más)',
             score: 3,
             class: 'p-button-warn',
@@ -78,23 +87,23 @@ export class QuestionComponent implements OnInit {
         type: 'phq9a',
         number: 2,
         answers: [
-          {id: 7, value: 'Para nada', score: 0, class: 'p-button-primary', icon: 'pi pi-thumbs-up'},
+          {id: 8, value: 'Para nada', score: 0, class: 'p-button-primary', icon: 'pi pi-thumbs-up'},
           {
-            id: 8,
+            id: 9,
             value: 'Varios días (entre 1 a 6 días)',
             score: 1,
             class: 'p-button-info',
             icon: 'pi pi-thumbs-down'
           },
           {
-            id: 9,
+            id: 10,
             value: 'La mitad de los días o más (entre 7 y 11 días)',
             score: 2,
             class: 'p-button-help',
             icon: 'pi pi-thumbs-down'
           },
           {
-            id: 10,
+            id: 11,
             value: 'Casi todos los días (12 días o más)',
             score: 3,
             class: 'p-button-warn',
@@ -108,10 +117,10 @@ export class QuestionComponent implements OnInit {
         type: 'psc17',
         number: 1,
         answers: [
-          {id: 11, value: 'Nunca', score: 0, class: 'p-button-primary', icon: 'pi pi-thumbs-up'},
-          {id: 12, value: 'Algunas veces', score: 1, class: 'p-button-info', icon: 'pi pi-thumbs-down'},
+          {id: 12, value: 'Nunca', score: 0, class: 'p-button-primary', icon: 'pi pi-thumbs-up'},
+          {id: 13, value: 'Algunas veces', score: 1, class: 'p-button-info', icon: 'pi pi-thumbs-down'},
           {
-            id: 13,
+            id: 14,
             value: 'Frecuentemente',
             score: 2,
             class: 'p-button-help',
@@ -125,10 +134,10 @@ export class QuestionComponent implements OnInit {
         type: 'psc17',
         number: 2,
         answers: [
-          {id: 14, value: 'Nunca', score: 0, class: 'p-button-primary', icon: 'pi pi-thumbs-up'},
-          {id: 15, value: 'Algunas veces', score: 1, class: 'p-button-info', icon: 'pi pi-thumbs-down'},
+          {id: 15, value: 'Nunca', score: 0, class: 'p-button-primary', icon: 'pi pi-thumbs-up'},
+          {id: 16, value: 'Algunas veces', score: 1, class: 'p-button-info', icon: 'pi pi-thumbs-down'},
           {
-            id: 16,
+            id: 17,
             value: 'Frecuentemente',
             score: 2,
             class: 'p-button-help',
@@ -142,14 +151,18 @@ export class QuestionComponent implements OnInit {
         type: 'duel',
         number: 1,
         answers: [
-          {id: 17, value: 'No', score: 0, class: 'p-button-primary', icon: 'pi pi-thumbs-up'},
-          {id: 18, value: 'Si', score: 1, class: 'p-button-info', icon: 'pi pi-thumbs-down'},
+          {id: 18, value: 'No', score: 0, class: 'p-button-primary', icon: 'pi pi-thumbs-up'},
+          {id: 19, value: 'Si', score: 1, class: 'p-button-info', icon: 'pi pi-thumbs-down'},
         ]
       },
     ];
     this.time = setInterval(() => {
       this.currentDate = new Date();
     }, 1000);
+
+    this.patient = this.psychologyHttpService.patient;
+    this.patient.age = this.psychologyHttpService.age;
+    this.agent = this.psychologyHttpService.agent;
   }
 
   ngOnInit(): void {
@@ -157,6 +170,10 @@ export class QuestionComponent implements OnInit {
       this.scroll();
     }, 20);
     this.questions = this.baseQuestions.filter(question => question.type === 'phq2');
+  }
+
+  ngOnDestroy(): void {
+
   }
 
   get newFormChat(): FormGroup {
@@ -179,7 +196,7 @@ export class QuestionComponent implements OnInit {
   reply(question: any, answer: any) {
     if (this.questions.find(question => question.type == 'duel')) {
       clearInterval(this.time);
-      // this.messageService.finishTest();
+      this.saveTest();
     }
 
     this.progressBarAnswerOut.emit(true);
@@ -227,5 +244,19 @@ export class QuestionComponent implements OnInit {
       }
       return acc;
     }, 0);
+  }
+
+  saveTest() {
+    this.test.patient = this.patient;
+    this.test.agent = this.agent;
+    this.test.results = this.results;
+    this.progressBarAnswerOut.emit(true);
+    this.psychologyHttpService.storeTest(this.test).subscribe(
+      response => {
+        this.progressBarAnswerOut.emit(false);
+      }, error => {
+        this.messageService.error(error);
+        this.progressBarAnswerOut.emit(false);
+      });
   }
 }
