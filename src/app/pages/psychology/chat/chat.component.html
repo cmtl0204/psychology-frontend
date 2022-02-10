@@ -13,7 +13,12 @@
   <br>
   <div class="p-fluid app-panel">
 
-    <app-registration *ngIf="!activatedTest" (activatedTestOut)="activatedTest=$event"></app-registration>
-    <app-question *ngIf="activatedTest"></app-question>
+    <app-registration *ngIf="!activatedTest"
+                      (activatedTestOut)="activatedTest=$event"
+                      (progressBarAnswerOut)="progressBarAnswer=$event"
+    ></app-registration>
+    <app-question *ngIf="activatedTest"
+                  (progressBarAnswerOut)="progressBarAnswer=$event"
+    ></app-question>
   </div>
 </div>

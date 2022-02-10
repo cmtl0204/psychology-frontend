@@ -11,6 +11,7 @@ import {LocationModel} from '@models/core';
 })
 export class RegistrationComponent implements OnInit {
   @Output() activatedTestOut = new EventEmitter<boolean>();
+  @Output() progressBarAnswerOut = new EventEmitter<boolean>();
   formChat: FormGroup;
   primeIcons = PrimeIcons;
   progressBar: boolean = false;
@@ -25,7 +26,7 @@ export class RegistrationComponent implements OnInit {
   currentDate: Date = new Date();
   ageValid: boolean = false;
   younger: boolean = false;
-  codeVerified: boolean = false;
+  codeVerified: string = '';
 
   public provinces: LocationModel[] = [];
   public cantons: LocationModel[] = [];
@@ -200,14 +201,14 @@ export class RegistrationComponent implements OnInit {
   }
 
   reply(question: any, answer: any) {
-    this.progressBarAnswer = true;
+    this.progressBarAnswerOut.emit(true);
     setTimeout(() => {
       this.results.push({
         question, answer, number: this.numberQuestion, registeredAt: new Date()
       });
       this.numberQuestion++;
       this.actualQuestion = question.number + 1;
-      this.progressBarAnswer = false;
+      this.progressBarAnswerOut.emit(false);
 
       if (this.results.length == 2) {
         this.actualQuestion = 1;
@@ -248,7 +249,7 @@ export class RegistrationComponent implements OnInit {
   }
 
   saveTermsConditions(value: boolean) {
-    this.progressBarAnswer = true;
+    this.progressBarAnswerOut.emit(true);
     setTimeout(() => {
       this.termsConditionField.setValue(value);
       if (value) {
@@ -256,12 +257,12 @@ export class RegistrationComponent implements OnInit {
       } else {
         this.steps = 0;
       }
-      this.progressBarAnswer = false;
+      this.progressBarAnswerOut.emit(false);
     }, Math.random() * (2000 - 1000) + 1000);
   }
 
   saveAge() {
-    this.progressBarAnswer = true;
+    this.progressBarAnswerOut.emit(true);
     setTimeout(() => {
 
       if (this.ageField.value >= 12 && this.ageField.value <= 18) {
@@ -270,12 +271,12 @@ export class RegistrationComponent implements OnInit {
           this.younger = true;
         } else {
           this.younger = false;
-          this.codeVerified = true;
+          this.codeVerified = 'valid';
         }
       } else {
         this.ageValid = true;
       }
-      this.progressBarAnswer = false;
+      this.progressBarAnswerOut.emit(false);
     }, Math.random() * (2000 - 1000) + 1000);
   }
 

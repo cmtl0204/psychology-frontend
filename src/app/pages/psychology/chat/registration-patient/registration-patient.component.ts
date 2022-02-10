@@ -168,9 +168,9 @@ export class RegistrationPatientComponent implements OnInit {
   get newFormPatient(): FormGroup {
     return this.formBuilder.group({
       identification: ['1234567890', [Validators.required]],
-      name: ['Juan Andres', [Validators.required]],
-      lastname: ['Tamayo Perez', [Validators.required]],
-      email: ['juan.tamayo@gmail.com', [Validators.required, Validators.email]],
+      name: ['CHRISTOPHER DE LAS MERCEDES', [Validators.required]],
+      lastname: ['VILLAVICENCIO QUINCHIGUANGO', [Validators.required]],
+      email: ['mayrapaulinaquinatoagomez@yahoo.com', [Validators.required, Validators.email]],
       phone: ['0987654321', [Validators.required]],
       code: [null, [Validators.required]],
       province: [null, [Validators.required]],
@@ -288,21 +288,27 @@ export class RegistrationPatientComponent implements OnInit {
   }
 
   savePhone() {
+    this.progressBarAnswerOut.emit(true);
     setTimeout(() => {
+      this.progressBarAnswerOut.emit(false);
       this.steps++;
     }, Math.random() * (2000 - 1000) + 1000);
   }
 
   saveAddress() {
+    this.progressBarAnswerOut.emit(true);
     setTimeout(() => {
+      this.progressBarAnswerOut.emit(false);
       this.steps++;
     }, Math.random() * (2000 - 1000) + 1000);
   }
 
   startTest() {
+    this.progressBarAnswerOut.emit(true);
     setTimeout(() => {
       this.stepsOut.emit(4);
       this.activatedTest.emit(true);
+      this.progressBarAnswerOut.emit(false);
       this.steps++;
     }, Math.random() * (2000 - 1000) + 1000);
   }

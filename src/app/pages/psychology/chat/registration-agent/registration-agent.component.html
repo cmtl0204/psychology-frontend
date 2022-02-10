@@ -1,5 +1,4 @@
 <form [formGroup]="formAgent" (ngSubmit)="onSubmit()" class="p-fluid">
-
   <!--Identification-->
   <div *ngIf="steps>=1" class="formgrid grid">
     <div class="field col-10 panel-question">
@@ -10,7 +9,7 @@
   <div *ngIf="steps===1" class="formgrid grid">
     <div class="field col-12">
       <div class="p-inputgroup">
-        <input type="text" pInputText formControlName="identification" pKeyFilter="pint">
+        <input type="number" pInputText formControlName="identification" pKeyFilter="pint">
         <button type="button" pButton pRipple
                 class="p-button-rounded ml-1"
                 icon="pi pi-send"
@@ -20,8 +19,11 @@
   </div>
   <!--Result-->
   <div *ngIf="steps>1" class="formgrid grid">
-    <div class="field col-6 col-offset-6 panel-answer text-right">
-      <p>{{identificationField.value}}</p>
+    <div class="field col-5 col-offset-7 panel-answer text-right">
+      <p>
+        {{identificationField.value}}
+        <i class="pi pi-check" style="font-size: 0.5rem"></i>
+        <i class="pi pi-check" style="font-size: 0.5rem"></i></p>
     </div>
   </div>
 
@@ -45,8 +47,12 @@
   </div>
   <!--Result-->
   <div *ngIf="steps>2" class="formgrid grid">
-    <div class="field col-6 col-offset-6 panel-answer text-right">
-      <p>{{nameField.value}}</p>
+    <div class="field col-7 col-offset-5 panel-answer text-right">
+      <p>
+        {{nameField.value}}
+        <i class="pi pi-check" style="font-size: 0.5rem"></i>
+        <i class="pi pi-check" style="font-size: 0.5rem"></i>
+      </p>
     </div>
   </div>
 
@@ -70,8 +76,12 @@
   </div>
   <!--Result-->
   <div *ngIf="steps>3" class="formgrid grid">
-    <div class="field col-6 col-offset-6 panel-answer text-right">
-      <p>{{lastnameField.value}}</p>
+    <div class="field col-7 col-offset-5 panel-answer text-right">
+      <p>
+        {{lastnameField.value}}
+        <i class="pi pi-check" style="font-size: 0.5rem"></i>
+        <i class="pi pi-check" style="font-size: 0.5rem"></i>
+      </p>
     </div>
   </div>
 
@@ -95,8 +105,12 @@
   </div>
   <!--Result-->
   <div *ngIf="steps>4" class="formgrid grid">
-    <div class="field col-6 col-offset-6 panel-answer text-right">
-      <p>{{phoneField.value}}</p>
+    <div class="field col-5 col-offset-7 panel-answer text-right">
+      <p>
+        {{phoneField.value}}
+        <i class="pi pi-check" style="font-size: 0.5rem"></i>
+        <i class="pi pi-check" style="font-size: 0.5rem"></i>
+      </p>
     </div>
   </div>
 
@@ -120,8 +134,12 @@
   </div>
   <!--Result-->
   <div *ngIf="steps>5" class="formgrid grid">
-    <div class="field col-6 col-offset-6 panel-answer text-right">
-      <p>{{emailField.value}}</p>
+    <div class="field col-10 col-offset-2 panel-answer text-right">
+      <p>
+        {{emailField.value}}
+        <i class="pi pi-check" style="font-size: 0.5rem"></i>
+        <i class="pi pi-check" style="font-size: 0.5rem"></i>
+      </p>
     </div>
   </div>
 
@@ -135,13 +153,23 @@
   <div *ngIf="steps===6" class="formgrid grid">
     <div class="field col-12">
       <div class="p-inputgroup">
-        <input type="text" pInputText formControlName="code" pKeyFilter="pint"
+        <input type="number" pInputText formControlName="code" pKeyFilter="pint"
                placeholder="Ingrese el código para continuar">
         <button type="button" pButton pRipple
                 class="p-button-rounded ml-1"
                 icon="pi pi-send"
                 (click)="saveCode()"></button>
       </div>
+    </div>
+  </div>
+  <!--Result-->
+  <div *ngIf="steps>6" class="formgrid grid">
+    <div class="field col-4 col-offset-8 panel-answer text-right">
+      <p>
+        {{codeField.value}}
+        <i class="pi pi-check" style="font-size: 0.5rem"></i>
+        <i class="pi pi-check" style="font-size: 0.5rem"></i>
+      </p>
     </div>
   </div>
 </form>

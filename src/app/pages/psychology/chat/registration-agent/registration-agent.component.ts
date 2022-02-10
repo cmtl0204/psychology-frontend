@@ -16,7 +16,7 @@ export class RegistrationAgentComponent implements OnInit {
   progressBarAnswer: boolean = false;
   @Output() progressBarAnswerOut = new EventEmitter<boolean>();
   @Output() stepsOut = new EventEmitter<number>();
-  @Output() codeVerifiedOut = new EventEmitter<boolean>();
+  @Output() codeVerifiedOut = new EventEmitter<string>();
   questions: any[] = [];
   baseQuestions: any[] = [];
   flagDuel: boolean = false;
@@ -168,9 +168,9 @@ export class RegistrationAgentComponent implements OnInit {
   get newFormAgent(): FormGroup {
     return this.formBuilder.group({
       identification: ['1234567890', [Validators.required]],
-      name: ['Juan Andres', [Validators.required]],
-      lastname: ['Tamayo Perez', [Validators.required]],
-      email: ['juan.tamayo@gmail.com', [Validators.required, Validators.email]],
+      name: ['CHRISTOPHER DE LAS MERCEDES', [Validators.required]],
+      lastname: ['VILLAVICENCIO QUINCHIGUANGO', [Validators.required]],
+      email: ['mayrapaulinaquinatoagomez@yahoo.com', [Validators.required, Validators.email]],
       phone: ['0987654321', [Validators.required]],
       code: [null, [Validators.required]],
     });
@@ -256,6 +256,7 @@ export class RegistrationAgentComponent implements OnInit {
     this.progressBarAnswerOut.emit(true);
     setTimeout(() => {
       this.progressBarAnswerOut.emit(false);
+      this.steps = 5;
       this.steps++;
     }, Math.random() * (2000 - 1000) + 1000);
   }
@@ -285,16 +286,24 @@ export class RegistrationAgentComponent implements OnInit {
   }
 
   savePhone() {
+    this.progressBarAnswerOut.emit(true);
     setTimeout(() => {
+      this.progressBarAnswerOut.emit(false);
       this.steps++;
     }, Math.random() * (2000 - 1000) + 1000);
   }
 
   saveCode() {
+    this.progressBarAnswerOut.emit(true);
     setTimeout(() => {
-      this.stepsOut.emit(4);
-      this.codeVerifiedOut.emit(true);
-      this.steps++;
+      this.progressBarAnswerOut.emit(false);
+      if (this.codeField.value === 1234) {
+        this.stepsOut.emit(4);
+        this.codeVerifiedOut.emit('valid');
+        this.steps++;
+      } else {
+        this.codeVerifiedOut.emit('invalid');
+      }
     }, Math.random() * (2000 - 1000) + 1000);
   }
 
@@ -316,5 +325,9 @@ export class RegistrationAgentComponent implements OnInit {
 
   get phoneField() {
     return this.formAgent.controls['phone'];
+  }
+
+  get codeField() {
+    return this.formAgent.controls['code'];
   }
 }

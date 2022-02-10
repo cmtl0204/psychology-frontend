@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, EventEmitter, OnInit, Output} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {PrimeIcons} from 'primeng/api';
 import {MessageService} from '@services/core';
@@ -10,6 +10,7 @@ import {MessageService} from '@services/core';
 })
 
 export class QuestionComponent implements OnInit {
+  @Output() progressBarAnswerOut = new EventEmitter<boolean>();
   formChat: FormGroup;
   primeIcons = PrimeIcons;
   progressBar: boolean = false;
@@ -21,6 +22,7 @@ export class QuestionComponent implements OnInit {
   actualQuestion: number = 1;
   numberQuestion: number = 1;
   currentDate: Date = new Date();
+  time: any;
 
   constructor(private formBuilder: FormBuilder, private messageService: MessageService) {
     this.formChat = this.newFormChat;
@@ -145,7 +147,7 @@ export class QuestionComponent implements OnInit {
         ]
       },
     ];
-    setInterval(() => {
+    this.time = setInterval(() => {
       this.currentDate = new Date();
     }, 1000);
   }
@@ -176,17 +178,18 @@ export class QuestionComponent implements OnInit {
 
   reply(question: any, answer: any) {
     if (this.questions.find(question => question.type == 'duel')) {
+      clearInterval(this.time);
       // this.messageService.finishTest();
     }
 
-    this.progressBarAnswer = true;
+    this.progressBarAnswerOut.emit(true);
     setTimeout(() => {
       this.results.push({
         question, answer, number: this.numberQuestion, registeredAt: new Date()
       });
       this.numberQuestion++;
       this.actualQuestion = question.number + 1;
-      this.progressBarAnswer = false;
+      this.progressBarAnswerOut.emit(false);
 
       if (this.results.length == 2) {
         this.actualQuestion = 1;

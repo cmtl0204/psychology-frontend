@@ -6,14 +6,15 @@
         <p>
           {{result.question.value}}
         </p>
-        <small>
-          {{result.registredAt|date:'medium'}}
-        </small>
       </div>
     </div>
     <div class="formgrid grid">
-      <div class="field col-6 col-offset-6 panel-answer text-right">
-        <p>{{result.answer.value}}</p>
+      <div class="field col-7 col-offset-5 panel-answer text-right">
+        <p>
+          {{result.answer.value}}
+          <i class="pi pi-check" style="font-size: 0.5rem"></i>
+          <i class="pi pi-check" style="font-size: 0.5rem"></i>
+        </p>
         <small>{{result.registeredAt|date:'medium'}}</small>
       </div>
     </div>
@@ -31,7 +32,7 @@
       </div>
       <div class="formgrid grid">
         <div *ngFor="let answer of question.answers"
-             class="field col-6 col-offset-6">
+             class="field col-7 col-offset-5">
           <button pButton type="button" [label]="answer.value"
                   [class]="answer.class"
                   [icon]="answer.icon"

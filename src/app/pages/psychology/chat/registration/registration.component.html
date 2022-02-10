@@ -1,95 +1,106 @@
-    <form [formGroup]="formChat" (ngSubmit)="onSubmit()" class="p-fluid">
-      <!--Terms and Conditions-->
-      <div class="formgrid grid">
-        <div class="field col-10 panel-question">
-          <p>Hola, soy tu amigo Jorgebot, y te estaré realizando unas preguntas para conocer juntos sobre tu estado de
-            ánimo en las últimas dos semanas. La información que me brindes será confidencial y se guardará de forma
-            segura para proteger tu privacidad e integridad.
-          </p>
-        </div>
-      </div>
-      <!--Input-->
-      <div *ngIf="steps===1" class="formgrid grid">
-        <div class="field col-6 col-offset-6">
-          <button pButton type="button" label="Aceptar"
-                  class="p-button-lg"
-                  icon="pi pi-check"
-                  (click)="saveTermsConditions(true)"></button>
-        </div>
-        <div class="field col-6 col-offset-6">
-          <button pButton type="button" label="Rechazar"
-                  class="p-button-lg p-button-help"
-                  icon="pi pi-ban"
-                  (click)="saveTermsConditions(false)"></button>
-        </div>
-      </div>
-      <!--Result-->
-      <div *ngIf="steps>1" class="formgrid grid">
-        <div class="field col-6 col-offset-6 panel-answer text-right">
-          <p>
-            {{termsConditionField.value|termsConditions}}
-            <i class="pi pi-check" style="font-size: 0.5rem"></i>
-            <i class="pi pi-check" style="font-size: 0.5rem"></i>
-          </p>
-        </div>
-      </div>
+<form [formGroup]="formChat" (ngSubmit)="onSubmit()" class="p-fluid">
+  <!--Terms and Conditions-->
+  <div class="formgrid grid">
+    <div class="field col-10 panel-question">
+      <p>Hola, soy tu amigo Jorgebot, y te estaré realizando unas preguntas para conocer juntos sobre tu estado de
+        ánimo en las últimas dos semanas. La información que me brindes será confidencial y se guardará de forma
+        segura para proteger tu privacidad e integridad.
+      </p>
+    </div>
+  </div>
+  <!--Input-->
+  <div *ngIf="steps===1" class="formgrid grid">
+    <div class="field col-6 col-offset-6">
+      <button pButton type="button" label="Aceptar"
+              class="p-button-lg"
+              icon="pi pi-check"
+              (click)="saveTermsConditions(true)"></button>
+    </div>
+    <div class="field col-6 col-offset-6">
+      <button pButton type="button" label="Rechazar"
+              class="p-button-lg p-button-help"
+              icon="pi pi-ban"
+              (click)="saveTermsConditions(false)"></button>
+    </div>
+  </div>
+  <!--Result-->
+  <div *ngIf="steps>1" class="formgrid grid">
+    <div class="field col-4 col-offset-8 panel-answer text-right">
+      <p>
+        {{termsConditionField.value|termsConditions}}
+        <i class="pi pi-check" style="font-size: 0.5rem"></i>
+        <i class="pi pi-check" style="font-size: 0.5rem"></i>
+      </p>
+    </div>
+  </div>
 
-      <!--No Accept Terms and Conditions-->
-      <div *ngIf="termsConditionField.value===false" class="formgrid grid">
-        <div class="field col-10 panel-question">
-          <p>Vuelve cuando lo requieras
-          </p>
-        </div>
-      </div>
+  <!--No Accept Terms and Conditions-->
+  <div *ngIf="termsConditionField.value===false" class="formgrid grid">
+    <div class="field col-10 panel-question">
+      <p>Vuelve cuando lo requieras
+      </p>
+    </div>
+  </div>
 
-      <!--Age-->
-      <div *ngIf="steps>=2" class="formgrid grid">
-        <div class="field col-10 panel-question">
-          <p>Antes de empezar, es importante que pueda saber tu edad. Selecciona la respuesta con tu edad</p>
-        </div>
+  <!--Age-->
+  <div *ngIf="steps>=2" class="formgrid grid">
+    <div class="field col-10 panel-question">
+      <p>Antes de empezar, es importante que pueda saber tu edad. Selecciona la respuesta con tu edad</p>
+    </div>
+  </div>
+  <!--Input-->
+  <div *ngIf="steps===2" class="formgrid grid">
+    <div class="field col-12">
+      <div class="p-inputgroup">
+        <input type="number" pInputText formControlName="age"
+               [min]="12" [max]="18">
+        <button pButton type="button"
+                class="p-button-rounded ml-1"
+                icon="pi pi-send"
+                (click)="saveAge()"></button>
       </div>
-      <!--Input-->
-      <div *ngIf="steps===2" class="formgrid grid">
-        <div class="field col-12">
-          <div class="p-inputgroup">
-            <input type="number" pInputText formControlName="age"
-                   [min]="12" [max]="18">
-            <button pButton type="button"
-                    class="p-button-rounded ml-1"
-                    icon="pi pi-send"
-                    (click)="saveAge()"></button>
-          </div>
-        </div>
-      </div>
-      <!--Result-->
-      <div *ngIf="steps>2" class="formgrid grid">
-        <div class="field col-6 col-offset-6 panel-answer text-right">
-          <p>
-            {{ageField.value}}
-            <i class="pi pi-check" style="font-size: 0.5rem"></i>
-            <i class="pi pi-check" style="font-size: 0.5rem"></i>
-          </p>
-        </div>
-      </div>
+    </div>
+  </div>
+  <!--Result-->
+  <div *ngIf="steps>2" class="formgrid grid">
+    <div class="field col-3 col-offset-9 panel-answer text-right">
+      <p>
+        {{ageField.value}}
+        <i class="pi pi-check" style="font-size: 0.5rem"></i>
+        <i class="pi pi-check" style="font-size: 0.5rem"></i>
+      </p>
+    </div>
+  </div>
 
-      <!--Age Range-->
-      <div *ngIf="ageValid" class="formgrid grid">
-        <div class="field col-10 panel-question">
-          <p>Tu edad debe estar en el rango entre 12 y 18 años
-          </p>
-        </div>
-      </div>
-    </form>
-    <app-registration-agent *ngIf="younger"
-                            (progressBarAnswerOut)="progressBarAnswer=$event"
-                            (stepsOut)="steps=$event"
-                            (codeVerifiedOut)="codeVerified=$event">
+  <!--Age Range-->
+  <div *ngIf="ageValid" class="formgrid grid">
+    <div class="field col-10 panel-question">
+      <p>Tu edad debe estar en el rango entre 12 y 18 años
+      </p>
+    </div>
+  </div>
+</form>
 
-    </app-registration-agent>
+<!--Agent Registration-->
+<app-registration-agent *ngIf="younger"
+                        (progressBarAnswerOut)="progressBarAnswerOut.emit($event)"
+                        (stepsOut)="steps=$event"
+                        (codeVerifiedOut)="codeVerified=$event">
 
-    <app-registration-patient *ngIf="codeVerified"
-                              (progressBarAnswerOut)="progressBarAnswer=$event"
-                              (activatedTest)="activatedTestOut.emit($event)"
-                              (stepsOut)="steps=$event">
+</app-registration-agent>
 
-    </app-registration-patient>
+<!--Code Invalid-->
+<div *ngIf="codeVerified.length>0 && codeVerified==='invalid'" class="formgrid grid">
+  <div class="field col-10 panel-question">
+    <p>
+      El código de verificación no es válido
+    </p>
+  </div>
+</div>
+
+<!--Patient Registration-->
+<app-registration-patient *ngIf="codeVerified=='valid'"
+                          (progressBarAnswerOut)="progressBarAnswerOut.emit($event)"
+                          (activatedTest)="activatedTestOut.emit($event)"
+                          (stepsOut)="steps=$event">
+</app-registration-patient>
