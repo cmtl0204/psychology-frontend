@@ -22,35 +22,41 @@ import {InputNumberModule} from 'primeng/inputnumber';
 import {MessageModule} from 'primeng/message';
 import {MessagesModule} from 'primeng/messages';
 import {DropdownModule} from 'primeng/dropdown';
+import {KeyFilterModule} from 'primeng/keyfilter';
+import {RegistrationAgentComponent} from './chat/registration-agent/registration-agent.component';
+import {RegistrationPatientComponent} from './chat/registration-patient/registration-patient.component';
 
 @NgModule({
   declarations: [
     QuestionComponent,
     RegistrationComponent,
+    RegistrationAgentComponent,
+    RegistrationPatientComponent,
     ChatComponent
   ],
-  imports: [
-    CommonModule,
-    PsychologyRoutingModule,
-    FormsModule,
-    ReactiveFormsModule,
-    InputTextModule,
-    ButtonModule,
-    CardModule,
-    SharedModule,
-    DividerModule,
-    RippleModule,
-    PasswordModule,
-    ScrollPanelModule,
-    PanelModule,
-    ProgressBarModule,
-    AvatarModule,
-    BadgeModule,
-    InputNumberModule,
-    MessageModule,
-    MessagesModule,
-    DropdownModule
-  ]
+    imports: [
+        CommonModule,
+        PsychologyRoutingModule,
+        FormsModule,
+        ReactiveFormsModule,
+        InputTextModule,
+        ButtonModule,
+        CardModule,
+        SharedModule,
+        DividerModule,
+        RippleModule,
+        PasswordModule,
+        ScrollPanelModule,
+        PanelModule,
+        ProgressBarModule,
+        AvatarModule,
+        BadgeModule,
+        InputNumberModule,
+        MessageModule,
+        MessagesModule,
+        DropdownModule,
+        KeyFilterModule
+    ]
 })
 export class PsychologyModule {
 }

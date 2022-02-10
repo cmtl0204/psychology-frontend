@@ -25,7 +25,7 @@ const routes: Routes = [
         data: {
           roles: [RolesEnum.ADMIN]
         },
-        canActivate: [TokenGuard, RoleGuard]
+        // canActivate: [TokenGuard, RoleGuard]
       }
     ]
   },

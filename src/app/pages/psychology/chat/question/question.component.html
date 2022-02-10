@@ -1,59 +1,50 @@
-<div id="app-messages" class="app-messages">
-  <div class="panel-avatar">
-    <img src="assets/images/components/psychology/chat/jorge.jpg" width="70px" class="jorge-avatar">
-    <p class="text-jorge">
-      ChatBot - Jorge
-    </p>
+<!--Results-->
+<div *ngIf="results?.length">
+  <div *ngFor="let result of results">
+    <div class="formgrid grid">
+      <div class="field col-10 panel-question">
+        <p>
+          {{result.question.value}}
+        </p>
+        <small>
+          {{result.registredAt|date:'medium'}}
+        </small>
+      </div>
+    </div>
+    <div class="formgrid grid">
+      <div class="field col-6 col-offset-6 panel-answer text-right">
+        <p>{{result.answer.value}}</p>
+        <small>{{result.registeredAt|date:'medium'}}</small>
+      </div>
+    </div>
   </div>
-  <br>
-  <br>
-  <br>
-  <div *ngIf="results?.length" class="app-panel p-fluid">
-    <div *ngFor="let result of results">
+</div>
+
+<!--Current Message-->
+<form [formGroup]="formChat" (ngSubmit)="onSubmit()" class="p-fluid">
+  <div *ngFor="let question of questions">
+    <div *ngIf="question.number===actualQuestion">
       <div class="formgrid grid">
-        <div class="field xl:col-8 lg:col-8 md:col-8 sm:col-8 panel-question">
-          <p>{{result.question.value}}</p>
+        <div class="field col-10 panel-question">
+          <p>{{question.value}}</p>
         </div>
       </div>
       <div class="formgrid grid">
-        <div class="field xl:col-6 lg:col-6 md:col-6 sm:col-6 col-offset-6 panel-answer">
-<!--          <button pButton type="button" [label]="result.answer.value"-->
-<!--                  [class]="result.answer.class + ' p-button-lg'"-->
-<!--                  [icon]="result.answer.icon"></button>-->
-          <p class="text-right mr-5">{{result.answer.value}}</p>
+        <div *ngFor="let answer of question.answers"
+             class="field col-6 col-offset-6">
+          <button pButton type="button" [label]="answer.value"
+                  [class]="answer.class"
+                  [icon]="answer.icon"
+                  (click)="reply(question,answer)"></button>
         </div>
       </div>
     </div>
   </div>
-  <br>
-  <div class="app-panel">
-    <form [formGroup]="formChat" (ngSubmit)="onSubmit()" class="p-fluid">
-      <div *ngFor="let question of questions">
-        <div *ngIf="question.number===actualQuestion">
-          <div class="formgrid grid">
-            <div class="field xl:col-8 lg:col-8 md:col-8 sm:col-8 panel-question">
-              <p>{{question.value}}</p>
-            </div>
-          </div>
-          <div class="formgrid grid">
-            <div *ngFor="let answer of question.answers"
-                 class="field xl:col-6 lg:col-6 md:col-6 sm:col-6 col-offset-6">
-              <button pButton type="button" [label]="answer.value"
-                      [class]="answer.class"
-                      [icon]="answer.icon"
-                      (click)="reply(question,answer)"></button>
-            </div>
-          </div>
-          <div class="field">
-            <app-skeleton *ngIf="progressBarAnswer" [type]="'point'"></app-skeleton>
-          </div>
-        </div>
-      </div>
-    </form>
-  </div>
+</form>
 
-  <div *ngIf="flagDuel && actualQuestion>1">
-    <img src="assets/images/components/psychology/chat/congratulation.jpg" alt="" width="50%">
-    <p>Los resultados serán enviados a su correo electrónico</p>
+<!--Finished Message-->
+<div *ngIf="flagDuel && actualQuestion>1" class="formgrid grid">
+  <div class="field col-10 panel-question">
+    <p>Gracias por particiar, los resultados serán enviados a su correo electrónico</p>
   </div>
 </div>

@@ -47,7 +47,7 @@
             <p-sortIcon [field]="col.field"></p-sortIcon>
           </th>
           <th style="text-align: center">
-            <button pButton pRipple type="button" class="p-button-rounded p-button-secondary" icon="pi pi-cog"></button>
+            <button pButton pRipple type="button" class="p-button-rounded p-button-info" icon="pi pi-cog"></button>
           </th>
         </tr>
       </ng-template>
@@ -60,7 +60,7 @@
             {{rowData[col.field]}}
           </td>
           <td style="text-align: center">
-            <p-splitButton label="Más" styleClass="p-button-secondary" icon="pi pi-user-edit"
+            <p-splitButton label="Más" styleClass="p-button-info" icon="pi pi-user-edit"
                            (onClick)="showForm(rowData)"
                            (onDropdownClick)="selectUser(rowData)"
                            [model]="items"></p-splitButton>

@@ -1,0 +1,147 @@
+<form [formGroup]="formAgent" (ngSubmit)="onSubmit()" class="p-fluid">
+
+  <!--Identification-->
+  <div *ngIf="steps>=1" class="formgrid grid">
+    <div class="field col-10 panel-question">
+      <p>Número de cédula de tu padre o madre</p>
+    </div>
+  </div>
+  <!--Input-->
+  <div *ngIf="steps===1" class="formgrid grid">
+    <div class="field col-12">
+      <div class="p-inputgroup">
+        <input type="text" pInputText formControlName="identification" pKeyFilter="pint">
+        <button type="button" pButton pRipple
+                class="p-button-rounded ml-1"
+                icon="pi pi-send"
+                (click)="saveIdentification()"></button>
+      </div>
+    </div>
+  </div>
+  <!--Result-->
+  <div *ngIf="steps>1" class="formgrid grid">
+    <div class="field col-6 col-offset-6 panel-answer text-right">
+      <p>{{identificationField.value}}</p>
+    </div>
+  </div>
+
+  <!--Name-->
+  <div *ngIf="steps>=2" class="formgrid grid">
+    <div class="field col-10 panel-question">
+      <p>Nombres de tu padre o madre</p>
+    </div>
+  </div>
+  <!--Input-->
+  <div *ngIf="steps===2" class="formgrid grid">
+    <div class="field col-12">
+      <div class="p-inputgroup">
+        <input type="text" pInputText formControlName="name" pKeyFilter="alpha">
+        <button type="button" pButton pRipple
+                class="p-button-rounded ml-1"
+                icon="pi pi-send"
+                (click)="saveName()"></button>
+      </div>
+    </div>
+  </div>
+  <!--Result-->
+  <div *ngIf="steps>2" class="formgrid grid">
+    <div class="field col-6 col-offset-6 panel-answer text-right">
+      <p>{{nameField.value}}</p>
+    </div>
+  </div>
+
+  <!--lastname-->
+  <div *ngIf="steps>=3" class="formgrid grid">
+    <div class="field col-10 panel-question">
+      <p>Apellidos de tu padre o madre</p>
+    </div>
+  </div>
+  <!--Input-->
+  <div *ngIf="steps===3" class="formgrid grid">
+    <div class="field col-12">
+      <div class="p-inputgroup">
+        <input type="text" pInputText formControlName="lastname" pKeyFilter="alpha">
+        <button type="button" pButton pRipple
+                class="p-button-rounded ml-1"
+                icon="pi pi-send"
+                (click)="saveLastname()"></button>
+      </div>
+    </div>
+  </div>
+  <!--Result-->
+  <div *ngIf="steps>3" class="formgrid grid">
+    <div class="field col-6 col-offset-6 panel-answer text-right">
+      <p>{{lastnameField.value}}</p>
+    </div>
+  </div>
+
+  <!--Phone-->
+  <div *ngIf="steps>=4" class="formgrid grid">
+    <div class="field col-10 panel-question">
+      <p>Número celular de tu padre o madre</p>
+    </div>
+  </div>
+  <!--Input-->
+  <div *ngIf="steps===4" class="formgrid grid">
+    <div class="field col-12">
+      <div class="p-inputgroup">
+        <input type="text" pInputText formControlName="phone" pKeyFilter="pint">
+        <button type="button" pButton pRipple
+                class="p-button-rounded ml-1"
+                icon="pi pi-send"
+                (click)="savePhone()"></button>
+      </div>
+    </div>
+  </div>
+  <!--Result-->
+  <div *ngIf="steps>4" class="formgrid grid">
+    <div class="field col-6 col-offset-6 panel-answer text-right">
+      <p>{{phoneField.value}}</p>
+    </div>
+  </div>
+
+  <!--Email-->
+  <div *ngIf="steps>=5" class="formgrid grid">
+    <div class="field col-10 panel-question">
+      <p>Correo electrónico de tu padre o madre</p>
+    </div>
+  </div>
+  <!--Input-->
+  <div *ngIf="steps===5" class="formgrid grid">
+    <div class="field col-12">
+      <div class="p-inputgroup">
+        <input type="text" pInputText formControlName="email" pKeyFilter="email">
+        <button type="button" pButton pRipple
+                class="p-button-rounded ml-1"
+                icon="pi pi-send"
+                (click)="saveEmail()"></button>
+      </div>
+    </div>
+  </div>
+  <!--Result-->
+  <div *ngIf="steps>5" class="formgrid grid">
+    <div class="field col-6 col-offset-6 panel-answer text-right">
+      <p>{{emailField.value}}</p>
+    </div>
+  </div>
+
+  <!--Message send code-->
+  <div *ngIf="steps>=6" class="formgrid grid">
+    <div class="field col-10 panel-question">
+      <p>Se envió un código al correo electrónico, por favor revise y regrese al chat para continuar</p>
+    </div>
+  </div>
+  <!--Input-->
+  <div *ngIf="steps===6" class="formgrid grid">
+    <div class="field col-12">
+      <div class="p-inputgroup">
+        <input type="text" pInputText formControlName="code" pKeyFilter="pint"
+               placeholder="Ingrese el código para continuar">
+        <button type="button" pButton pRipple
+                class="p-button-rounded ml-1"
+                icon="pi pi-send"
+                (click)="saveCode()"></button>
+      </div>
+    </div>
+  </div>
+</form>

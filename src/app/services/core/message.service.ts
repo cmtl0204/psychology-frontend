@@ -63,6 +63,14 @@ export class MessageService {
     });
   }
 
+  finishTest() {
+    return Swal.fire({
+      title: 'Gracias por participar!',
+      text: 'Se enviará un correo electrónico con los resultados',
+      icon: 'info'
+    });
+  }
+
   showLoading() {
     return Swal.showLoading();
   }

@@ -6,7 +6,7 @@ import {Pipe, PipeTransform} from '@angular/core';
 export class TermsCondititonsPipe implements PipeTransform {
 
   transform(value: boolean, ...args: unknown[]): string {
-    return value ? 'Aceptado' : 'Rechazado';
+    return value ? 'Acepto' : 'Rechazo';
   }
 
 }

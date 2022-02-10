@@ -1,2 +1,19 @@
-<!--<app-registration></app-registration>-->
- <app-question></app-question>
+<div class="app-messages">
+  <div class="panel-avatar">
+    <img src="assets/images/components/psychology/chat/jorge.jpg" width="70px" class="jorge-avatar">
+    <p class="text-jorge">
+      ChatBot - Jorge
+      <app-skeleton *ngIf="progressBarAnswer" [type]="'point'"></app-skeleton>
+    </p>
+  </div>
+  <br>
+  <br>
+  <br>
+  <br>
+  <br>
+  <div class="p-fluid app-panel">
+
+    <app-registration *ngIf="!activatedTest" (activatedTestOut)="activatedTest=$event"></app-registration>
+    <app-question *ngIf="activatedTest"></app-question>
+  </div>
+</div>

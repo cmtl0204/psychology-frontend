@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, EventEmitter, OnInit, Output} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {PrimeIcons} from 'primeng/api';
 import {CoreHttpService} from '@services/core';
@@ -10,6 +10,7 @@ import {LocationModel} from '@models/core';
   styleUrls: ['./registration.component.scss']
 })
 export class RegistrationComponent implements OnInit {
+  @Output() activatedTestOut = new EventEmitter<boolean>();
   formChat: FormGroup;
   primeIcons = PrimeIcons;
   progressBar: boolean = false;
@@ -21,7 +22,13 @@ export class RegistrationComponent implements OnInit {
   actualQuestion: number = 1;
   numberQuestion: number = 1;
   steps: number = 1;
+  currentDate: Date = new Date();
+  ageValid: boolean = false;
+  younger: boolean = false;
+  codeVerified: boolean = false;
+
   public provinces: LocationModel[] = [];
+  public cantons: LocationModel[] = [];
 
   constructor(private formBuilder: FormBuilder, private coreHttpService: CoreHttpService) {
     this.formChat = this.newFormChat;
@@ -150,6 +157,7 @@ export class RegistrationComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadLocations();
+    this.loadCantons();
     setTimeout(() => {
       this.scroll();
     }, 20);
@@ -159,9 +167,7 @@ export class RegistrationComponent implements OnInit {
   get newFormChat(): FormGroup {
     return this.formBuilder.group({
       termsConditions: [null, [Validators.required]],
-      age: [12, [Validators.required]],
-      name: [null, [Validators.required]],
-      province: [null, [Validators.required]],
+      age: [null, [Validators.required]],
     });
   }
 
@@ -169,6 +175,16 @@ export class RegistrationComponent implements OnInit {
     this.coreHttpService.getLocations('PROVINCE').subscribe(
       response => {
         this.provinces = response.data;
+      }, error => {
+        // this.messageService.error(error);
+      }
+    );
+  }
+
+  loadCantons() {
+    this.coreHttpService.getLocations('CANTON').subscribe(
+      response => {
+        this.cantons = response.data;
       }, error => {
         // this.messageService.error(error);
       }
@@ -187,7 +203,7 @@ export class RegistrationComponent implements OnInit {
     this.progressBarAnswer = true;
     setTimeout(() => {
       this.results.push({
-        question, answer, number: this.numberQuestion
+        question, answer, number: this.numberQuestion, registeredAt: new Date()
       });
       this.numberQuestion++;
       this.actualQuestion = question.number + 1;
@@ -211,7 +227,7 @@ export class RegistrationComponent implements OnInit {
         this.flagDuel = true;
         this.questions = this.baseQuestions.filter(question => question.type == 'duel');
       }
-    }, 1500);
+    }, Math.random() * (2000 - 1000) + 1000);
 
   }
 
@@ -237,17 +253,30 @@ export class RegistrationComponent implements OnInit {
       this.termsConditionField.setValue(value);
       if (value) {
         this.steps++;
+      } else {
+        this.steps = 0;
       }
       this.progressBarAnswer = false;
-    }, 1500);
+    }, Math.random() * (2000 - 1000) + 1000);
   }
 
   saveAge() {
     this.progressBarAnswer = true;
     setTimeout(() => {
-      this.steps++;
+
+      if (this.ageField.value >= 12 && this.ageField.value <= 18) {
+        this.steps++;
+        if (this.ageField.value < 18) {
+          this.younger = true;
+        } else {
+          this.younger = false;
+          this.codeVerified = true;
+        }
+      } else {
+        this.ageValid = true;
+      }
       this.progressBarAnswer = false;
-    }, 1500);
+    }, Math.random() * (2000 - 1000) + 1000);
   }
 
   get termsConditionField() {
@@ -256,13 +285,5 @@ export class RegistrationComponent implements OnInit {
 
   get ageField() {
     return this.formChat.controls['age'];
-  }
-
-  get nameField() {
-    return this.formChat.controls['name'];
-  }
-
-  get provinceField() {
-    return this.formChat.controls['province'];
   }
 }

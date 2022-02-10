@@ -1,34 +1,43 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {PrimeIcons} from 'primeng/api';
-import {MessageService} from '@services/core';
+import {CoreHttpService} from '@services/core';
+import {LocationModel} from '@models/core';
 
 @Component({
-  selector: 'app-question',
-  templateUrl: './question.component.html',
-  styleUrls: ['./question.component.scss']
+  selector: 'app-registration-agent',
+  templateUrl: './registration-agent.component.html',
+  styleUrls: ['./registration-agent.component.scss']
 })
-
-export class QuestionComponent implements OnInit {
-  formChat: FormGroup;
+export class RegistrationAgentComponent implements OnInit {
+  formAgent: FormGroup;
   primeIcons = PrimeIcons;
   progressBar: boolean = false;
   progressBarAnswer: boolean = false;
+  @Output() progressBarAnswerOut = new EventEmitter<boolean>();
+  @Output() stepsOut = new EventEmitter<number>();
+  @Output() codeVerifiedOut = new EventEmitter<boolean>();
   questions: any[] = [];
   baseQuestions: any[] = [];
   flagDuel: boolean = false;
   results: any[] = [];
   actualQuestion: number = 1;
   numberQuestion: number = 1;
+  steps: number = 1;
   currentDate: Date = new Date();
+  ageValid: boolean = false;
+  adult: boolean = false;
 
-  constructor(private formBuilder: FormBuilder, private messageService: MessageService) {
-    this.formChat = this.newFormChat;
+  public provinces: LocationModel[] = [];
+  public cantons: LocationModel[] = [];
+
+  constructor(private formBuilder: FormBuilder, private coreHttpService: CoreHttpService) {
+    this.formAgent = this.newFormAgent;
 
     this.baseQuestions = [
       {
         id: 1,
-        value: 'En las últimas dos semanas, ¿te has sentido triste, deprimido o sin esperanzas?',
+        value: 'Hola, soy tu amigo Jorgebot, y te estaré realizando unas preguntas para conocer juntos sobre tu estado de ánimo en las últimas dos semanas. La información que me brindes será confidencial y se guardará de forma segura para proteger tu privacidad e integridad.',
         type: 'phq2',
         number: 1,
         answers: [
@@ -38,7 +47,7 @@ export class QuestionComponent implements OnInit {
       },
       {
         id: 2,
-        value: 'En las últimas dos semanas, ¿Has perdido el interés o placer en hacer cosas que te hacían sentir bien?',
+        value: 'Antes de empezar, es importante que pueda saber tu edad. Selecciona la respuesta con tu edad',
         type: 'phq2',
         number: 2,
         answers: [
@@ -144,41 +153,58 @@ export class QuestionComponent implements OnInit {
           {id: 18, value: 'Si', score: 1, class: 'p-button-info', icon: 'pi pi-thumbs-down'},
         ]
       },
-    ];
-    setInterval(() => {
-      this.currentDate = new Date();
-    }, 1000);
+    ]
   }
 
   ngOnInit(): void {
+    this.loadLocations();
+    this.loadCantons();
     setTimeout(() => {
       this.scroll();
     }, 20);
     this.questions = this.baseQuestions.filter(question => question.type === 'phq2');
   }
 
-  get newFormChat(): FormGroup {
+  get newFormAgent(): FormGroup {
     return this.formBuilder.group({
-      username: ['1234567890', [Validators.required]],
-      // username: [null, [Validators.required]],
-      password: ['12345678', [Validators.required]],
-      // password: [null, [Validators.required]],
+      identification: ['1234567890', [Validators.required]],
+      name: ['Juan Andres', [Validators.required]],
+      lastname: ['Tamayo Perez', [Validators.required]],
+      email: ['juan.tamayo@gmail.com', [Validators.required, Validators.email]],
+      phone: ['0987654321', [Validators.required]],
+      code: [null, [Validators.required]],
     });
   }
 
+  loadLocations() {
+    this.coreHttpService.getLocations('PROVINCE').subscribe(
+      response => {
+        this.provinces = response.data;
+      }, error => {
+        // this.messageService.error(error);
+      }
+    );
+  }
+
+  loadCantons() {
+    this.coreHttpService.getLocations('CANTON').subscribe(
+      response => {
+        this.cantons = response.data;
+      }, error => {
+        // this.messageService.error(error);
+      }
+    );
+  }
+
   onSubmit() {
-    if (this.formChat.valid) {
+    if (this.formAgent.valid) {
       // this.login();
     } else {
-      this.formChat.markAllAsTouched();
+      this.formAgent.markAllAsTouched();
     }
   }
 
   reply(question: any, answer: any) {
-    if (this.questions.find(question => question.type == 'duel')) {
-      // this.messageService.finishTest();
-    }
-
     this.progressBarAnswer = true;
     setTimeout(() => {
       this.results.push({
@@ -206,7 +232,7 @@ export class QuestionComponent implements OnInit {
         this.flagDuel = true;
         this.questions = this.baseQuestions.filter(question => question.type == 'duel');
       }
-    }, Math.random() * (1500 - 1000) + 1000);
+    }, 1500);
 
   }
 
@@ -224,5 +250,71 @@ export class QuestionComponent implements OnInit {
       }
       return acc;
     }, 0);
+  }
+
+  saveIdentification() {
+    this.progressBarAnswerOut.emit(true);
+    setTimeout(() => {
+      this.progressBarAnswerOut.emit(false);
+      this.steps++;
+    }, Math.random() * (2000 - 1000) + 1000);
+  }
+
+  saveName() {
+    this.progressBarAnswerOut.emit(true);
+    setTimeout(() => {
+      this.progressBarAnswerOut.emit(false);
+      this.steps++;
+    }, Math.random() * (2000 - 1000) + 1000);
+  }
+
+  saveLastname() {
+    this.progressBarAnswerOut.emit(true);
+    setTimeout(() => {
+      this.progressBarAnswerOut.emit(false);
+      this.steps++;
+    }, Math.random() * (2000 - 1000) + 1000);
+  }
+
+  saveEmail() {
+    this.progressBarAnswerOut.emit(true);
+    setTimeout(() => {
+      this.progressBarAnswerOut.emit(false);
+      this.steps++;
+    }, Math.random() * (2000 - 1000) + 1000);
+  }
+
+  savePhone() {
+    setTimeout(() => {
+      this.steps++;
+    }, Math.random() * (2000 - 1000) + 1000);
+  }
+
+  saveCode() {
+    setTimeout(() => {
+      this.stepsOut.emit(4);
+      this.codeVerifiedOut.emit(true);
+      this.steps++;
+    }, Math.random() * (2000 - 1000) + 1000);
+  }
+
+  get identificationField() {
+    return this.formAgent.controls['identification'];
+  }
+
+  get lastnameField() {
+    return this.formAgent.controls['lastname'];
+  }
+
+  get nameField() {
+    return this.formAgent.controls['name'];
+  }
+
+  get emailField() {
+    return this.formAgent.controls['email'];
+  }
+
+  get phoneField() {
+    return this.formAgent.controls['phone'];
   }
 }

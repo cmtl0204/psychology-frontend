@@ -1,34 +1,43 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {PrimeIcons} from 'primeng/api';
-import {MessageService} from '@services/core';
+import {CoreHttpService} from '@services/core';
+import {LocationModel} from '@models/core';
 
 @Component({
-  selector: 'app-question',
-  templateUrl: './question.component.html',
-  styleUrls: ['./question.component.scss']
+  selector: 'app-registration-patient',
+  templateUrl: './registration-patient.component.html',
+  styleUrls: ['./registration-patient.component.scss']
 })
-
-export class QuestionComponent implements OnInit {
-  formChat: FormGroup;
+export class RegistrationPatientComponent implements OnInit {
+  formPatient: FormGroup;
   primeIcons = PrimeIcons;
   progressBar: boolean = false;
   progressBarAnswer: boolean = false;
+  @Output() progressBarAnswerOut = new EventEmitter<boolean>();
+  @Output() stepsOut = new EventEmitter<number>();
+  @Output() activatedTest = new EventEmitter<boolean>();
   questions: any[] = [];
   baseQuestions: any[] = [];
   flagDuel: boolean = false;
   results: any[] = [];
   actualQuestion: number = 1;
   numberQuestion: number = 1;
+  steps: number = 1;
   currentDate: Date = new Date();
+  ageValid: boolean = false;
+  adult: boolean = false;
 
-  constructor(private formBuilder: FormBuilder, private messageService: MessageService) {
-    this.formChat = this.newFormChat;
+  public provinces: LocationModel[] = [];
+  public cantons: LocationModel[] = [];
+
+  constructor(private formBuilder: FormBuilder, private coreHttpService: CoreHttpService) {
+    this.formPatient = this.newFormPatient;
 
     this.baseQuestions = [
       {
         id: 1,
-        value: 'En las últimas dos semanas, ¿te has sentido triste, deprimido o sin esperanzas?',
+        value: 'Hola, soy tu amigo Jorgebot, y te estaré realizando unas preguntas para conocer juntos sobre tu estado de ánimo en las últimas dos semanas. La información que me brindes será confidencial y se guardará de forma segura para proteger tu privacidad e integridad.',
         type: 'phq2',
         number: 1,
         answers: [
@@ -38,7 +47,7 @@ export class QuestionComponent implements OnInit {
       },
       {
         id: 2,
-        value: 'En las últimas dos semanas, ¿Has perdido el interés o placer en hacer cosas que te hacían sentir bien?',
+        value: 'Antes de empezar, es importante que pueda saber tu edad. Selecciona la respuesta con tu edad',
         type: 'phq2',
         number: 2,
         answers: [
@@ -144,41 +153,60 @@ export class QuestionComponent implements OnInit {
           {id: 18, value: 'Si', score: 1, class: 'p-button-info', icon: 'pi pi-thumbs-down'},
         ]
       },
-    ];
-    setInterval(() => {
-      this.currentDate = new Date();
-    }, 1000);
+    ]
   }
 
   ngOnInit(): void {
+    this.loadLocations();
+    this.loadCantons();
     setTimeout(() => {
       this.scroll();
     }, 20);
     this.questions = this.baseQuestions.filter(question => question.type === 'phq2');
   }
 
-  get newFormChat(): FormGroup {
+  get newFormPatient(): FormGroup {
     return this.formBuilder.group({
-      username: ['1234567890', [Validators.required]],
-      // username: [null, [Validators.required]],
-      password: ['12345678', [Validators.required]],
-      // password: [null, [Validators.required]],
+      identification: ['1234567890', [Validators.required]],
+      name: ['Juan Andres', [Validators.required]],
+      lastname: ['Tamayo Perez', [Validators.required]],
+      email: ['juan.tamayo@gmail.com', [Validators.required, Validators.email]],
+      phone: ['0987654321', [Validators.required]],
+      code: [null, [Validators.required]],
+      province: [null, [Validators.required]],
+      canton: [null, [Validators.required]],
     });
   }
 
+  loadLocations() {
+    this.coreHttpService.getLocations('PROVINCE').subscribe(
+      response => {
+        this.provinces = response.data;
+      }, error => {
+        // this.messageService.error(error);
+      }
+    );
+  }
+
+  loadCantons() {
+    this.coreHttpService.getLocations('CANTON').subscribe(
+      response => {
+        this.cantons = response.data;
+      }, error => {
+        // this.messageService.error(error);
+      }
+    );
+  }
+
   onSubmit() {
-    if (this.formChat.valid) {
+    if (this.formPatient.valid) {
       // this.login();
     } else {
-      this.formChat.markAllAsTouched();
+      this.formPatient.markAllAsTouched();
     }
   }
 
   reply(question: any, answer: any) {
-    if (this.questions.find(question => question.type == 'duel')) {
-      // this.messageService.finishTest();
-    }
-
     this.progressBarAnswer = true;
     setTimeout(() => {
       this.results.push({
@@ -206,7 +234,7 @@ export class QuestionComponent implements OnInit {
         this.flagDuel = true;
         this.questions = this.baseQuestions.filter(question => question.type == 'duel');
       }
-    }, Math.random() * (1500 - 1000) + 1000);
+    }, 1500);
 
   }
 
@@ -224,5 +252,86 @@ export class QuestionComponent implements OnInit {
       }
       return acc;
     }, 0);
+  }
+
+  saveIdentification() {
+    this.progressBarAnswerOut.emit(true);
+    setTimeout(() => {
+      this.progressBarAnswerOut.emit(false);
+      this.steps = 5;
+      this.steps++;
+    }, Math.random() * (2000 - 1000) + 1000);
+  }
+
+  saveName() {
+    this.progressBarAnswerOut.emit(true);
+    setTimeout(() => {
+      this.progressBarAnswerOut.emit(false);
+      this.steps++;
+    }, Math.random() * (2000 - 1000) + 1000);
+  }
+
+  saveLastname() {
+    this.progressBarAnswerOut.emit(true);
+    setTimeout(() => {
+      this.progressBarAnswerOut.emit(false);
+      this.steps++;
+    }, Math.random() * (2000 - 1000) + 1000);
+  }
+
+  saveEmail() {
+    this.progressBarAnswerOut.emit(true);
+    setTimeout(() => {
+      this.progressBarAnswerOut.emit(false);
+      this.steps++;
+    }, Math.random() * (2000 - 1000) + 1000);
+  }
+
+  savePhone() {
+    setTimeout(() => {
+      this.steps++;
+    }, Math.random() * (2000 - 1000) + 1000);
+  }
+
+  saveAddress() {
+    setTimeout(() => {
+      this.steps++;
+    }, Math.random() * (2000 - 1000) + 1000);
+  }
+
+  startTest() {
+    setTimeout(() => {
+      this.stepsOut.emit(4);
+      this.activatedTest.emit(true);
+      this.steps++;
+    }, Math.random() * (2000 - 1000) + 1000);
+  }
+
+  get identificationField() {
+    return this.formPatient.controls['identification'];
+  }
+
+  get lastnameField() {
+    return this.formPatient.controls['lastname'];
+  }
+
+  get nameField() {
+    return this.formPatient.controls['name'];
+  }
+
+  get emailField() {
+    return this.formPatient.controls['email'];
+  }
+
+  get phoneField() {
+    return this.formPatient.controls['phone'];
+  }
+
+  get provinceField() {
+    return this.formPatient.controls['province'];
+  }
+
+  get cantonField() {
+    return this.formPatient.controls['canton'];
   }
 }
