@@ -59,8 +59,8 @@ export class CoreHttpService {
   getCatalogues2(type: string | undefined, paginator: PaginatorModel): Observable<ServerResponse> {
     const params = new HttpParams()
       .append('type', String(type))
-      .append('page', paginator.current_page)
-      .append('per_page', paginator.per_page);
+      .append('page', paginator.current_page!)
+      .append('per_page', paginator.per_page!);
     const url = this.API_URL + '/catalogue/all';
     return this.httpClient.get<ServerResponse>(url, {params})
       .pipe(
@@ -107,8 +107,8 @@ export class CoreHttpService {
   getFiles(url: string, paginator: PaginatorModel, filter: string = ''): Observable<ServerResponse> {
     url = this.API_URL + url;
     let params = new HttpParams()
-      .set('page', paginator.current_page)
-      .set('per_page', paginator.per_page);
+      .set('page', paginator.current_page!)
+      .set('per_page', paginator.per_page!);
     // El filtro depende de los campos propios que sean cadenas de texto
     if (filter !== '') {
       params = params.append('name', filter).append('description', filter);

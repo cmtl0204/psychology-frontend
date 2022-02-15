@@ -5,8 +5,8 @@
                     (files)="upload($event)"></app-upload-files>
   <p-divider></p-divider>
   <p-card [hidden]="!filesIn?.length">
-    <p-paginator [rows]="paginatorIn.per_page"
-                 [totalRecords]="paginatorIn.total"
+    <p-paginator [rows]="paginatorIn.per_page!"
+                 [totalRecords]="paginatorIn.total!"
                  (onPageChange)="paginate($event)"></p-paginator>
     <p-toolbar styleClass="p-mb-4">
       <ng-template pTemplate="left">

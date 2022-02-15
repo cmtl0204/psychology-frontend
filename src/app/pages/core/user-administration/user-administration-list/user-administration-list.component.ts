@@ -1,5 +1,4 @@
-import {Component, Input, OnInit, Output, EventEmitter} from '@angular/core';
-import {Router} from '@angular/router';
+import {Component, OnInit} from '@angular/core';
 import {MenuItem} from 'primeng/api';
 import {UserAdministrationHttpService} from '@services/core/user-administration-http.service';
 import {MessageService} from '@services/core/message.service';
@@ -14,25 +13,26 @@ import {FormControl} from '@angular/forms';
 export class UserAdministrationListComponent implements OnInit {
   users$ = this.userAdministrationHttpService.users$;
   user$ = this.userAdministrationHttpService.user$;
-  loading$ = this.userAdministrationHttpService.loading$;
+  loaded$ = this.userAdministrationHttpService.loaded$;
   paginator$ = this.userAdministrationHttpService.paginator$;
+
   selectedUsers: UserModel[] = [];
   selectedUser: UserModel = {};
   cols: ColModel[];
-  items: MenuItem[] = [];
-  dialogForm: boolean = false;
+  items: MenuItem[] = []; // optional
+  dialogForm: boolean = false; // optional
   progressBarDelete: boolean = false;
   search: FormControl = new FormControl('');
-  paginator: PaginatorModel = {current_page: 1, per_page: 5, total: 0};
+  paginator: PaginatorModel = {};
 
   constructor(private userAdministrationHttpService: UserAdministrationHttpService,
-              public messageService: MessageService,
-              private router: Router) {
+              public messageService: MessageService) {
     this.cols = [
       {field: 'username', header: 'Número de documento'},
       {field: 'name', header: 'Nombres'},
       {field: 'lastname', header: 'Apellidos'},
-      {field: 'email', header: 'Correo'}
+      {field: 'email', header: 'Correo'},
+      {field: 'updatedAt', header: 'Última actualización'},
     ];
     this.items = [
       {
@@ -56,13 +56,9 @@ export class UserAdministrationListComponent implements OnInit {
         }
       }
     ];
+
     this.paginator$.subscribe(response => {
       this.paginator = response;
-    });
-    this.search.valueChanges.subscribe(response => {
-      if (response === '') {
-        this.loadUsers();
-      }
     });
   }
 
@@ -74,6 +70,7 @@ export class UserAdministrationListComponent implements OnInit {
     this.users$ = this.userAdministrationHttpService.getUsers(page, this.search.value);
   }
 
+  // optional
   showForm(user: UserModel = {}) {
     this.selectedUser = user;
     this.userAdministrationHttpService.selectUser(user);
@@ -88,7 +85,7 @@ export class UserAdministrationListComponent implements OnInit {
     this.messageService.questionDelete({})
       .then((result) => {
         if (result.isConfirmed) {
-          this.userAdministrationHttpService.deleteUser(user.id).subscribe(
+          this.userAdministrationHttpService.deleteUser(user.id!).subscribe(
             response => {
               this.messageService.success(response);
             },
@@ -131,9 +128,5 @@ export class UserAdministrationListComponent implements OnInit {
   paginate(event: any) {
     this.paginator.current_page = event.page + 1;
     this.loadUsers(this.paginator.current_page);
-  }
-
-  redirectNotFound() {
-    this.router.navigate(['/common/not-found']);
   }
 }

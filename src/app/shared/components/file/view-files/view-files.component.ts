@@ -89,7 +89,7 @@ export class ViewFilesComponent implements OnInit, OnDestroy {
   remove(ids: (number | undefined)[]) {
     for (const id of ids) {
       this.filesIn = this.filesIn.filter(element => element.id !== id);
-      this.paginatorIn.total = this.paginatorIn.total - 1;
+      this.paginatorIn.total = this.paginatorIn.total! - 1;
     }
     this.filesOut.emit(this.filesIn);
   }

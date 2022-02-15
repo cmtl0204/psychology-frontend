@@ -13,17 +13,19 @@ import {PaginatorModel, UserModel} from '@models/core';
 
 export class UserAdministrationHttpService {
   private API_URL: string = environment.API_URL;
+
   private usersList: ServerResponse = {};
   private users = new BehaviorSubject<ServerResponse>({});
   public users$ = this.users.asObservable();
+
   private userModel: UserModel = {};
   private user = new BehaviorSubject<UserModel>({});
   public user$ = this.user.asObservable();
 
-  private loading = new BehaviorSubject<boolean>(true);
-  public loading$ = this.loading.asObservable();
+  private loaded = new BehaviorSubject<boolean>(true);
+  public loaded$ = this.loaded.asObservable();
 
-  private paginator = new BehaviorSubject<PaginatorModel>({current_page: 1, per_page: 25, total: 0});
+  private paginator = new BehaviorSubject<PaginatorModel>({current_page: 1, per_page: 15, total: 0});
   public paginator$ = this.paginator.asObservable();
 
   constructor(private httpClient: HttpClient) {
@@ -31,91 +33,118 @@ export class UserAdministrationHttpService {
   }
 
   getUsers(page: number = 1, search: string = ''): Observable<ServerResponse> {
-    this.loading.next(true);
-    const url = this.API_URL + '/users';
-    let params = new HttpParams().set('sort', 'lastname')
-      .append('per_page', '10')
-      .append('page', page)
-      .append('search', search);
+    const url = `${this.API_URL}/users`;
 
+    const params = new HttpParams()
+      .set('sort', 'lastname') //optional
+      .append('per_page', '10') //optional
+      .append('page', page) // conditional
+      .append('search', search); // conditional
+
+    this.loaded.next(true);
     return this.httpClient.get<ServerResponse>(url, {params})
       .pipe(
         map(response => response),
         tap(response => {
           this.usersList = response as ServerResponse;
           this.users.next(this.usersList);
-          this.loading.next(false);
+          this.loaded.next(false);
           this.paginator.next(response.meta!);
         }, error => {
-          this.loading.next(false);
+          this.loaded.next(false);
         }),
         catchError(Handler.render)
       );
   }
 
   getUser(id: number): Observable<ServerResponse> {
-    const url = this.API_URL + '/users/' + id;
+    const url = `${this.API_URL}/users/${id}`;
+
+    this.loaded.next(true);
     return this.httpClient.get<ServerResponse>(url)
       .pipe(
         map(response => response),
         tap(response => {
+          this.loaded.next(false);
           this.userModel = response.data;
           this.user.next(this.userModel);
+        }, error => {
+          this.loaded.next(false);
         }),
         catchError(Handler.render)
       );
   }
 
   storeUser(user: UserModel): Observable<ServerResponse> {
-    const url = this.API_URL + '/users';
+    const url = `${this.API_URL}/users`;
+
+    this.loaded.next(true);
     return this.httpClient.post<ServerResponse>(url, user)
       .pipe(
         map(response => response),
         tap(response => {
+          this.loaded.next(false);
           this.usersList.data.push(response.data);
           this.users.next(this.usersList);
+        }, error => {
+          this.loaded.next(false);
         }),
         catchError(Handler.render)
       );
   }
 
-  updateUser(id: number | undefined, user: UserModel): Observable<ServerResponse> {
-    const url = this.API_URL + '/users/' + id;
+  updateUser(id: number, user: UserModel): Observable<ServerResponse> {
+    const url = `${this.API_URL}/users/${id}`;
+
+    this.loaded.next(true);
     return this.httpClient.put<ServerResponse>(url, user)
       .pipe(
         map(response => response),
         tap(response => {
+          this.loaded.next(false);
           const index = this.usersList.data.findIndex((user: UserModel) => user.id === response.data.id);
           this.usersList.data[index] = response.data;
           this.users.next(this.usersList);
+        }, error => {
+          this.loaded.next(false);
         }),
         catchError(Handler.render)
       );
   }
 
-  deleteUser(id: number | undefined): Observable<ServerResponse> {
-    const url = this.API_URL + '/users/' + id;
+  deleteUser(id: number): Observable<ServerResponse> {
+    const url = `${this.API_URL}/users/${id}`;
+
+    this.loaded.next(true);
     return this.httpClient.delete<ServerResponse>(url)
       .pipe(
         map(response => response),
         tap(response => {
+          this.loaded.next(false);
           this.usersList.data = this.usersList.data.filter((user: UserModel) => user.id !== response.data.id);
           this.users.next(this.usersList);
+        },error => {
+          this.loaded.next(false);
         }),
         catchError(Handler.render)
       );
   }
 
-  deleteUsers(ids: (number | undefined)[]): Observable<ServerResponse> {
-    const url = this.API_URL + '/user/destroys';
+  deleteUsers(ids: (number|undefined)[]): Observable<ServerResponse> {
+    const url = `${this.API_URL}/user/destroys`;
+
+    this.loaded.next(true);
     return this.httpClient.patch<ServerResponse>(url, {ids})
       .pipe(
         map(response => response),
         tap(response => {
+          this.loaded.next(false);
           ids.forEach(userId => {
             this.usersList.data = this.usersList.data.filter((user: UserModel) => user.id !== userId);
           })
           this.users.next(this.usersList);
+        },error => {
+          this.loaded.next(false);
         }),
         catchError(Handler.render)
       );
@@ -125,4 +154,3 @@ export class UserAdministrationHttpService {
     this.user.next(user);
   }
 }
-

@@ -1,5 +1,5 @@
 <p-dialog header="Usuario" [(visible)]="dialogForm" [maximizable]="true" [modal]="true">
-  <app-user-administration-form *ngIf="dialogForm"></app-user-administration-form>
+  <app-user-administration-form *ngIf="dialogForm" (dialogForm)="dialogForm=$event"></app-user-administration-form>
 </p-dialog>
 
 <div class="container">
@@ -25,18 +25,17 @@
     </div>
   </p-toolbar>
   <p-card>
-    <p-paginator [rows]="paginator.per_page"
-                 [totalRecords]="paginator.total"
+    <p-paginator [rows]="paginator.per_page!"
+                 [totalRecords]="paginator.total!"
                  (onPageChange)="paginate($event)"></p-paginator>
-    <p-table *appRolesPermissions="['permission:view-users']"
-             dataKey="id"
-             [value]="(users$|async)?.data"
-             [columns]="cols"
-             styleClass="p-datatable-striped"
-             [lazy]="true"
-             [loading]="(loading$|async)!"
-             [(selection)]="selectedUsers"
-             [responsive]="true">
+    <p-table
+      dataKey="id"
+      styleClass="p-datatable-striped"
+      [value]="(users$|async)?.data"
+      [columns]="cols"
+      [loading]="(loaded$|async)!"
+      [(selection)]="selectedUsers"
+      [responsive]="true">
       <ng-template pTemplate="header" let-columns>
         <tr>
           <th style="width: 3rem">
@@ -46,8 +45,8 @@
             {{col.header}}
             <p-sortIcon [field]="col.field"></p-sortIcon>
           </th>
-          <th style="text-align: center">
-            <button pButton pRipple type="button" class="p-button-rounded p-button-info" icon="pi pi-cog"></button>
+          <th class="text-center">
+            <button pButton pRipple type="button" class="p-button-rounded p-button-secondary" icon="pi pi-cog"></button>
           </th>
         </tr>
       </ng-template>
@@ -57,13 +56,31 @@
             <p-tableCheckbox [value]="rowData"></p-tableCheckbox>
           </td>
           <td *ngFor="let col of columns">
-            {{rowData[col.field]}}
+            <span *ngIf="rowData[col.field]?.id">
+              {{rowData[col.field].name}}
+            </span>
+            <span *ngIf="!rowData[col.field]?.id" [ngSwitch]="col.field">
+              <span *ngSwitchCase="'updatedAt'">{{rowData[col.field]|date}}</span>
+              <span *ngSwitchCase="'registeredAt'">{{rowData[col.field]|date}}</span>
+              <span *ngSwitchDefault>{{rowData[col.field]}}</span>
+              <!--              <span *ngSwitchCase="'certificated'">{{rowData[col.field]|certificated}}</span>-->
+            </span>
           </td>
-          <td style="text-align: center">
-            <p-splitButton label="Más" styleClass="p-button-info" icon="pi pi-user-edit"
+          <td class="text-center">
+            <p-splitButton label="Más" styleClass="p-button-secondary" icon="pi pi-user-edit"
                            (onClick)="showForm(rowData)"
                            (onDropdownClick)="selectUser(rowData)"
                            [model]="items"></p-splitButton>
+          </td>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="summary">
+        {{messageService.paginatorTotalRegisters(paginator)}}
+      </ng-template>
+      <ng-template pTemplate="emptymessage" let-columns>
+        <tr>
+          <td [attr.colspan]="columns.length">
+            {{messageService.paginatorNoRecordsFound}}
           </td>
         </tr>
       </ng-template>

@@ -26,6 +26,14 @@ const routes: Routes = [
           roles: [RolesEnum.ADMIN]
         },
         // canActivate: [TokenGuard, RoleGuard]
+      },
+      {
+        path: 'test',
+        loadChildren: () => import('./pages/psychology/psychology.module').then(m => m.PsychologyModule),
+        data: {
+          roles: [RolesEnum.ADMIN]
+        },
+        // canActivate: [TokenGuard, RoleGuard]
       }
     ]
   },

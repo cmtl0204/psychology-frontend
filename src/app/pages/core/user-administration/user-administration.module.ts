@@ -22,6 +22,7 @@ import {ToolbarModule} from 'primeng/toolbar';
 import {PaginatorModule} from 'primeng/paginator';
 import {CardModule} from 'primeng/card';
 import {ToastModule} from 'primeng/toast';
+import {ConfirmPopupModule} from 'primeng/confirmpopup';
 
 @NgModule({
   declarations: [
@@ -29,28 +30,29 @@ import {ToastModule} from 'primeng/toast';
     UserAdministrationListComponent,
     UserAdministrationFormComponent,
   ],
-  imports: [
-    CommonModule,
-    UserAdministrationRoutingModule,
-    SharedModule,
-    TableModule,
-    SpeedDialModule,
-    RippleModule,
-    DialogModule,
-    DropdownModule,
-    ReactiveFormsModule,
-    InputTextModule,
-    InputSwitchModule,
-    ProgressBarModule,
-    SplitButtonModule,
-    PasswordModule,
-    DividerModule,
-    KeyFilterModule,
-    ToolbarModule,
-    PaginatorModule,
-    CardModule,
-    ToastModule,
-  ]
+    imports: [
+        CommonModule,
+        UserAdministrationRoutingModule,
+        SharedModule,
+        TableModule,
+        SpeedDialModule,
+        RippleModule,
+        DialogModule,
+        DropdownModule,
+        ReactiveFormsModule,
+        InputTextModule,
+        InputSwitchModule,
+        ProgressBarModule,
+        SplitButtonModule,
+        PasswordModule,
+        DividerModule,
+        KeyFilterModule,
+        ToolbarModule,
+        PaginatorModule,
+        CardModule,
+        ToastModule,
+        ConfirmPopupModule,
+    ]
 })
 export class UserAdministrationModule {
 }

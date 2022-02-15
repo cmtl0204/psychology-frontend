@@ -166,9 +166,6 @@ export class QuestionComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    setTimeout(() => {
-      this.scroll();
-    }, 20);
     this.questions = this.baseQuestions.filter(question => question.type === 'phq2');
   }
 
@@ -228,13 +225,6 @@ export class QuestionComponent implements OnInit, OnDestroy {
       }
     }, Math.random() * (1500 - 1000) + 1000);
 
-  }
-
-  scroll() {
-    // const elements = document.getElementsByClassName('msg');
-    // const last: any = elements[elements.length - 1];
-    // //@ts-ignore
-    // document.getElementById('container')?.scrollTop = last.offsetTop;
   }
 
   validatePhq2() {

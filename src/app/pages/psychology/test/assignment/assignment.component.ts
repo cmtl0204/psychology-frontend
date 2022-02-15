@@ -1,20 +1,21 @@
-import { Component, OnInit, OnDestroy, Input, Output, EventEmitter } from '@angular/core';
-import { Subject, takeUntil } from 'rxjs';
-import { AbstractControl, FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { CoreHttpService, MessageService, UserAdministrationHttpService } from '@services/core';
-import { CatalogueModel, LocationModel, PhoneModel, UserModel } from '@models/core';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {Subject, takeUntil} from 'rxjs';
+import {AbstractControl, FormArray, FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
+import {CatalogueModel, LocationModel, PhoneModel, UserModel} from '@models/core';
+import {CoreHttpService, MessageService, UserAdministrationHttpService} from '@services/core';
+import {TestModel} from '@models/psychology';
+import {PsychologyHttpService} from '@services/psychology/psychology-http.service';
 
 @Component({
-  selector: 'app-user-administration-form',
-  templateUrl: './user-administration-form.component.html',
-  styleUrls: ['./user-administration-form.component.scss']
+  selector: 'app-assignment',
+  templateUrl: './assignment.component.html',
+  styleUrls: ['./assignment.component.scss']
 })
-
-export class UserAdministrationFormComponent implements OnInit, OnDestroy {
-  private user$ = this.userAdministrationHttpService.user$;
-  private unsubscribe$ = new Subject<void>();
+export class AssignmentComponent implements OnInit {
   @Output() dialogForm = new EventEmitter<boolean>();
-  public formUser: FormGroup = this.newFormUser;
+  @Input() tests: TestModel[] = [];
+  private unsubscribe$ = new Subject<void>();
+  public form: FormGroup = this.newForm;
   public automaticPassword: FormControl = new FormControl(false);
   public progressBar: boolean = false;
   public identificationTypes: CatalogueModel[] = [];
@@ -25,30 +26,9 @@ export class UserAdministrationFormComponent implements OnInit, OnDestroy {
   constructor(private formBuilder: FormBuilder,
               private userAdministrationHttpService: UserAdministrationHttpService,
               private coreHttpService: CoreHttpService,
+              private psychologyHttpService: PsychologyHttpService,
               public messageService: MessageService,
   ) {
-    this.user$
-      .pipe(takeUntil(this.unsubscribe$))
-      .subscribe(response => {
-        if (response.id !== undefined) {
-          this.formUser.reset(response);
-        }
-
-        if (this.idField.value) {
-          this.passwordField.clearValidators();
-        }
-
-        if (response.phones?.length) {
-          this.phonesField.clear();
-        }
-
-        response.phones?.forEach(phone => {
-          // this.addPhone(phone);
-        });
-        console.log(response);
-        console.log(this.formUser);
-        console.log(this.phonesField.value);
-      });
   }
 
   ngOnInit(): void {
@@ -56,6 +36,11 @@ export class UserAdministrationFormComponent implements OnInit, OnDestroy {
     this.loadPhoneOperators();
     this.loadPhoneTypes();
     this.loadPhoneLocations();
+    this.tests?.forEach(test => {
+      this.addTest(test);
+    });
+
+    // console.log(this.testsField.value);
   }
 
   ngOnDestroy(): void {
@@ -63,7 +48,7 @@ export class UserAdministrationFormComponent implements OnInit, OnDestroy {
     this.unsubscribe$.complete();
   }
 
-  get newFormUser(): FormGroup {
+  get newForm(): FormGroup {
     return this.formBuilder.group({
       email: [null, [Validators.required, Validators.email]],
       id: [null],
@@ -73,6 +58,7 @@ export class UserAdministrationFormComponent implements OnInit, OnDestroy {
       password: [null, [Validators.required, Validators.minLength(8)]],
       passwordChanged: [true],
       phones: this.formBuilder.array([this.newFormPhone], Validators.required),
+      tests: this.formBuilder.array([], Validators.required),
       username: [null, [Validators.required]],
     });
   }
@@ -84,6 +70,14 @@ export class UserAdministrationFormComponent implements OnInit, OnDestroy {
       number: [null, [Validators.required]],
       operator: [null, [Validators.required]],
       type: [null, [Validators.required]],
+    });
+  }
+
+  get newFormTest(): FormGroup {
+    return this.formBuilder.group({
+      id: [null],
+      name: [null, [Validators.required]],
+      user: [null, [Validators.required]],
     });
   }
 
@@ -128,14 +122,14 @@ export class UserAdministrationFormComponent implements OnInit, OnDestroy {
   }
 
   onSubmit() {
-    if (this.formUser.valid) {
+    if (this.form.valid) {
       if (this.idField.value) {
-        this.updateUser(this.formUser.value);
+        this.updateUser(this.form.value);
       } else {
-        this.storeUser(this.formUser.value);
+        this.storeUser(this.form.value);
       }
     } else {
-      this.formUser.markAllAsTouched();
+      this.form.markAllAsTouched();
     }
   }
 
@@ -179,12 +173,19 @@ export class UserAdministrationFormComponent implements OnInit, OnDestroy {
   }
 
   addPhone(data: PhoneModel = {}) {
-    console.log(data);
     const formPhone = this.newFormPhone;
     if (data.id !== undefined) {
       formPhone.patchValue(data);
     }
     this.phonesField.push(formPhone);
+  }
+
+  addTest(data: TestModel = {}) {
+    const formTest = this.newFormTest;
+    if (data.id !== undefined) {
+      formTest.patchValue(data);
+    }
+    this.testsField.push(formTest);
   }
 
   removePhone(index: number) {
@@ -196,44 +197,57 @@ export class UserAdministrationFormComponent implements OnInit, OnDestroy {
     }
   }
 
+  removeTest(index: number) {
+    if (this.testsField.length > 1) {
+      this.testsField.removeAt(index);
+    } else {
+      this.testsField.markAllAsTouched();
+      this.messageService.errorRequired();
+    }
+  }
+
   isRequired(field: AbstractControl): boolean {
     return field.hasValidator(Validators.required);
   }
 
   // Getters
   get emailField() {
-    return this.formUser.controls['email'];
+    return this.form.controls['email'];
   }
 
   get idField() {
-    return this.formUser.controls['id'];
+    return this.form.controls['id'];
   }
 
   get identificationTypeField() {
-    return this.formUser.controls['identificationType'];
+    return this.form.controls['identificationType'];
   }
 
   get lastnameField() {
-    return this.formUser.controls['lastname'];
+    return this.form.controls['lastname'];
   }
 
   get nameField() {
-    return this.formUser.controls['name'];
+    return this.form.controls['name'];
   }
 
   get passwordField() {
-    return this.formUser.controls['password'];
+    return this.form.controls['password'];
   }
 
   get passwordChangedField() {
-    return this.formUser.controls['passwordChanged'];
+    return this.form.controls['passwordChanged'];
   }
 
   get phonesField(): FormArray {
-    return this.formUser.controls['phones'] as FormArray;
+    return this.form.controls['phones'] as FormArray;
+  }
+
+  get testsField(): FormArray {
+    return this.form.controls['tests'] as FormArray;
   }
 
   get usernameField() {
-    return this.formUser.controls['username'];
+    return this.form.controls['username'];
   }
 }
