@@ -26,7 +26,7 @@ export class AssignmentComponent implements OnInit {
   constructor(private formBuilder: FormBuilder,
               private userAdministrationHttpService: UserAdministrationHttpService,
               private coreHttpService: CoreHttpService,
-              private psychologyHttpService: TestHttpService,
+              private testHttpService: TestHttpService,
               public messageService: MessageService,
   ) {
   }

@@ -2,6 +2,11 @@
 
 <div class="p-fluid">
   <form [formGroup]="form" (ngSubmit)="onSubmit()">
+    <!--onSubmit()-->
+    <div class="field">
+      <button pButton pRipple label="Asignar" class="p-button-rounded"
+              icon="pi pi-save"></button>
+    </div>
     <!--identificationType & username-->
     <div class="formgrid grid">
       <!--identificationType-->
@@ -42,9 +47,14 @@
         <!--title & removePhone()-->
         <div class="field text-center">
           <!--title-->
-          <p>{{test.value.id}} {{test.value.name}}</p>
+          <p>
+            {{test.value.code}}
+            {{test.value.user.username}}
+            {{test.value.user.lastname}}
+            {{test.value.user.name}}
+          </p>
 
-          <!--removePhone()-->
+          <!--removeTest()-->
           <button pButton pRipple type="button"
                   class="p-button-danger p-button-rounded ml-2"
                   iconPos="right"
@@ -53,6 +63,11 @@
         </div>
         <p-divider *ngIf="i<testsField.length-1"></p-divider>
       </div>
+    </div>
+    <!--onSubmit()-->
+    <div class="field">
+      <button pButton pRipple label="Asignar" class="p-button-rounded"
+              icon="pi pi-save"></button>
     </div>
   </form>
 </div>

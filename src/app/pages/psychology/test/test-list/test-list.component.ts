@@ -25,8 +25,12 @@ export class TestListComponent implements OnInit {
   search: FormControl = new FormControl('');
   paginator: PaginatorModel = {};
 
-  states: any[] = [{name: 'TODOS'}, {name: 'SIN ASIGNAR'}, {name: 'ASIGNADO'}, {name: 'FINALIZADO'}];
+  states: any[] = [{id: 0, name: 'TODOS'}, {id: 1, name: 'SIN ASIGNAR'}, {id: 2, name: 'ASIGNADO'}, {
+    id: 3,
+    name: 'CERRADO'
+  }];
   rangeDates: Date[] = [new Date(), new Date()];
+  state: FormControl = new FormControl(null);
 
   constructor(private psychologyHttpService: TestHttpService,
               public messageService: MessageService) {
