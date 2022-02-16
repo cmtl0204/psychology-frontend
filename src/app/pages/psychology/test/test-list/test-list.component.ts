@@ -2,7 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {ColModel, PaginatorModel} from '@models/core';
 import {MenuItem} from 'primeng/api';
 import {FormControl} from '@angular/forms';
-import {TestModel} from '@models/psychology';
+import {PriorityModel, TestModel} from '@models/psychology';
 import {MessageService} from '@services/core';
 import {TestHttpService} from '@services/psychology/test-http.service';
 
@@ -12,10 +12,10 @@ import {TestHttpService} from '@services/psychology/test-http.service';
   styleUrls: ['./test-list.component.scss']
 })
 export class TestListComponent implements OnInit {
-  tests$ = this.psychologyHttpService.tests$;
-  test$ = this.psychologyHttpService.test$;
-  loaded$ = this.psychologyHttpService.loaded$;
-  paginator$ = this.psychologyHttpService.paginator$;
+  tests$ = this.testHttpService.tests$;
+  test$ = this.testHttpService.test$;
+  loaded$ = this.testHttpService.loaded$;
+  paginator$ = this.testHttpService.paginator$;
   selectedTests: TestModel[] = [];
   selectedTest: TestModel = {};
   cols: ColModel[];
@@ -24,7 +24,7 @@ export class TestListComponent implements OnInit {
   progressBarDelete: boolean = false;
   search: FormControl = new FormControl('');
   paginator: PaginatorModel = {};
-
+  countPriorities: PriorityModel[] = [];
   states: any[] = [{id: 0, name: 'TODOS'}, {id: 1, name: 'SIN ASIGNAR'}, {id: 2, name: 'ASIGNADO'}, {
     id: 3,
     name: 'CERRADO'
@@ -32,7 +32,7 @@ export class TestListComponent implements OnInit {
   rangeDates: Date[] = [new Date(), new Date()];
   state: FormControl = new FormControl(null);
 
-  constructor(private psychologyHttpService: TestHttpService,
+  constructor(private testHttpService: TestHttpService,
               public messageService: MessageService) {
     this.cols = [
       {field: 'code', header: 'Test'},
@@ -72,10 +72,20 @@ export class TestListComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadTests();
+    this.loadCountPriorities()
   }
 
   loadTests(page: number = 1) {
-    this.tests$ = this.psychologyHttpService.getTests(page, this.search.value);
+    this.tests$ = this.testHttpService.getTests(page, this.search.value);
+  }
+
+  loadCountPriorities() {
+    this.testHttpService.countPriorities().subscribe(
+      response => {
+        this.countPriorities = response.data;
+        console.log(this.countPriorities);
+      }
+    );
   }
 
   selectTest(test: TestModel) {
@@ -86,7 +96,7 @@ export class TestListComponent implements OnInit {
     this.messageService.questionDelete({})
       .then((result) => {
         if (result.isConfirmed) {
-          this.psychologyHttpService.deleteTest(test.id!).subscribe(
+          this.testHttpService.deleteTest(test.id!).subscribe(
             response => {
               this.messageService.success(response);
             },
@@ -103,7 +113,7 @@ export class TestListComponent implements OnInit {
       .then((result) => {
         if (result.isConfirmed) {
           const ids = this.selectedTests.map(element => element.id);
-          this.psychologyHttpService.deleteTests(ids).subscribe(
+          this.testHttpService.deleteTests(ids).subscribe(
             response => {
               this.messageService.success(response);
             },

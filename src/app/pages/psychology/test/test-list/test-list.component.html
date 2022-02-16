@@ -9,25 +9,25 @@
         <div class="field xl:col-6 lg:col-6 md:col-12 sm:col-12 text-center">
           <h2>Detalles de la Jornada</h2>
           <p>Tamizajes Totales:
-            <p-badge value="25" size="large"></p-badge>
+            <p-badge [value]="paginator?.total?.toString()!" size="large"></p-badge>
           </p>
           <p>Sin Problemas:
-            <p-badge value="14" size="large" severity="success"></p-badge>
+            <p-badge [value]="countPriorities[3]?.testsCount!" size="large" severity="success"></p-badge>
           </p>
           <p>Fecha:
-            <b>{{rangeDates[0]|date}} <span *ngIf="rangeDates.length">al</span> {{rangeDates[1]|date}}</b>
+            <b><span *ngIf="!rangeDates[1]">hasta</span> {{rangeDates[0]|date}} <span *ngIf="rangeDates[1]">al</span> {{rangeDates[1]|date}}</b>
           </p>
         </div>
         <div class="field xl:col-6 lg:col-6 md:col-12 sm:col-12 text-center">
           <h2>Acciones requeridas</h2>
           <p>Alta Intensidad:
-            <p-badge value="24" size="large" severity="danger"></p-badge>
+            <p-badge [value]="countPriorities[0]?.testsCount!" size="large" severity="danger"></p-badge>
           </p>
           <p>Media Intensidad:
-            <p-badge value="33" size="large" severity="warning"></p-badge>
+            <p-badge [value]="countPriorities[1]?.testsCount!" size="large" severity="warning"></p-badge>
           </p>
           <p>Baja Intensidad:
-            <p-badge value="56" size="large" severity="info"></p-badge>
+            <p-badge [value]="countPriorities[2]?.testsCount!" size="large" severity="info"></p-badge>
           </p>
         </div>
       </div>
@@ -74,6 +74,7 @@
                     selectionMode="range"
                     [readonlyInput]="true"
                     [showIcon]="true"
+                    [showButtonBar]="true"
                     inputId="range"></p-calendar>
         <div class="p-inputgroup">
           <input pInputText id="search" [formControl]="search" (keypress)="filter($event)">

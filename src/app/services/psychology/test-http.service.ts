@@ -190,6 +190,15 @@ export class TestHttpService {
       );
   }
 
+  countPriorities(): Observable<ServerResponse> {
+    const url = `${this.API_URL}/tests/count-priorities`;
+    return this.httpClient.get<ServerResponse>(url)
+      .pipe(
+        map(response => response),
+        catchError(Handler.render)
+      );
+  }
+
   selectTest(test: TestModel) {
     this.selectedTest.next(test);
   }
