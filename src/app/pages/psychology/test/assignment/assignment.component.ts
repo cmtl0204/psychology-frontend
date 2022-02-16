@@ -4,7 +4,7 @@ import {AbstractControl, FormArray, FormBuilder, FormControl, FormGroup, Validat
 import {CatalogueModel, LocationModel, PhoneModel, UserModel} from '@models/core';
 import {CoreHttpService, MessageService, UserAdministrationHttpService} from '@services/core';
 import {TestModel} from '@models/psychology';
-import {PsychologyHttpService} from '@services/psychology/psychology-http.service';
+import {TestHttpService} from '@services/psychology/test-http.service';
 
 @Component({
   selector: 'app-assignment',
@@ -26,7 +26,7 @@ export class AssignmentComponent implements OnInit {
   constructor(private formBuilder: FormBuilder,
               private userAdministrationHttpService: UserAdministrationHttpService,
               private coreHttpService: CoreHttpService,
-              private psychologyHttpService: PsychologyHttpService,
+              private psychologyHttpService: TestHttpService,
               public messageService: MessageService,
   ) {
   }

@@ -3,7 +3,7 @@ import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {PrimeIcons} from 'primeng/api';
 import {CoreHttpService} from '@services/core';
 import {LocationModel} from '@models/core';
-import {PsychologyHttpService} from '@services/psychology/psychology-http.service';
+import {TestHttpService} from '@services/psychology/test-http.service';
 
 @Component({
   selector: 'app-registration',
@@ -28,7 +28,7 @@ export class RegistrationComponent implements OnInit {
 
   constructor(private formBuilder: FormBuilder,
               private coreHttpService: CoreHttpService,
-              private psychologyHttpService: PsychologyHttpService) {
+              private psychologyHttpService: TestHttpService) {
     this.formChat = this.newFormChat;
   }
 
@@ -65,19 +65,24 @@ export class RegistrationComponent implements OnInit {
   }
 
   saveTermsConditions(value: boolean) {
+    this.progressBar = true;
     this.progressBarAnswerOut.emit(true);
     setTimeout(() => {
       this.termsConditionField.setValue(value);
-      if (value) {
-        this.steps++;
-      } else {
-        this.steps = 0;
+      if (this.termsConditionField.valid) {
+        if (value) {
+          this.steps++;
+        } else {
+          this.steps = 0;
+        }
+        this.progressBar = false;
+        this.progressBarAnswerOut.emit(false);
       }
-      this.progressBarAnswerOut.emit(false);
     }, Math.random() * (2000 - 1000) + 1000);
   }
 
   saveAge() {
+    this.progressBar = true;
     this.progressBarAnswerOut.emit(true);
     setTimeout(() => {
       if (this.ageField.value >= 12 && this.ageField.value <= 18) {
@@ -92,6 +97,7 @@ export class RegistrationComponent implements OnInit {
       } else {
         this.ageValid = true;
       }
+      this.progressBar = false;
       this.progressBarAnswerOut.emit(false);
     }, Math.random() * (2000 - 1000) + 1000);
   }

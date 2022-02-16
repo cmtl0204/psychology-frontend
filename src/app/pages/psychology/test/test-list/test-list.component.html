@@ -3,35 +3,87 @@
 </p-dialog>
 
 <div class="container">
-  <p-toolbar>
-    <div class="p-toolbar-group-left">
-      <div *ngIf="!selectedTests?.length">
-        <p-button label="ALTA" icon="pi pi-exclamation-circle" styleClass="p-button-danger mr-2"
-                  badge="28"></p-button>
-        <p-button label="MEDIA Amarillo" icon="pi pi-exclamation-triangle" styleClass="p-button-warning mr-2"
-                  badge="15"></p-button>
-        <p-button label="BAJA" icon="pi pi-thumbs-up" styleClass="p-button-success mr-2" badge="10"></p-button>
+  <div class="grid">
+    <div class="panel-toolbar field xl:col-12 lg:col-12 md:col-12 sm:col-12">
+      <div class="grid">
+        <div class="field xl:col-6 lg:col-6 md:col-12 sm:col-12 text-center">
+          <h2>Detalles de la Jornada</h2>
+          <p>Tamizajes Totales:
+            <p-badge value="25" size="large"></p-badge>
+          </p>
+          <p>Sin Problemas:
+            <p-badge value="14" size="large" severity="success"></p-badge>
+          </p>
+          <p>Fecha:
+            <b>{{rangeDates[0]|date}} <span *ngIf="rangeDates.length">al</span> {{rangeDates[1]|date}}</b>
+          </p>
+        </div>
+        <div class="field xl:col-6 lg:col-6 md:col-12 sm:col-12 text-center">
+          <h2>Acciones requeridas</h2>
+          <p>Alta Intensidad:
+            <p-badge value="24" size="large" severity="danger"></p-badge>
+          </p>
+          <p>Media Intensidad:
+            <p-badge value="33" size="large" severity="warning"></p-badge>
+          </p>
+          <p>Baja Intensidad:
+            <p-badge value="56" size="large" severity="info"></p-badge>
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <p-card>
+    <p-toolbar styleClass="panel-toolbar">
+      <div class="p-toolbar-group-left">
+        <div *ngIf="!selectedTests?.length">
+          <!--        <p-button label="Alta Intensidad" icon="pi pi-exclamation-circle"-->
+          <!--                  styleClass="p-button-lg p-button-danger"></p-button>-->
+          <!--        <p-badge value="14" size="large" severity="danger"></p-badge>-->
+          <!--        <p-button label="Media Intensidad" icon="pi pi-exclamation-triangle"-->
+          <!--                  styleClass="p-button-lg p-button-warning ml-2"></p-button>-->
+          <!--        <p-badge value="25" size="large" severity="warning"></p-badge>-->
 
-        <button pButton pRipple type="button" label="Refrescar"
-                class="p-button-info" icon="pi pi-sync"
-                (click)="loadTests(paginator.current_page)"></button>
+          <!--        <p-button label="Baja Intensidad" icon="pi pi-thumbs-up"-->
+          <!--                  styleClass="p-button-lg p-button-info ml-2"></p-button>-->
+          <!--        <p-badge value="18" size="large" severity="info"></p-badge>-->
+
+          <!--        <p-button label="Sin Problemas" icon="pi pi-thumbs-up"-->
+          <!--                  styleClass="p-button-lg p-button-success ml-2"></p-button>-->
+          <!--        <p-badge value="10" size="large" severity="success"></p-badge>-->
+        </div>
+        <button pButton pRipple type="button" label="Refrescar Página"
+                class="p-button-info mr-2" icon="pi pi-sync"
+                (click)="loadTests(paginator.current_page)"
+                [loading]="(loaded$|async)!"></button>
+        <button *ngIf="selectedTests?.length" pButton pRipple type="button" label="Eliminar seleccionados"
+                class="p-button-danger mr-2" icon="pi pi-trash"
+                (click)="deleteTests()"></button>
+        <button *ngIf="selectedTests?.length" pButton pRipple type="button" label="Asignar Tests"
+                class="mr-2"
+                icon="pi pi-share-alt"
+                (click)="assignmentForms()"></button>
+        <app-progress-bar *ngIf="progressBarDelete" [message]="messageService.progressBarDelete"
+                          class="ml-2"></app-progress-bar>
       </div>
-      <button *ngIf="selectedTests?.length" pButton pRipple type="button" label="Eliminar seleccionados"
-              class="p-button-danger mr-2" icon="pi pi-trash"
-              (click)="deleteTests()"></button>
-      <button *ngIf="selectedTests?.length" pButton pRipple type="button" label="Asignar Tests" icon="pi pi-share-alt"
-              (click)="assignmentForms()"></button>
-      <app-progress-bar *ngIf="progressBarDelete" [message]="messageService.progressBarDelete"
-                        class="ml-2"></app-progress-bar>
-    </div>
-    <div class="p-toolbar-group-right">
-      <p-dropdown [options]="states" optionLabel="name"></p-dropdown>
-      <div class="p-inputgroup ml-2">
-        <input pInputText id="search" [formControl]="search" (keypress)="filter($event)">
-        <button pButton pRipple type="button" icon="pi pi-search" (click)="filter($event)"></button>
+      <div class="p-toolbar-group-right">
+        <p-dropdown id="states" [options]="states" optionLabel="name" class="mr-2"></p-dropdown>
+        <p-calendar id="range"
+                    [(ngModel)]="rangeDates"
+                    class="mr-2"
+                    selectionMode="range"
+                    [readonlyInput]="true"
+                    [showIcon]="true"
+                    inputId="range"></p-calendar>
+        <div class="p-inputgroup">
+          <input pInputText id="search" [formControl]="search" (keypress)="filter($event)">
+          <button pButton pRipple type="button" icon="pi pi-search" (click)="filter($event)"
+                  [loading]="(loaded$|async)!"></button>
+        </div>
       </div>
-    </div>
-  </p-toolbar>
+    </p-toolbar>
+  </p-card>
+  <p-divider></p-divider>
   <p-card>
     <p-paginator [rows]="paginator.per_page!"
                  [totalRecords]="paginator.total!"
@@ -72,11 +124,11 @@
               <span *ngSwitchCase="'priority'">
                 <button pButton type="button"
                         [label]="rowData[col.field].name"
-                        icon="pi pi-exclamation-circle"
                         [ngClass]="{
                         'p-button-danger':rowData[col.field].level===1,
                         'p-button-warning':rowData[col.field].level===2,
-                        'p-button-success':rowData[col.field].level===3
+                        'p-button-info':rowData[col.field].level===3,
+                        'p-button-success':rowData[col.field].level===4
                         }"
                 ></button>
               </span>

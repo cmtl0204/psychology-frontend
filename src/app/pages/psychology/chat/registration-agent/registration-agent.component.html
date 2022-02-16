@@ -2,15 +2,16 @@
   <!--Identification-->
   <div *ngIf="steps>=1" class="formgrid grid">
     <div class="field col-10 panel-question">
-      <p>Número de cédula de tu padre o madre</p>
+      <p>Número de cédula de tu Representante Legal</p>
+      <app-skeleton *ngIf="progressBarAnswer" [type]="'point'"></app-skeleton>
     </div>
   </div>
   <!--Input-->
-  <div *ngIf="steps===1" class="formgrid grid">
+  <div *ngIf="steps===1 && !progressBarAnswer" class="formgrid grid">
     <div class="field col-12">
       <div class="p-inputgroup">
         <input type="number" pInputText formControlName="identification" pKeyFilter="pint">
-        <button type="button" pButton pRipple
+        <button *ngIf="identificationField.valid" type="button" pButton pRipple
                 class="p-button-rounded ml-1"
                 icon="pi pi-send"
                 (click)="saveIdentification()"></button>
@@ -30,15 +31,17 @@
   <!--Name-->
   <div *ngIf="steps>=2" class="formgrid grid">
     <div class="field col-10 panel-question">
-      <p>Nombres de tu padre o madre</p>
+      <p>Nombres de tu Representante Legal</p>
+      <app-skeleton *ngIf="progressBarAnswer" [type]="'point'"></app-skeleton>
     </div>
   </div>
   <!--Input-->
-  <div *ngIf="steps===2" class="formgrid grid">
+  <div *ngIf="steps===2 && !progressBarAnswer" class="formgrid grid">
     <div class="field col-12">
       <div class="p-inputgroup">
-        <input type="text" pInputText formControlName="name" pKeyFilter="alpha">
-        <button type="button" pButton pRipple
+        <!--        <input type="text" pInputText formControlName="name" pKeyFilter="alpha">-->
+        <input type="text" pInputText formControlName="name">
+        <button *ngIf="nameField.valid" type="button" pButton pRipple
                 class="p-button-rounded ml-1"
                 icon="pi pi-send"
                 (click)="saveName()"></button>
@@ -59,15 +62,17 @@
   <!--lastname-->
   <div *ngIf="steps>=3" class="formgrid grid">
     <div class="field col-10 panel-question">
-      <p>Apellidos de tu padre o madre</p>
+      <p>Apellidos de tu Representante Legal</p>
+      <app-skeleton *ngIf="progressBarAnswer" [type]="'point'"></app-skeleton>
     </div>
   </div>
   <!--Input-->
-  <div *ngIf="steps===3" class="formgrid grid">
+  <div *ngIf="steps===3 && !progressBarAnswer" class="formgrid grid">
     <div class="field col-12">
       <div class="p-inputgroup">
-        <input type="text" pInputText formControlName="lastname" pKeyFilter="alpha">
-        <button type="button" pButton pRipple
+        <!--        <input type="text" pInputText formControlName="lastname" pKeyFilter="alpha">-->
+        <input type="text" pInputText formControlName="lastname">
+        <button *ngIf="lastnameField.valid" type="button" pButton pRipple
                 class="p-button-rounded ml-1"
                 icon="pi pi-send"
                 (click)="saveLastname()"></button>
@@ -88,15 +93,16 @@
   <!--Phone-->
   <div *ngIf="steps>=4" class="formgrid grid">
     <div class="field col-10 panel-question">
-      <p>Número celular de tu padre o madre</p>
+      <p>Número celular de tu Representante Legal</p>
+      <app-skeleton *ngIf="progressBarAnswer" [type]="'point'"></app-skeleton>
     </div>
   </div>
   <!--Input-->
-  <div *ngIf="steps===4" class="formgrid grid">
+  <div *ngIf="steps===4 && !progressBarAnswer" class="formgrid grid">
     <div class="field col-12">
       <div class="p-inputgroup">
         <input type="text" pInputText formControlName="phone" pKeyFilter="pint">
-        <button type="button" pButton pRipple
+        <button *ngIf="phoneField.valid" type="button" pButton pRipple
                 class="p-button-rounded ml-1"
                 icon="pi pi-send"
                 (click)="savePhone()"></button>
@@ -117,15 +123,16 @@
   <!--Email-->
   <div *ngIf="steps>=5" class="formgrid grid">
     <div class="field col-10 panel-question">
-      <p>Correo electrónico de tu padre o madre</p>
+      <p>Correo electrónico de tu Representante Legal</p>
+      <app-skeleton *ngIf="progressBarAnswer" [type]="'point'"></app-skeleton>
     </div>
   </div>
   <!--Input-->
-  <div *ngIf="steps===5" class="formgrid grid">
+  <div *ngIf="steps===5 && !progressBarAnswer" class="formgrid grid">
     <div class="field col-12">
       <div class="p-inputgroup">
         <input type="text" pInputText formControlName="email" pKeyFilter="email">
-        <button type="button" pButton pRipple
+        <button *ngIf="emailField.valid" type="button" pButton pRipple
                 class="p-button-rounded ml-1"
                 icon="pi pi-send"
                 (click)="saveEmail()"></button>
@@ -149,14 +156,24 @@
       <p>Se envió un código al correo electrónico, por favor revise y regrese al chat para continuar</p>
     </div>
   </div>
+
+  <!--Code Invalid-->
+  <div *ngIf="verifiedCode.length>0 && verifiedCode==='invalid'" class="formgrid grid">
+    <div class="field col-10 panel-question">
+      <p>
+        El código de verificación no es válido
+      </p>
+    </div>
+  </div>
+
   <!--Input-->
-  <div *ngIf="steps===6" class="formgrid grid">
+  <div *ngIf="steps===6 && !progressBarAnswer" class="formgrid grid">
     <div class="field col-12">
       <div class="p-inputgroup">
-        <input type="number" pInputText formControlName="code" pKeyFilter="pint"
-               placeholder="Ingrese el código para continuar">
-        <button type="button" pButton pRipple
-                class="p-button-rounded ml-1"
+        <input type="number" pInputText formControlName="code" pKeyFilter="pint" class="mr-1">
+        <button *ngIf="codeField.valid"
+                type="button" pButton pRipple
+                class="p-button-rounded"
                 icon="pi pi-send"
                 (click)="saveCode()"></button>
       </div>

@@ -2,7 +2,7 @@ import {Injectable} from '@angular/core';
 import * as themes from '../../../assets/themes/themes.json';
 import {MenuItem} from 'primeng/api';
 import {Observable} from 'rxjs';
-import {ServerResponse, FileModel, PaginatorModel} from '@models/core';
+import {ServerResponse, FileModel, PaginatorModel, LocationModel} from '@models/core';
 import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
 import {catchError, map} from 'rxjs/operators';
 import {Handler} from '../../exceptions/handler';

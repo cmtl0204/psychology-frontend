@@ -4,5 +4,6 @@ export interface QuestionModel {
   id?: number;
   value?: string;
   type?: string;
+  order?: number;
   answers?:AnswerModel[] ;
 }

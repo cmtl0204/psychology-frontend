@@ -6,4 +6,5 @@ export interface TestModel {
   patient?: PatientModel;
   agent?: PatientModel;
   results?: ResultModel[];
+  type?: string;
 }

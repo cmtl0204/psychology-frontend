@@ -8,8 +8,13 @@
       </p>
     </div>
   </div>
+  <div class="formgrid grid">
+    <div class="field col-10 panel-question">
+      <p>¿Aceptas los términos y condiciones?</p>
+    </div>
+  </div>
   <!--Input-->
-  <div *ngIf="steps===1" class="formgrid grid">
+  <div *ngIf="steps===1 && !progressBar" class="formgrid grid">
     <div class="field col-6 col-offset-6">
       <button pButton type="button" label="Aceptar"
               class="p-button-lg"
@@ -37,7 +42,7 @@
   <!--No Accept Terms and Conditions-->
   <div *ngIf="termsConditionField.value===false" class="formgrid grid">
     <div class="field col-10 panel-question">
-      <p>Vuelve cuando lo requieras
+      <p>Gracias, el servicio está disponible cuando lo requieras
       </p>
     </div>
   </div>
@@ -45,16 +50,23 @@
   <!--Age-->
   <div *ngIf="steps>=2" class="formgrid grid">
     <div class="field col-10 panel-question">
-      <p>Antes de empezar, es importante que pueda saber tu edad. Selecciona la respuesta con tu edad</p>
+      <p>Antes de empezar, es importante que pueda saber tu edad. Ingresa tu edad</p>
+    </div>
+  </div>
+  <!--Age Range-->
+  <div *ngIf="ageValid" class="formgrid grid">
+    <div class="field col-10 panel-question">
+      <p>Tu edad debe estar entre 12 y 18 años
+      </p>
     </div>
   </div>
   <!--Input-->
-  <div *ngIf="steps===2" class="formgrid grid">
+  <div *ngIf="steps===2 && !progressBar" class="formgrid grid">
     <div class="field col-12">
       <div class="p-inputgroup">
         <input type="number" pInputText formControlName="age"
                [min]="12" [max]="18">
-        <button pButton type="button"
+        <button *ngIf="ageField.value" pButton type="button"
                 class="p-button-rounded ml-1"
                 icon="pi pi-send"
                 (click)="saveAge()"></button>
@@ -71,14 +83,6 @@
       </p>
     </div>
   </div>
-
-  <!--Age Range-->
-  <div *ngIf="ageValid" class="formgrid grid">
-    <div class="field col-10 panel-question">
-      <p>Tu edad debe estar en el rango entre 12 y 18 años
-      </p>
-    </div>
-  </div>
 </form>
 
 <!--Agent Registration-->
@@ -88,15 +92,6 @@
                         (codeVerifiedOut)="codeVerified=$event">
 
 </app-registration-agent>
-
-<!--Code Invalid-->
-<div *ngIf="codeVerified.length>0 && codeVerified==='invalid'" class="formgrid grid">
-  <div class="field col-10 panel-question">
-    <p>
-      El código de verificación no es válido
-    </p>
-  </div>
-</div>
 
 <!--Patient Registration-->
 <app-registration-patient *ngIf="codeVerified=='valid'"

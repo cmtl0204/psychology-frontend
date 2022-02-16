@@ -1,19 +1,20 @@
 <form [formGroup]="formPatient" class="p-fluid">
-  <!--Identification-->
+  <!--Username-->
   <div *ngIf="steps>=1" class="formgrid grid">
     <div class="field col-10 panel-question">
       <p>Dinos tu número de cédula</p>
+      <app-skeleton *ngIf="progressBarAnswer" [type]="'point'"></app-skeleton>
     </div>
   </div>
   <!--Input-->
-  <div *ngIf="steps===1" class="formgrid grid">
+  <div *ngIf="steps===1 && !progressBarAnswer" class="formgrid grid">
     <div class="field col-12">
       <div class="p-inputgroup">
-        <input type="text" pInputText formControlName="identification" pKeyFilter="pint">
-        <button type="button" pButton pRipple
+        <input type="text" pInputText formControlName="username" pKeyFilter="pint">
+        <button *ngIf="usernameField.valid" type="button" pButton pRipple
                 class="p-button-rounded ml-1"
                 icon="pi pi-send"
-                (click)="saveIdentification()"></button>
+                (click)="saveUsername()"></button>
       </div>
     </div>
   </div>
@@ -21,7 +22,7 @@
   <div *ngIf="steps>1" class="formgrid grid">
     <div class="field col-5 col-offset-7 panel-answer text-right">
       <p>
-        {{identificationField.value}}
+        {{usernameField.value}}
         <i class="pi pi-check" style="font-size: 0.5rem"></i>
         <i class="pi pi-check" style="font-size: 0.5rem"></i>
       </p>
@@ -32,14 +33,16 @@
   <div *ngIf="steps>=2" class="formgrid grid">
     <div class="field col-10 panel-question">
       <p>Dinos tu nombres</p>
+      <app-skeleton *ngIf="progressBarAnswer" [type]="'point'"></app-skeleton>
     </div>
   </div>
   <!--Input-->
-  <div *ngIf="steps===2" class="formgrid grid">
+  <div *ngIf="steps===2 && !progressBarAnswer" class="formgrid grid">
     <div class="field col-12">
       <div class="p-inputgroup">
+<!--        <input type="text" pInputText formControlName="name" pKeyFilter="alpha">-->
         <input type="text" pInputText formControlName="name" pKeyFilter="alpha">
-        <button type="button" pButton pRipple
+        <button *ngIf="nameField.valid" type="button" pButton pRipple
                 class="p-button-rounded ml-1"
                 icon="pi pi-send"
                 (click)="saveName()"></button>
@@ -61,14 +64,16 @@
   <div *ngIf="steps>=3" class="formgrid grid">
     <div class="field col-10 panel-question">
       <p>Dinos tus apellidos</p>
+      <app-skeleton *ngIf="progressBarAnswer" [type]="'point'"></app-skeleton>
     </div>
   </div>
   <!--Input-->
-  <div *ngIf="steps===3" class="formgrid grid">
+  <div *ngIf="steps===3 && !progressBarAnswer" class="formgrid grid">
     <div class="field col-12">
       <div class="p-inputgroup">
-        <input type="text" pInputText formControlName="lastname" pKeyFilter="alpha">
-        <button type="button" pButton pRipple
+<!--        <input type="text" pInputText formControlName="lastname" pKeyFilter="alpha">-->
+        <input type="text" pInputText formControlName="lastname">
+        <button *ngIf="lastnameField.valid" type="button" pButton pRipple
                 class="p-button-rounded ml-1"
                 icon="pi pi-send"
                 (click)="saveLastname()"></button>
@@ -90,14 +95,15 @@
   <div *ngIf="steps>=4" class="formgrid grid">
     <div class="field col-10 panel-question">
       <p>Dinos tu número de celular</p>
+      <app-skeleton *ngIf="progressBarAnswer" [type]="'point'"></app-skeleton>
     </div>
   </div>
   <!--Input-->
-  <div *ngIf="steps===4" class="formgrid grid">
+  <div *ngIf="steps===4 && !progressBarAnswer" class="formgrid grid">
     <div class="field col-12">
       <div class="p-inputgroup">
         <input type="text" pInputText formControlName="phone" pKeyFilter="pint">
-        <button type="button" pButton pRipple
+        <button *ngIf="phoneField.valid" type="button" pButton pRipple
                 class="p-button-rounded ml-1"
                 icon="pi pi-send"
                 (click)="savePhone()"></button>
@@ -119,14 +125,15 @@
   <div *ngIf="steps>=5" class="formgrid grid">
     <div class="field col-10 panel-question">
       <p>Dinos tu correo electrónico</p>
+      <app-skeleton *ngIf="progressBarAnswer" [type]="'point'"></app-skeleton>
     </div>
   </div>
   <!--Input-->
-  <div *ngIf="steps===5" class="formgrid grid">
+  <div *ngIf="steps===5 && !progressBarAnswer" class="formgrid grid">
     <div class="field col-12">
       <div class="p-inputgroup">
         <input type="text" pInputText formControlName="email" pKeyFilter="email">
-        <button type="button" pButton pRipple
+        <button *ngIf="emailField.valid" type="button" pButton pRipple
                 class="p-button-rounded ml-1"
                 icon="pi pi-send"
                 (click)="saveEmail()"></button>
@@ -148,53 +155,58 @@
   <div *ngIf="steps>=6" class="formgrid grid">
     <div class="field col-10 panel-question">
       <p>Dinos tu Provincia y Cantón</p>
+      <app-skeleton *ngIf="progressBarAnswer" [type]="'point'"></app-skeleton>
     </div>
   </div>
   <!--Input-->
-  <div *ngIf="steps===6" class="formgrid grid">
-    <div class="field col-5">
-      <p-dropdown id="province" formControlName="province"
-                  [options]="provinces"
-                  dataKey="id"
-                  [filter]="true"
-                  filterBy="name"
-                  placeholder="Provincia">
-        <ng-template pTemplate="selectedItem">
-          <div *ngIf="provinceField.value">
-            <div>
-              {{provinceField.value.name}}
-            </div>
-          </div>
-        </ng-template>
-        <ng-template let-item pTemplate="item">
-          <div>
-            {{item.name}}
-          </div>
-        </ng-template>
-      </p-dropdown>
+  <div *ngIf="steps===6 && !progressBarAnswer" class="formgrid grid">
+    <div class="field col-12">
+<!--      <p-dropdown id="province" formControlName="province"-->
+<!--                  [options]="provinces"-->
+<!--                  dataKey="id"-->
+<!--                  [filter]="true"-->
+<!--                  filterBy="name"-->
+<!--                  placeholder="Provincia">-->
+<!--        <ng-template pTemplate="selectedItem">-->
+<!--          <div *ngIf="provinceField.value">-->
+<!--            <div>-->
+<!--              {{provinceField.value.name}}-->
+<!--            </div>-->
+<!--          </div>-->
+<!--        </ng-template>-->
+<!--        <ng-template let-item pTemplate="item">-->
+<!--          <div>-->
+<!--            {{item.name}}-->
+<!--          </div>-->
+<!--        </ng-template>-->
+<!--      </p-dropdown>-->
+      <p-listbox [options]="provinces" formControlName="province" optionLabel="name"></p-listbox>
     </div>
-    <div class="field col-5">
-      <p-dropdown id="canton" formControlName="canton"
-                  [options]="cantons"
-                  dataKey="id"
-                  [filter]="true"
-                  filterBy="name"
-                  placeholder="Cantón">
-        <ng-template pTemplate="selectedItem">
-          <div *ngIf="cantonField.value">
-            <div>
-              {{cantonField.value.name}}
-            </div>
-          </div>
-        </ng-template>
-        <ng-template let-item pTemplate="item">
-          <div>
-            {{item.name}}
-          </div>
-        </ng-template>
-      </p-dropdown>
+  </div>
+  <div *ngIf="steps===6 && !progressBarAnswer" class="formgrid grid">
+    <div class="field col-12">
+      <!--      <p-dropdown id="canton" formControlName="canton"-->
+      <!--                  [options]="cantons"-->
+      <!--                  dataKey="id"-->
+      <!--                  [filter]="true"-->
+      <!--                  filterBy="name"-->
+      <!--                  placeholder="Cantón">-->
+      <!--        <ng-template pTemplate="selectedItem">-->
+      <!--          <div *ngIf="cantonField.value">-->
+      <!--            <div>-->
+      <!--              {{cantonField.value.name}}-->
+      <!--            </div>-->
+      <!--          </div>-->
+      <!--        </ng-template>-->
+      <!--        <ng-template let-item pTemplate="item">-->
+      <!--          <div>-->
+      <!--            {{item.name}}-->
+      <!--          </div>-->
+      <!--        </ng-template>-->
+      <!--      </p-dropdown>-->
+      <p-listbox [options]="cantons" formControlName="canton" optionLabel="name"></p-listbox>
     </div>
-    <div class="field col-1">
+    <div class="field col-12">
       <button pButton type="button"
               class="p-button-rounded"
               icon="pi pi-send"

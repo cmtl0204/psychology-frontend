@@ -4,4 +4,6 @@ export interface AnswerModel {
   id?: number;
   value?: string;
   type?: string;
+  class?: string;
+  icon?: string;
 }

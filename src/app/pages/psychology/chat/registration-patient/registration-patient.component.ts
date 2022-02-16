@@ -3,7 +3,7 @@ import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {PrimeIcons} from 'primeng/api';
 import {CoreHttpService} from '@services/core';
 import {LocationModel} from '@models/core';
-import {PsychologyHttpService} from '@services/psychology/psychology-http.service';
+import {TestHttpService} from '@services/psychology/test-http.service';
 
 @Component({
   selector: 'app-registration-patient',
@@ -13,7 +13,6 @@ import {PsychologyHttpService} from '@services/psychology/psychology-http.servic
 export class RegistrationPatientComponent implements OnInit {
   formPatient: FormGroup;
   primeIcons = PrimeIcons;
-  progressBar: boolean = false;
   progressBarAnswer: boolean = false;
   @Output() progressBarAnswerOut = new EventEmitter<boolean>();
   @Output() stepsOut = new EventEmitter<number>();
@@ -25,11 +24,18 @@ export class RegistrationPatientComponent implements OnInit {
 
   public provinces: LocationModel[] = [];
   public cantons: LocationModel[] = [];
+  public allCantons: LocationModel[] = [];
 
   constructor(private formBuilder: FormBuilder,
               private coreHttpService: CoreHttpService,
-              private psychologyHttpService: PsychologyHttpService) {
+              private psychologyHttpService: TestHttpService) {
     this.formPatient = this.newFormPatient;
+    this.provinceField.valueChanges.subscribe(province => {
+      console.log(province);
+      console.log(this.allCantons);
+      this.cantons = this.allCantons.filter(canton => canton.parent?.id === province.id)
+      console.log(this.cantons);
+    });
   }
 
   ngOnInit(): void {
@@ -39,12 +45,18 @@ export class RegistrationPatientComponent implements OnInit {
 
   get newFormPatient(): FormGroup {
     return this.formBuilder.group({
-      identification: ['1234567890', [Validators.required]],
-      name: ['CHRISTOPHER DE LAS MERCEDES', [Validators.required]],
-      lastname: ['VILLAVICENCIO QUINCHIGUANGO', [Validators.required]],
-      email: ['mayrapaulinaquinatoagomez@yahoo.com', [Validators.required, Validators.email]],
-      phone: ['0987654321', [Validators.required]],
-      code: [null, [Validators.required]],
+      // username: ['1234567890', [Validators.required]],
+      // name: ['CHRISTOPHER DE LAS MERCEDES', [Validators.required]],
+      // lastname: ['VILLAVICENCIO QUINCHIGUANGO', [Validators.required]],
+      // email: ['mayrapaulinaquinatoagomez@yahoo.com', [Validators.required, Validators.email]],
+      // phone: ['0987654321', [Validators.required]],
+      // province: [{id: 265}, [Validators.required]],
+      // canton: [{id: 451}, [Validators.required]],
+      username: [null, [Validators.required]],
+      name: [null, [Validators.required]],
+      lastname: [null, [Validators.required]],
+      email: [null, [Validators.required, Validators.email]],
+      phone: [null, [Validators.required]],
       province: [null, [Validators.required]],
       canton: [null, [Validators.required]],
     });
@@ -63,75 +75,102 @@ export class RegistrationPatientComponent implements OnInit {
   loadCantons() {
     this.coreHttpService.getLocations('CANTON').subscribe(
       response => {
-        this.cantons = response.data;
+        this.allCantons = response.data;
+        console.log(this.allCantons);
       }, error => {
         // this.messageService.error(error);
       }
     );
   }
 
-  saveIdentification() {
-    this.progressBarAnswerOut.emit(true);
-    setTimeout(() => {
-      this.progressBarAnswerOut.emit(false);
-      this.steps = 5;
-      this.steps++;
-    }, Math.random() * (2000 - 1000) + 1000);
+  saveUsername() {
+    if (this.usernameField.valid) {
+      this.progressBarAnswer = true;
+      this.progressBarAnswerOut.emit(true);
+      setTimeout(() => {
+        this.progressBarAnswer = false;
+        this.progressBarAnswerOut.emit(false);
+        // this.steps = 5;
+        this.steps++;
+      }, Math.random() * (2000 - 1000) + 1000);
+    }
   }
 
   saveName() {
-    this.progressBarAnswerOut.emit(true);
-    setTimeout(() => {
-      this.progressBarAnswerOut.emit(false);
-      this.steps++;
-    }, Math.random() * (2000 - 1000) + 1000);
+    if (this.nameField.valid) {
+      this.progressBarAnswer = true;
+      this.progressBarAnswerOut.emit(true);
+      setTimeout(() => {
+        this.progressBarAnswer = false;
+        this.progressBarAnswerOut.emit(false);
+        this.steps++;
+      }, Math.random() * (2000 - 1000) + 1000);
+    }
   }
 
   saveLastname() {
-    this.progressBarAnswerOut.emit(true);
-    setTimeout(() => {
-      this.progressBarAnswerOut.emit(false);
-      this.steps++;
-    }, Math.random() * (2000 - 1000) + 1000);
+    if (this.lastnameField.valid) {
+      this.progressBarAnswer = true;
+      this.progressBarAnswerOut.emit(true);
+      setTimeout(() => {
+        this.progressBarAnswer = false;
+        this.progressBarAnswerOut.emit(false);
+        this.steps++;
+      }, Math.random() * (2000 - 1000) + 1000);
+    }
   }
 
   saveEmail() {
-    this.progressBarAnswerOut.emit(true);
-    setTimeout(() => {
-      this.progressBarAnswerOut.emit(false);
-      this.steps++;
-    }, Math.random() * (2000 - 1000) + 1000);
+    if (this.emailField.valid) {
+      this.progressBarAnswer = true;
+      this.progressBarAnswerOut.emit(true);
+      setTimeout(() => {
+        this.progressBarAnswer = false;
+        this.progressBarAnswerOut.emit(false);
+        this.steps++;
+      }, Math.random() * (2000 - 1000) + 1000);
+    }
   }
 
   savePhone() {
-    this.progressBarAnswerOut.emit(true);
-    setTimeout(() => {
-      this.progressBarAnswerOut.emit(false);
-      this.steps++;
-    }, Math.random() * (2000 - 1000) + 1000);
+    if (this.phoneField.valid) {
+      this.progressBarAnswer = true;
+      this.progressBarAnswerOut.emit(true);
+      setTimeout(() => {
+        this.progressBarAnswer = false;
+        this.progressBarAnswerOut.emit(false);
+        this.steps++;
+      }, Math.random() * (2000 - 1000) + 1000);
+    }
   }
 
   saveAddress() {
-    this.progressBarAnswerOut.emit(true);
-    setTimeout(() => {
-      this.progressBarAnswerOut.emit(false);
-      this.steps++;
-    }, Math.random() * (2000 - 1000) + 1000);
+    if (this.provinceField.valid && this.cantonField.valid) {
+      this.progressBarAnswer = true;
+      this.progressBarAnswerOut.emit(true);
+      setTimeout(() => {
+        this.progressBarAnswer = false;
+        this.progressBarAnswerOut.emit(false);
+        this.steps++;
+      }, Math.random() * (2000 - 1000) + 1000);
+    }
   }
 
   startTest() {
+    this.progressBarAnswer = true;
     this.progressBarAnswerOut.emit(true);
     setTimeout(() => {
       this.stepsOut.emit(4);
       this.activatedTest.emit(true);
+      this.progressBarAnswer = false;
       this.progressBarAnswerOut.emit(false);
       this.steps++;
       this.psychologyHttpService.savePatient(this.formPatient.value);
     }, Math.random() * (2000 - 1000) + 1000);
   }
 
-  get identificationField() {
-    return this.formPatient.controls['identification'];
+  get usernameField() {
+    return this.formPatient.controls['username'];
   }
 
   get lastnameField() {

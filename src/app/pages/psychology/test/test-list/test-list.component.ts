@@ -4,7 +4,7 @@ import {MenuItem} from 'primeng/api';
 import {FormControl} from '@angular/forms';
 import {TestModel} from '@models/psychology';
 import {MessageService} from '@services/core';
-import {PsychologyHttpService} from '@services/psychology/psychology-http.service';
+import {TestHttpService} from '@services/psychology/test-http.service';
 
 @Component({
   selector: 'app-test-list',
@@ -25,9 +25,10 @@ export class TestListComponent implements OnInit {
   search: FormControl = new FormControl('');
   paginator: PaginatorModel = {};
 
-  states: any[] = [{name: 'TODOS'}, {name: 'SIN ASIGNAR'}, {name: 'ASIGNADO'},{name: 'FINALIZADO'}];
+  states: any[] = [{name: 'TODOS'}, {name: 'SIN ASIGNAR'}, {name: 'ASIGNADO'}, {name: 'FINALIZADO'}];
+  rangeDates: Date[] = [new Date(), new Date()];
 
-  constructor(private psychologyHttpService: PsychologyHttpService,
+  constructor(private psychologyHttpService: TestHttpService,
               public messageService: MessageService) {
     this.cols = [
       {field: 'code', header: 'Test'},
@@ -39,17 +40,22 @@ export class TestListComponent implements OnInit {
     ];
     this.items = [
       {
+        label: 'Ver Informe', icon: 'pi pi-eye', command: () => {
+          this.assignmentForm();
+        }
+      },
+      {
         label: 'Asignar', icon: 'pi pi-share-alt', command: () => {
           this.assignmentForm();
         }
       },
       {
-        label: 'Eliminar', icon: 'pi pi-trash', command: () => {
+        label: 'Descargar Informe', icon: 'pi pi-download', command: () => {
           this.deleteTest(this.selectedTest);
         }
       },
       {
-        label: 'Descargar Informe', icon: 'pi pi-download', command: () => {
+        label: 'Eliminar', icon: 'pi pi-trash', command: () => {
           this.deleteTest(this.selectedTest);
         }
       },

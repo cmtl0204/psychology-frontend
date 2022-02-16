@@ -4,7 +4,7 @@
     <div class="formgrid grid">
       <div class="field col-10 panel-question">
         <p>
-          {{result.question.value}}
+          {{result.question.order}}. [{{result.question.type}}] {{result.question.value}}
         </p>
       </div>
     </div>
@@ -24,18 +24,19 @@
 <!--Current Message-->
 <form [formGroup]="formChat" (ngSubmit)="onSubmit()" class="p-fluid">
   <div *ngFor="let question of questions">
-    <div *ngIf="question.number===actualQuestion">
+    <div *ngIf="question.order===actualQuestion">
       <div class="formgrid grid">
         <div class="field col-10 panel-question">
-          <p>{{question.value}}</p>
+          <p>{{question.order}}. [{{question.type}}] {{question.value}}</p>
         </div>
+        <app-skeleton *ngIf="progressBarAnswer" [type]="'point'"></app-skeleton>
       </div>
       <div class="formgrid grid">
         <div *ngFor="let answer of question.answers"
              class="field col-7 col-offset-5">
-          <button pButton type="button" [label]="answer.value"
-                  [class]="answer.class"
-                  [icon]="answer.icon"
+          <button *ngIf="!progressBarAnswer" pButton type="button" [label]="answer.value!"
+                  [class]="answer.class!"
+                  [icon]="answer.icon!"
                   (click)="reply(question,answer)"></button>
         </div>
       </div>

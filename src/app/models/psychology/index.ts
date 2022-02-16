@@ -1,3 +1,4 @@
+export {AgentModel} from './agent.model'
 export {PatientModel} from './patient.model'
 export {TestModel} from './test.model'
 export {AnswerModel} from './answer.model'

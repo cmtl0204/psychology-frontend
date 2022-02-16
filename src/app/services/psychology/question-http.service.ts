@@ -6,29 +6,29 @@ import {environment} from '@env/environment';
 import {ServerResponse} from '@models/core/server.response';
 import {Handler} from '../../exceptions/handler';
 import {PaginatorModel} from '@models/core';
-import {AssignmentModel, PatientModel, TestModel} from '@models/psychology';
+import {AssignmentModel, PatientModel, QuestionModel} from '@models/psychology';
 
 @Injectable({
   providedIn: 'root'
 })
 
-export class PsychologyHttpService {
+export class QuestionHttpService {
   private API_URL: string = environment.API_URL;
 
-  private testsList: ServerResponse = {};
-  private tests = new BehaviorSubject<ServerResponse>({});
-  public tests$ = this.tests.asObservable();
+  private questionsList: ServerResponse = {};
+  private questions = new BehaviorSubject<ServerResponse>({});
+  public questions$ = this.questions.asObservable();
 
-  private testModel: TestModel = {};
+  private questionModel: QuestionModel = {};
 
-  private test = new BehaviorSubject<TestModel>({});
-  public test$ = this.test.asObservable();
+  private question = new BehaviorSubject<QuestionModel>({});
+  public question$ = this.question.asObservable();
 
-  private selectedTest = new BehaviorSubject<TestModel>({});
-  public selectedTest$ = this.selectedTest.asObservable();
+  private selectedQuestion = new BehaviorSubject<QuestionModel>({});
+  public selectedQuestion$ = this.selectedQuestion.asObservable();
 
-  private selectedTests = new BehaviorSubject<TestModel[]>([]);
-  public selectedTests$ = this.selectedTests.asObservable();
+  private selectedQuestions = new BehaviorSubject<QuestionModel[]>([]);
+  public selectedQuestions$ = this.selectedQuestions.asObservable();
 
   private loaded = new BehaviorSubject<boolean>(true);
   public loaded$ = this.loaded.asObservable();
@@ -40,8 +40,8 @@ export class PsychologyHttpService {
 
   }
 
-  getTests(page: number = 1, search: string = ''): Observable<ServerResponse> {
-    const url = `${this.API_URL}/tests`;
+  index(page: number = 1, search: string = ''): Observable<ServerResponse> {
+    const url = `${this.API_URL}/questions`;
 
     const params = new HttpParams()
       .append('page', page) // conditional
@@ -52,8 +52,8 @@ export class PsychologyHttpService {
       .pipe(
         map(response => response),
         tap(response => {
-          this.testsList = response as ServerResponse;
-          this.tests.next(this.testsList);
+          this.questionsList = response as ServerResponse;
+          this.questions.next(this.questionsList);
           this.loaded.next(false);
           this.paginator.next(response.meta!);
         }, error => {
@@ -63,8 +63,8 @@ export class PsychologyHttpService {
       );
   }
 
-  getTest(id: number): Observable<ServerResponse> {
-    const url = `${this.API_URL}/tests/${id}`;
+  show(id: number): Observable<ServerResponse> {
+    const url = `${this.API_URL}/questions/${id}`;
 
     this.loaded.next(true);
     return this.httpClient.get<ServerResponse>(url)
@@ -72,8 +72,8 @@ export class PsychologyHttpService {
         map(response => response),
         tap(response => {
           this.loaded.next(false);
-          this.testModel = response.data;
-          this.test.next(this.testModel);
+          this.questionModel = response.data;
+          this.question.next(this.questionModel);
         }, error => {
           this.loaded.next(false);
         }),
@@ -81,17 +81,17 @@ export class PsychologyHttpService {
       );
   }
 
-  storeTest(test: TestModel): Observable<ServerResponse> {
-    const url = `${this.API_URL}/tests`;
+  store(question: QuestionModel): Observable<ServerResponse> {
+    const url = `${this.API_URL}/questions`;
 
     this.loaded.next(true);
-    return this.httpClient.post<ServerResponse>(url, test)
+    return this.httpClient.post<ServerResponse>(url, question)
       .pipe(
         map(response => response),
         tap(response => {
           this.loaded.next(false);
-          this.testsList.data.push(response.data);
-          this.tests.next(this.testsList);
+          this.questionsList.data.push(response.data);
+          this.questions.next(this.questionsList);
         }, error => {
           this.loaded.next(false);
         }),
@@ -99,18 +99,18 @@ export class PsychologyHttpService {
       );
   }
 
-  updateTest(id: number, test: TestModel): Observable<ServerResponse> {
-    const url = `${this.API_URL}/tests/${id}`;
+  update(id: number, question: QuestionModel): Observable<ServerResponse> {
+    const url = `${this.API_URL}/questions/${id}`;
 
     this.loaded.next(true);
-    return this.httpClient.put<ServerResponse>(url, test)
+    return this.httpClient.put<ServerResponse>(url, question)
       .pipe(
         map(response => response),
         tap(response => {
           this.loaded.next(false);
-          const index = this.testsList.data.findIndex((test: TestModel) => test.id === response.data.id);
-          this.testsList.data[index] = response.data;
-          this.tests.next(this.testsList);
+          const index = this.questionsList.data.findIndex((question: QuestionModel) => question.id === response.data.id);
+          this.questionsList.data[index] = response.data;
+          this.questions.next(this.questionsList);
         }, error => {
           this.loaded.next(false);
         }),
@@ -118,8 +118,8 @@ export class PsychologyHttpService {
       );
   }
 
-  deleteTest(id: number): Observable<ServerResponse> {
-    const url = `${this.API_URL}/tests/${id}`;
+  destroy(id: number): Observable<ServerResponse> {
+    const url = `${this.API_URL}/questions/${id}`;
 
     this.loaded.next(true);
     return this.httpClient.delete<ServerResponse>(url)
@@ -127,8 +127,8 @@ export class PsychologyHttpService {
         map(response => response),
         tap(response => {
           this.loaded.next(false);
-          this.testsList.data = this.testsList.data.filter((test: TestModel) => test.id !== response.data.id);
-          this.tests.next(this.testsList);
+          this.questionsList.data = this.questionsList.data.filter((question: QuestionModel) => question.id !== response.data.id);
+          this.questions.next(this.questionsList);
         }, error => {
           this.loaded.next(false);
         }),
@@ -136,8 +136,8 @@ export class PsychologyHttpService {
       );
   }
 
-  deleteTests(ids: (number | undefined)[]): Observable<ServerResponse> {
-    const url = `${this.API_URL}/test/destroys`;
+  destroys(ids: (number | undefined)[]): Observable<ServerResponse> {
+    const url = `${this.API_URL}/questions/destroys`;
 
     this.loaded.next(true);
     return this.httpClient.patch<ServerResponse>(url, {ids})
@@ -146,9 +146,9 @@ export class PsychologyHttpService {
         tap(response => {
           this.loaded.next(false);
           ids.forEach(testId => {
-            this.testsList.data = this.testsList.data.filter((test: TestModel) => test.id !== testId);
+            this.questionsList.data = this.questionsList.data.filter((question: QuestionModel) => question.id !== testId);
           })
-          this.tests.next(this.testsList);
+          this.questions.next(this.questionsList);
         }, error => {
           this.loaded.next(false);
         }),
@@ -156,15 +156,18 @@ export class PsychologyHttpService {
       );
   }
 
-  assignmentTest(assignment: AssignmentModel): Observable<ServerResponse> {
-    const url = `${this.API_URL}/tests/assignments`;
+  all(): Observable<ServerResponse> {
+    const url = `${this.API_URL}/questions/all`;
 
     this.loaded.next(true);
-    return this.httpClient.post<ServerResponse>(url, assignment)
+    return this.httpClient.get<ServerResponse>(url)
       .pipe(
         map(response => response),
         tap(response => {
+          this.questionsList = response as ServerResponse;
+          this.questions.next(this.questionsList);
           this.loaded.next(false);
+          this.paginator.next(response.meta!);
         }, error => {
           this.loaded.next(false);
         }),
@@ -172,35 +175,15 @@ export class PsychologyHttpService {
       );
   }
 
-  selectTest(test: TestModel) {
-    this.selectedTest.next(test);
+  selectQuestion(question: QuestionModel) {
+    this.selectedQuestion.next(question);
   }
 
-  selectTests(tests: TestModel[]) {
-    this.selectedTests.next(tests);
+  selectQuestions(questions: QuestionModel[]) {
+    this.selectedQuestions.next(questions);
   }
 
   saveAge(age: string) {
     localStorage.setItem('age', age);
-  }
-
-  savePatient(patient: PatientModel) {
-    localStorage.setItem('patient', JSON.stringify(patient));
-  }
-
-  saveAgent(agent: PatientModel) {
-    localStorage.setItem('agent', JSON.stringify(agent));
-  }
-
-  get patient(): PatientModel {
-    return JSON.parse(String(localStorage.getItem('patient')));
-  }
-
-  get agent(): PatientModel {
-    return JSON.parse(String(localStorage.getItem('agent')));
-  }
-
-  get age(): string {
-    return JSON.parse(String(localStorage.getItem('age')));
   }
 }

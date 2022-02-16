@@ -1,10 +1,10 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {PrimeIcons} from 'primeng/api';
-import {CoreHttpService} from '@services/core';
+import {AuthHttpService, CoreHttpService, MessageService} from '@services/core';
 import {LocationModel} from '@models/core';
 import {Subject, takeUntil} from 'rxjs';
-import {PsychologyHttpService} from '@services/psychology/psychology-http.service';
+import {TestHttpService} from '@services/psychology/test-http.service';
 
 @Component({
   selector: 'app-registration-agent',
@@ -14,7 +14,6 @@ import {PsychologyHttpService} from '@services/psychology/psychology-http.servic
 export class RegistrationAgentComponent implements OnInit {
   formAgent: FormGroup;
   primeIcons = PrimeIcons;
-  progressBar: boolean = false;
   progressBarAnswer: boolean = false;
   @Output() progressBarAnswerOut = new EventEmitter<boolean>();
   @Output() stepsOut = new EventEmitter<number>();
@@ -25,9 +24,13 @@ export class RegistrationAgentComponent implements OnInit {
   adult: boolean = false;
   public provinces: LocationModel[] = [];
   public cantons: LocationModel[] = [];
+  verifiedCode: string = '';
 
-  constructor(private formBuilder: FormBuilder, private coreHttpService: CoreHttpService,
-              private psychologyHttpService: PsychologyHttpService) {
+  constructor(private formBuilder: FormBuilder,
+              private coreHttpService: CoreHttpService,
+              private testHttpService: TestHttpService,
+              public messageService: MessageService,
+  ) {
     this.formAgent = this.newFormAgent;
   }
 
@@ -38,11 +41,16 @@ export class RegistrationAgentComponent implements OnInit {
 
   get newFormAgent(): FormGroup {
     return this.formBuilder.group({
-      identification: ['1234567890', [Validators.required]],
-      name: ['CHRISTOPHER DE LAS MERCEDES', [Validators.required]],
-      lastname: ['VILLAVICENCIO QUINCHIGUANGO', [Validators.required]],
-      email: ['mayrapaulinaquinatoagomez@yahoo.com', [Validators.required, Validators.email]],
-      phone: ['0987654321', [Validators.required]],
+      // identification: ['1234567890', [Validators.required]],
+      // name: ['CHRISTOPHER DE LAS MERCEDES', [Validators.required]],
+      // phone: ['0987654321', [Validators.required]],
+      // email: ['mayrapaulinaquinatoagomez@yahoo.com', [Validators.required, Validators.email]],
+      // lastname: ['VILLAVICENCIO QUINCHIGUANGO', [Validators.required]],
+      identification: [null, [Validators.required]],
+      name: [null, [Validators.required]],
+      lastname: [null, [Validators.required]],
+      email: [null, [Validators.required, Validators.email]],
+      phone: [null, [Validators.required]],
       code: [null, [Validators.required]],
     });
   }
@@ -68,59 +76,95 @@ export class RegistrationAgentComponent implements OnInit {
   }
 
   saveIdentification() {
-    this.progressBarAnswerOut.emit(true);
-    setTimeout(() => {
-      this.progressBarAnswerOut.emit(false);
-      // this.steps = 5;
-      this.steps++;
-    }, Math.random() * (2000 - 1000) + 1000);
+    if (this.identificationField.valid) {
+      this.progressBarAnswer = true;
+      this.progressBarAnswerOut.emit(true);
+      setTimeout(() => {
+        this.progressBarAnswer = false;
+        this.progressBarAnswerOut.emit(false);
+        // this.steps = 4;
+        this.steps++;
+      }, Math.random() * (2000 - 1000) + 1000);
+    }
   }
 
   saveName() {
-    this.progressBarAnswerOut.emit(true);
-    setTimeout(() => {
-      this.progressBarAnswerOut.emit(false);
-      this.steps++;
-    }, Math.random() * (2000 - 1000) + 1000);
+    if (this.nameField.valid) {
+      this.progressBarAnswer = true;
+      this.progressBarAnswerOut.emit(true);
+      setTimeout(() => {
+        this.progressBarAnswer = false;
+        this.progressBarAnswerOut.emit(false);
+        this.steps++;
+      }, Math.random() * (2000 - 1000) + 1000);
+    }
   }
 
   saveLastname() {
-    this.progressBarAnswerOut.emit(true);
-    setTimeout(() => {
-      this.progressBarAnswerOut.emit(false);
-      this.steps++;
-    }, Math.random() * (2000 - 1000) + 1000);
-  }
-
-  saveEmail() {
-    this.progressBarAnswerOut.emit(true);
-    setTimeout(() => {
-      this.progressBarAnswerOut.emit(false);
-      this.steps++;
-    }, Math.random() * (2000 - 1000) + 1000);
+    if (this.lastnameField.valid) {
+      this.progressBarAnswer = true;
+      this.progressBarAnswerOut.emit(true);
+      setTimeout(() => {
+        this.progressBarAnswer = false;
+        this.progressBarAnswerOut.emit(false);
+        this.steps++;
+      }, Math.random() * (2000 - 1000) + 1000);
+    }
   }
 
   savePhone() {
-    this.progressBarAnswerOut.emit(true);
-    setTimeout(() => {
-      this.progressBarAnswerOut.emit(false);
-      this.steps++;
-    }, Math.random() * (2000 - 1000) + 1000);
+    if (this.phoneField.valid) {
+      this.progressBarAnswer = true;
+      this.progressBarAnswerOut.emit(true);
+      setTimeout(() => {
+        this.progressBarAnswer = false;
+        this.progressBarAnswerOut.emit(false);
+        this.steps++;
+      }, Math.random() * (2000 - 1000) + 1000);
+    }
+  }
+
+  saveEmail() {
+    if (this.emailField.valid) {
+      this.progressBarAnswer = true;
+      this.progressBarAnswerOut.emit(true);
+      this.testHttpService.requestTransactionalCode(this.formAgent.value).subscribe(
+        response => {
+          this.progressBarAnswer = false;
+          this.progressBarAnswerOut.emit(false);
+          this.steps++;
+        }, error => {
+          this.progressBarAnswer = false;
+          this.progressBarAnswerOut.emit(false);
+          this.messageService.error(error);
+        }
+      );
+    }
   }
 
   saveCode() {
-    this.progressBarAnswerOut.emit(true);
-    setTimeout(() => {
-      this.progressBarAnswerOut.emit(false);
-      if (this.codeField.value === 1234) {
-        this.stepsOut.emit(4);
-        this.codeVerifiedOut.emit('valid');
-        this.steps++;
-        this.psychologyHttpService.saveAgent(this.formAgent.value);
-      } else {
-        this.codeVerifiedOut.emit('invalid');
-      }
-    }, Math.random() * (2000 - 1000) + 1000);
+    if (this.codeField.valid) {
+      this.progressBarAnswer = true;
+      this.progressBarAnswerOut.emit(true);
+      this.testHttpService.verifyTransactionalCode(this.codeField.value).subscribe(
+        response => {
+          this.progressBarAnswer = false;
+          this.progressBarAnswerOut.emit(false);
+          this.stepsOut.emit(4);
+          this.codeVerifiedOut.emit('valid');
+          this.verifiedCode = 'valid';
+          this.steps++;
+          this.testHttpService.saveAgent(this.formAgent.value);
+        }, error => {
+          this.progressBarAnswer = false;
+          this.progressBarAnswerOut.emit(false);
+          this.codeVerifiedOut.emit('invalid');
+          this.verifiedCode = 'invalid';
+          // this.messageService.error(error);
+        }
+      );
+
+    }
   }
 
   get identificationField() {

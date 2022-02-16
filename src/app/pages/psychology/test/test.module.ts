@@ -17,6 +17,8 @@ import { AssignmentComponent } from './assignment/assignment.component';
 import {ToastModule} from 'primeng/toast';
 import {DialogModule} from 'primeng/dialog';
 import {DividerModule} from 'primeng/divider';
+import {BadgeModule} from 'primeng/badge';
+import {CalendarModule} from 'primeng/calendar';
 
 
 
@@ -44,7 +46,9 @@ import {DividerModule} from 'primeng/divider';
     SplitButtonModule,
     ToastModule,
     DialogModule,
-    DividerModule
+    DividerModule,
+    BadgeModule,
+    CalendarModule
   ]
 })
 export class TestModule { }
