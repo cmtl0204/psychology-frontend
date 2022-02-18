@@ -40,12 +40,17 @@ export class TestHttpService {
 
   }
 
-  getTests(page: number = 1, search: string = ''): Observable<ServerResponse> {
+  getTests(page: number = 1, search: string = '', priorityIds: number[], stateIds: number[], provinceIds: number[], startedAt: string, endedAt: string): Observable<ServerResponse> {
     const url = `${this.API_URL}/tests`;
 
     const params = new HttpParams()
       .append('page', page) // conditional
-      .append('search', search); // conditional
+      .append('search', search)
+      .append('priorities', priorityIds.toString())
+      .append('states', stateIds.toString())
+      .append('provinces', provinceIds.toString())
+      .append('startedAt', startedAt)
+      .append('endedAt', endedAt); // conditional
 
     this.loaded.next(true);
     return this.httpClient.get<ServerResponse>(url, {params})
@@ -90,6 +95,9 @@ export class TestHttpService {
         map(response => response),
         tap(response => {
           this.loaded.next(false);
+          this.removeAge();
+          this.removeAgent();
+          this.removePatient();
           this.testsList.data.push(response.data);
           this.tests.next(this.testsList);
         }, error => {
@@ -190,11 +198,54 @@ export class TestHttpService {
       );
   }
 
-  countPriorities(): Observable<ServerResponse> {
+  countPriorities(provinceIds: number[], startedAt: string, endedAt: string): Observable<ServerResponse> {
     const url = `${this.API_URL}/tests/count-priorities`;
-    return this.httpClient.get<ServerResponse>(url)
+    const params = new HttpParams()
+      .append('provinces', provinceIds.toString())
+      .append('startedAt', startedAt)
+      .append('endedAt', endedAt);
+    this.loaded.next(true);
+    return this.httpClient.get<ServerResponse>(url, {params})
       .pipe(
         map(response => response),
+        tap(() => {
+          this.loaded.next(false);
+        }),
+        catchError(Handler.render)
+      );
+  }
+
+  countAllPriorities(provinceIds: number[]): Observable<ServerResponse> {
+    const url = `${this.API_URL}/tests/count-all-priorities`;
+    const params = new HttpParams()
+      .append('provinces', provinceIds.toString());
+
+    this.loaded.next(true);
+    return this.httpClient.get<ServerResponse>(url, {params})
+      .pipe(
+        map(response => response),
+        tap(() => {
+          this.loaded.next(false);
+        }, error => {
+          this.loaded.next(false);
+        }),
+        catchError(Handler.render)
+      );
+  }
+
+  countAllTests(provinceIds: number[], startedAt: string, endedAt: string): Observable<ServerResponse> {
+    const url = `${this.API_URL}/tests/count-all-tests`;
+    const params = new HttpParams()
+      .append('provinces', provinceIds.toString())
+      .append('startedAt', startedAt)
+      .append('endedAt', endedAt);
+    this.loaded.next(true);
+    return this.httpClient.get<ServerResponse>(url, {params})
+      .pipe(
+        map(response => response),
+        tap(() => {
+          this.loaded.next(false);
+        }),
         catchError(Handler.render)
       );
   }
@@ -229,6 +280,18 @@ export class TestHttpService {
 
   get age(): string {
     return JSON.parse(String(localStorage.getItem('age')));
+  }
+
+  private removePatient() {
+    localStorage.removeItem('patient');
+  }
+
+  private removeAgent() {
+    localStorage.removeItem('agent');
+  }
+
+  private removeAge() {
+    localStorage.removeItem('age');
   }
 
 

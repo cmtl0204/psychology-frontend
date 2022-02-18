@@ -1,4 +1,8 @@
-import {NgModule} from '@angular/core';
+import {NgModule, LOCALE_ID} from '@angular/core';
+import localEs from '@angular/common/locales/es';
+import {registerLocaleData} from '@angular/common';
+
+registerLocaleData(localEs, 'es');
 import {BrowserModule} from '@angular/platform-browser';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {AppRoutingModule} from './app-routing.module';
@@ -70,6 +74,7 @@ import {MessageService} from 'primeng/api';
     ProgressSpinnerModule,
   ],
   providers: [
+    {provide: LOCALE_ID, useValue: 'es'},
     MessageService,
     {
       provide: LocationStrategy,

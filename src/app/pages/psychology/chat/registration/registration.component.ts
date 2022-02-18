@@ -13,12 +13,10 @@ import {TestHttpService} from '@services/psychology/test-http.service';
 export class RegistrationComponent implements OnInit {
   @Output() activatedTestOut = new EventEmitter<boolean>();
   @Output() progressBarAnswerOut = new EventEmitter<boolean>();
+  loaded$ = this.testHttpService.loaded$;
   formChat: FormGroup;
-  primeIcons = PrimeIcons;
-  progressBar: boolean = false;
   progressBarAnswer: boolean = false;
   steps: number = 1;
-  currentDate: Date = new Date();
   ageValid: boolean = false;
   younger: boolean = false;
   codeVerified: string = '';
@@ -28,7 +26,7 @@ export class RegistrationComponent implements OnInit {
 
   constructor(private formBuilder: FormBuilder,
               private coreHttpService: CoreHttpService,
-              private psychologyHttpService: TestHttpService) {
+              private testHttpService: TestHttpService) {
     this.formChat = this.newFormChat;
   }
 
@@ -65,7 +63,7 @@ export class RegistrationComponent implements OnInit {
   }
 
   saveTermsConditions(value: boolean) {
-    this.progressBar = true;
+    this.progressBarAnswer = true;
     this.progressBarAnswerOut.emit(true);
     setTimeout(() => {
       this.termsConditionField.setValue(value);
@@ -75,19 +73,19 @@ export class RegistrationComponent implements OnInit {
         } else {
           this.steps = 0;
         }
-        this.progressBar = false;
+        this.progressBarAnswer = false;
         this.progressBarAnswerOut.emit(false);
       }
     }, Math.random() * (2000 - 1000) + 1000);
   }
 
   saveAge() {
-    this.progressBar = true;
+    this.progressBarAnswer = true;
     this.progressBarAnswerOut.emit(true);
     setTimeout(() => {
       if (this.ageField.value >= 12 && this.ageField.value <= 18) {
         this.steps++;
-        this.psychologyHttpService.saveAge(this.ageField.value)
+        this.testHttpService.saveAge(this.ageField.value)
         if (this.ageField.value < 18) {
           this.younger = true;
         } else {
@@ -97,7 +95,7 @@ export class RegistrationComponent implements OnInit {
       } else {
         this.ageValid = true;
       }
-      this.progressBar = false;
+      this.progressBarAnswer = false;
       this.progressBarAnswerOut.emit(false);
     }, Math.random() * (2000 - 1000) + 1000);
   }

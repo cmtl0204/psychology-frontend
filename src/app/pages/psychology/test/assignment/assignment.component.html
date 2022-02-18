@@ -3,41 +3,42 @@
 <div class="p-fluid">
   <form [formGroup]="form" (ngSubmit)="onSubmit()">
     <!--onSubmit()-->
-    <div class="field">
-      <button pButton pRipple label="Asignar" class="p-button-rounded"
-              icon="pi pi-save"></button>
-    </div>
-    <!--identificationType & username-->
+<!--    <div class="field">-->
+<!--      <button pButton pRipple label="Asignar" class="p-button-rounded"-->
+<!--              icon="pi pi-save"></button>-->
+<!--    </div>-->
+    <!--institution & username-->
     <div class="formgrid grid">
-      <!--identificationType-->
+      <!--institution-->
       <div class="field xl:col-12 lg:col-12 md:col-12 sm:col-12">
-        <label for="identificationType" appLabel label="Institución:"
-               [required]="isRequired(identificationTypeField)"
-               [valid]="identificationTypeField.valid"
-               [touched]="identificationTypeField.touched"
-               [dirty]="identificationTypeField.dirty">
+        <label for="institution" appLabel label="Institución:"
+               [required]="isRequired(institutionField)"
+               [valid]="institutionField.valid"
+               [touched]="institutionField.touched"
+               [dirty]="institutionField.dirty">
         </label>
-        <p-dropdown id="identificationType"
-                    formControlName="identificationType"
-                    [options]="identificationTypes"
+        <p-dropdown id="institution"
+                    formControlName="institution"
+                    [options]="institutions"
                     [filter]="true"
                     filterBy="name"
                     placeholder="Seleccione">
           <ng-template pTemplate="selectedItem">
-            <div *ngIf="identificationTypeField.value">
-              <div>{{identificationTypeField.value?.name}}</div>
+            <div *ngIf="institutionField.value">
+              <div>{{institutionField.value?.shortName}}</div>
             </div>
           </ng-template>
           <ng-template let-item pTemplate="item">
             <div>
-              <div>{{item.name}}</div>
+              <div>{{item.shortName}}</div>
             </div>
+
           </ng-template>
         </p-dropdown>
         <small appErrorMessage
-               [errors]="identificationTypeField.errors"
-               [touched]="identificationTypeField.touched"
-               [dirty]="identificationTypeField.dirty">
+               [errors]="institutionField.errors"
+               [touched]="institutionField.touched"
+               [dirty]="institutionField.dirty">
         </small>
       </div>
     </div>

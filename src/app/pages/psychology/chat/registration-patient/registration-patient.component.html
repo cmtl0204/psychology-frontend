@@ -3,18 +3,18 @@
   <div *ngIf="steps>=1" class="formgrid grid">
     <div class="field col-10 panel-question">
       <p>Dinos tu número de cédula</p>
-      <app-skeleton *ngIf="progressBarAnswer" [type]="'point'"></app-skeleton>
     </div>
   </div>
   <!--Input-->
-  <div *ngIf="steps===1 && !progressBarAnswer" class="formgrid grid">
+  <div *ngIf="steps===1" class="formgrid grid">
     <div class="field col-12">
       <div class="p-inputgroup">
         <input type="text" pInputText formControlName="username" pKeyFilter="pint">
         <button *ngIf="usernameField.valid" type="button" pButton pRipple
                 class="p-button-rounded ml-1"
                 icon="pi pi-send"
-                (click)="saveUsername()"></button>
+                (click)="saveUsername()"
+                [loading]="progressBarAnswer"></button>
       </div>
     </div>
   </div>
@@ -29,59 +29,28 @@
     </div>
   </div>
 
-  <!--Name-->
+  <!--Lastname-->
   <div *ngIf="steps>=2" class="formgrid grid">
     <div class="field col-10 panel-question">
-      <p>Dinos tu nombres</p>
-      <app-skeleton *ngIf="progressBarAnswer" [type]="'point'"></app-skeleton>
+      <p>Dinos tus apellidos</p>
     </div>
   </div>
   <!--Input-->
-  <div *ngIf="steps===2 && !progressBarAnswer" class="formgrid grid">
+  <div *ngIf="steps===2" class="formgrid grid">
     <div class="field col-12">
       <div class="p-inputgroup">
-<!--        <input type="text" pInputText formControlName="name" pKeyFilter="alpha">-->
-        <input type="text" pInputText formControlName="name" pKeyFilter="alpha">
-        <button *ngIf="nameField.valid" type="button" pButton pRipple
+        <!--        <input type="text" pInputText formControlName="lastname" pKeyFilter="alpha">-->
+        <input type="text" pInputText formControlName="lastname">
+        <button *ngIf="lastnameField.valid" type="button" pButton pRipple
                 class="p-button-rounded ml-1"
                 icon="pi pi-send"
-                (click)="saveName()"></button>
+                (click)="saveLastname()"
+                [loading]="progressBarAnswer"></button>
       </div>
     </div>
   </div>
   <!--Result-->
   <div *ngIf="steps>2" class="formgrid grid">
-    <div class="field col-7 col-offset-5 panel-answer text-right">
-      <p>
-        {{nameField.value}}
-        <i class="pi pi-check" style="font-size: 0.5rem"></i>
-        <i class="pi pi-check" style="font-size: 0.5rem"></i>
-      </p>
-    </div>
-  </div>
-
-  <!--Lastname-->
-  <div *ngIf="steps>=3" class="formgrid grid">
-    <div class="field col-10 panel-question">
-      <p>Dinos tus apellidos</p>
-      <app-skeleton *ngIf="progressBarAnswer" [type]="'point'"></app-skeleton>
-    </div>
-  </div>
-  <!--Input-->
-  <div *ngIf="steps===3 && !progressBarAnswer" class="formgrid grid">
-    <div class="field col-12">
-      <div class="p-inputgroup">
-<!--        <input type="text" pInputText formControlName="lastname" pKeyFilter="alpha">-->
-        <input type="text" pInputText formControlName="lastname">
-        <button *ngIf="lastnameField.valid" type="button" pButton pRipple
-                class="p-button-rounded ml-1"
-                icon="pi pi-send"
-                (click)="saveLastname()"></button>
-      </div>
-    </div>
-  </div>
-  <!--Result-->
-  <div *ngIf="steps>3" class="formgrid grid">
     <div class="field col-7 col-offset-5 panel-answer text-right">
       <p>
         {{lastnameField.value}}
@@ -91,130 +60,171 @@
     </div>
   </div>
 
+  <!--Name-->
+  <div *ngIf="steps>=3" class="formgrid grid">
+    <div class="field col-10 panel-question">
+      <p>Dinos tu nombres</p>
+    </div>
+  </div>
+  <!--Input-->
+  <div *ngIf="steps===3" class="formgrid grid">
+    <div class="field col-12">
+      <div class="p-inputgroup">
+        <!--        <input type="text" pInputText formControlName="name" pKeyFilter="alpha">-->
+        <input type="text" pInputText formControlName="name">
+        <button *ngIf="nameField.valid" type="button" pButton pRipple
+                class="p-button-rounded ml-1"
+                icon="pi pi-send"
+                (click)="saveName()"
+                [loading]="progressBarAnswer"></button>
+      </div>
+    </div>
+  </div>
+  <!--Result-->
+  <div *ngIf="steps>3" class="formgrid grid">
+    <div class="field col-7 col-offset-5 panel-answer text-right">
+      <p>
+        {{nameField.value}}
+        <i class="pi pi-check" style="font-size: 0.5rem"></i>
+        <i class="pi pi-check" style="font-size: 0.5rem"></i>
+      </p>
+    </div>
+  </div>
+
   <!--Phone-->
-  <div *ngIf="steps>=4" class="formgrid grid">
-    <div class="field col-10 panel-question">
-      <p>Dinos tu número de celular</p>
-      <app-skeleton *ngIf="progressBarAnswer" [type]="'point'"></app-skeleton>
+  <div *ngIf="!younger">
+    <div *ngIf="steps>=4" class="formgrid grid">
+      <div class="field col-10 panel-question">
+        <p>Dinos tu número de celular</p>
+      </div>
     </div>
-  </div>
-  <!--Input-->
-  <div *ngIf="steps===4 && !progressBarAnswer" class="formgrid grid">
-    <div class="field col-12">
-      <div class="p-inputgroup">
-        <input type="text" pInputText formControlName="phone" pKeyFilter="pint">
-        <button *ngIf="phoneField.valid" type="button" pButton pRipple
-                class="p-button-rounded ml-1"
-                icon="pi pi-send"
-                (click)="savePhone()"></button>
+    <!--Input-->
+    <div *ngIf="steps===4" class="formgrid grid">
+      <div class="field col-12">
+        <div class="p-inputgroup">
+          <input type="text" pInputText formControlName="phone" pKeyFilter="pint">
+          <button *ngIf="phoneField.valid" type="button" pButton pRipple
+                  class="p-button-rounded ml-1"
+                  icon="pi pi-send"
+                  (click)="savePhone()"
+                  [loading]="progressBarAnswer"></button>
+        </div>
+      </div>
+    </div>
+    <!--Result-->
+    <div *ngIf="steps>4" class="formgrid grid">
+      <div class="field col-5 col-offset-7 panel-answer text-right">
+        <p>
+          {{phoneField.value}}
+          <i class="pi pi-check" style="font-size: 0.5rem"></i>
+          <i class="pi pi-check" style="font-size: 0.5rem"></i>
+        </p>
       </div>
     </div>
   </div>
-  <!--Result-->
-  <div *ngIf="steps>4" class="formgrid grid">
-    <div class="field col-5 col-offset-7 panel-answer text-right">
-      <p>
-        {{phoneField.value}}
-        <i class="pi pi-check" style="font-size: 0.5rem"></i>
-        <i class="pi pi-check" style="font-size: 0.5rem"></i>
-      </p>
-    </div>
-  </div>
 
-  <!--Email-->
-  <div *ngIf="steps>=5" class="formgrid grid">
-    <div class="field col-10 panel-question">
-      <p>Dinos tu correo electrónico</p>
-      <app-skeleton *ngIf="progressBarAnswer" [type]="'point'"></app-skeleton>
+  <div *ngIf="!younger">
+    <!--Email-->
+    <div *ngIf="steps>=5" class="formgrid grid">
+      <div class="field col-10 panel-question">
+        <p>Dinos tu correo electrónico</p>
+      </div>
     </div>
-  </div>
-  <!--Input-->
-  <div *ngIf="steps===5 && !progressBarAnswer" class="formgrid grid">
-    <div class="field col-12">
-      <div class="p-inputgroup">
-        <input type="text" pInputText formControlName="email" pKeyFilter="email">
-        <button *ngIf="emailField.valid" type="button" pButton pRipple
-                class="p-button-rounded ml-1"
-                icon="pi pi-send"
-                (click)="saveEmail()"></button>
+    <!--Input-->
+    <div *ngIf="steps===5" class="formgrid grid">
+      <div class="field col-12">
+        <div class="p-inputgroup">
+          <input type="text" pInputText formControlName="email" pKeyFilter="email">
+          <button *ngIf="emailField.valid" type="button" pButton pRipple
+                  class="p-button-rounded ml-1"
+                  icon="pi pi-send"
+                  (click)="saveEmail()"
+                  [loading]="progressBarAnswer"></button>
+        </div>
+      </div>
+    </div>
+    <!--Result-->
+    <div *ngIf="steps>5" class="formgrid grid">
+      <div class="field col-10 col-offset-2 panel-answer text-right">
+        <p>
+          {{emailField.value}}
+          <i class="pi pi-check" style="font-size: 0.5rem"></i>
+          <i class="pi pi-check" style="font-size: 0.5rem"></i>
+        </p>
       </div>
     </div>
   </div>
-  <!--Result-->
-  <div *ngIf="steps>5" class="formgrid grid">
-    <div class="field col-10 col-offset-2 panel-answer text-right">
-      <p>
-        {{emailField.value}}
-        <i class="pi pi-check" style="font-size: 0.5rem"></i>
-        <i class="pi pi-check" style="font-size: 0.5rem"></i>
-      </p>
-    </div>
-  </div>
 
-  <!--Address-->
+  <!--Province-->
   <div *ngIf="steps>=6" class="formgrid grid">
     <div class="field col-10 panel-question">
-      <p>Dinos tu Provincia y Cantón</p>
-      <app-skeleton *ngIf="progressBarAnswer" [type]="'point'"></app-skeleton>
+      <p>Dinos tu Provincia</p>
     </div>
   </div>
   <!--Input-->
-  <div *ngIf="steps===6 && !progressBarAnswer" class="formgrid grid">
-    <div class="field col-12">
-<!--      <p-dropdown id="province" formControlName="province"-->
-<!--                  [options]="provinces"-->
-<!--                  dataKey="id"-->
-<!--                  [filter]="true"-->
-<!--                  filterBy="name"-->
-<!--                  placeholder="Provincia">-->
-<!--        <ng-template pTemplate="selectedItem">-->
-<!--          <div *ngIf="provinceField.value">-->
-<!--            <div>-->
-<!--              {{provinceField.value.name}}-->
-<!--            </div>-->
-<!--          </div>-->
-<!--        </ng-template>-->
-<!--        <ng-template let-item pTemplate="item">-->
-<!--          <div>-->
-<!--            {{item.name}}-->
-<!--          </div>-->
-<!--        </ng-template>-->
-<!--      </p-dropdown>-->
-      <p-listbox [options]="provinces" formControlName="province" optionLabel="name"></p-listbox>
+  <div *ngIf="steps===6" class="formgrid grid">
+    <div class="field col-10">
+      <p-autoComplete formControlName="province" [suggestions]="filteredProvinces"
+                      (completeMethod)="filterProvinces($event)"
+                      field="name"
+                      [forceSelection]="true">
+      </p-autoComplete>
     </div>
-  </div>
-  <div *ngIf="steps===6 && !progressBarAnswer" class="formgrid grid">
-    <div class="field col-12">
-      <!--      <p-dropdown id="canton" formControlName="canton"-->
-      <!--                  [options]="cantons"-->
-      <!--                  dataKey="id"-->
-      <!--                  [filter]="true"-->
-      <!--                  filterBy="name"-->
-      <!--                  placeholder="Cantón">-->
-      <!--        <ng-template pTemplate="selectedItem">-->
-      <!--          <div *ngIf="cantonField.value">-->
-      <!--            <div>-->
-      <!--              {{cantonField.value.name}}-->
-      <!--            </div>-->
-      <!--          </div>-->
-      <!--        </ng-template>-->
-      <!--        <ng-template let-item pTemplate="item">-->
-      <!--          <div>-->
-      <!--            {{item.name}}-->
-      <!--          </div>-->
-      <!--        </ng-template>-->
-      <!--      </p-dropdown>-->
-      <p-listbox [options]="cantons" formControlName="canton" optionLabel="name"></p-listbox>
-    </div>
-    <div class="field col-12">
-      <button pButton type="button"
+    <div class="field col-2">
+      <button *ngIf="provinceField.valid" type="button" pButton pRipple
               class="p-button-rounded"
               icon="pi pi-send"
-              (click)="saveAddress()"></button>
+              (click)="saveProvince()"
+              [loading]="progressBarAnswer"></button>
+
     </div>
   </div>
   <!--Result-->
   <div *ngIf="steps>6" class="formgrid grid">
+    <div class="field col-10 col-offset-2 panel-answer text-right">
+      <p>
+        {{provinceField.value.name}}
+        <i class="pi pi-check" style="font-size: 0.5rem"></i>
+        <i class="pi pi-check" style="font-size: 0.5rem"></i>
+      </p>
+    </div>
+  </div>
+
+  <!--Canton-->
+  <div *ngIf="steps>=7" class="formgrid grid">
+    <div class="field col-10 panel-question">
+      <p>Dinos tu Cantón</p>
+    </div>
+  </div>
+  <!--Input-->
+  <div *ngIf="steps===7" class="formgrid grid">
+    <div class="field col-10">
+      <p-autoComplete formControlName="canton" [suggestions]="filteredCantons"
+                      (completeMethod)="filterCantons($event)" field="name"
+                      [forceSelection]="true">
+      </p-autoComplete>
+    </div>
+    <div class="field col-2">
+      <button *ngIf="cantonField.valid" type="button" pButton pRipple
+              class="p-button-rounded ml-1"
+              icon="pi pi-send"
+              (click)="saveCanton()"
+              [loading]="progressBarAnswer"></button>
+    </div>
+  </div>
+  <!--Result-->
+  <div *ngIf="steps>7" class="formgrid grid">
+    <div class="field col-10 col-offset-2 panel-answer text-right">
+      <p>
+        {{cantonField.value.name}}
+        <i class="pi pi-check" style="font-size: 0.5rem"></i>
+        <i class="pi pi-check" style="font-size: 0.5rem"></i>
+      </p>
+    </div>
+  </div>
+
+  <!--Result-->
+  <div *ngIf="steps>8" class="formgrid grid">
     <div class="field col-8 col-offset-4 panel-answer text-right">
       <p>
         {{provinceField?.value?.name}} - {{cantonField?.value?.name}}
@@ -225,13 +235,14 @@
   </div>
 
   <!--Start Test-->
-  <div *ngIf="steps===7" class="formgrid grid">
+  <div *ngIf="steps===8" class="formgrid grid">
     <div class="field col-12">
       <button type="button" pButton pRipple
               label="Iniciar Test"
               class="p-button-rounded p-button-help"
               icon="pi pi-send"
-              (click)="startTest()"></button>
+              (click)="startTest()"
+              [loading]="progressBarAnswer"></button>
     </div>
   </div>
 </form>

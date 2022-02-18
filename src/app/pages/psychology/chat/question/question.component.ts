@@ -2,7 +2,6 @@ import {Component, EventEmitter, OnDestroy, OnInit, Output} from '@angular/core'
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {PrimeIcons} from 'primeng/api';
 import {MessageService} from '@services/core';
-import {Subject, takeUntil} from 'rxjs';
 import {TestHttpService} from '@services/psychology/test-http.service';
 import {AnswerModel, PatientModel, QuestionModel, TestModel} from '@models/psychology';
 import {QuestionHttpService} from '@services/psychology/question-http.service';
@@ -35,6 +34,7 @@ export class QuestionComponent implements OnInit, OnDestroy {
   test: TestModel = {};
   age: number = 0;
   testType: string = '';
+  questionSteps: number = 0;
 
   constructor(private formBuilder: FormBuilder,
               private messageService: MessageService,
@@ -45,6 +45,7 @@ export class QuestionComponent implements OnInit, OnDestroy {
     this.time = setInterval(() => {
       this.currentDate = new Date();
     }, 1000);
+
     this.patient = this.testHttpService.patient;
     this.patient.age = this.testHttpService.age;
     this.agent = this.testHttpService.agent;
@@ -52,6 +53,7 @@ export class QuestionComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.loadQuestions();
+    this.loadWelcome();
   }
 
   ngOnDestroy(): void {
@@ -144,10 +146,46 @@ export class QuestionComponent implements OnInit, OnDestroy {
     this.progressBarAnswerOut.emit(true);
     this.testHttpService.storeTest(this.test).subscribe(
       response => {
+
         this.progressBarAnswerOut.emit(false);
       }, error => {
         this.messageService.error(error);
         this.progressBarAnswerOut.emit(false);
       });
+  }
+
+  loadWelcome() {
+    this.progressBarAnswerOut.emit(true);
+    setTimeout(() => {
+      this.questionSteps++;
+      this.progressBarAnswerOut.emit(false);
+    }, 1000);
+
+    setTimeout(() => {
+      this.progressBarAnswerOut.emit(true);
+    }, 2000);
+    setTimeout(() => {
+      this.questionSteps++;
+      this.progressBarAnswerOut.emit(false);
+    }, 3000);
+
+    setTimeout(() => {
+      this.progressBarAnswerOut.emit(true);
+    }, 4000);
+
+    this.progressBarAnswerOut.emit(true);
+    setTimeout(() => {
+      this.questionSteps++;
+      this.progressBarAnswerOut.emit(false);
+    }, 5000);
+
+    setTimeout(() => {
+      this.progressBarAnswerOut.emit(true);
+    }, 6000);
+
+    setTimeout(() => {
+      this.questionSteps++;
+      this.progressBarAnswerOut.emit(false);
+    }, 7000);
   }
 }

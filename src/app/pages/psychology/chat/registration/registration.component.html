@@ -11,21 +11,26 @@
   <div class="formgrid grid">
     <div class="field col-10 panel-question">
       <p>¿Aceptas los términos y condiciones?</p>
+      <a class="p-button-text" href="assets/files/terms_conditions.pdf" target="_blank">
+        Descargar términos y condiciones
+      </a>
     </div>
   </div>
   <!--Input-->
-  <div *ngIf="steps===1 && !progressBar" class="formgrid grid">
+  <div *ngIf="steps===1" class="formgrid grid">
     <div class="field col-6 col-offset-6">
       <button pButton type="button" label="Aceptar"
               class="p-button-lg"
               icon="pi pi-check"
-              (click)="saveTermsConditions(true)"></button>
+              (click)="saveTermsConditions(true)"
+              [loading]="progressBarAnswer"></button>
     </div>
     <div class="field col-6 col-offset-6">
       <button pButton type="button" label="Rechazar"
               class="p-button-lg p-button-help"
               icon="pi pi-ban"
-              (click)="saveTermsConditions(false)"></button>
+              (click)="saveTermsConditions(false)"
+              [loading]="progressBarAnswer"></button>
     </div>
   </div>
   <!--Result-->
@@ -42,7 +47,8 @@
   <!--No Accept Terms and Conditions-->
   <div *ngIf="termsConditionField.value===false" class="formgrid grid">
     <div class="field col-10 panel-question">
-      <p>Gracias, el servicio está disponible cuando lo requieras
+      <p>Muchas gracias por tu participación. Recuerda que tu bienestar psicólogo es prioridad y Jorgebot, tu amigo,
+        estará disponible para cuando lo necesites. ¡Hasta pronto!
       </p>
     </div>
   </div>
@@ -61,7 +67,7 @@
     </div>
   </div>
   <!--Input-->
-  <div *ngIf="steps===2 && !progressBar" class="formgrid grid">
+  <div *ngIf="steps===2" class="formgrid grid">
     <div class="field col-12">
       <div class="p-inputgroup">
         <input type="number" pInputText formControlName="age"
@@ -69,7 +75,8 @@
         <button *ngIf="ageField.value" pButton type="button"
                 class="p-button-rounded ml-1"
                 icon="pi pi-send"
-                (click)="saveAge()"></button>
+                (click)="saveAge()"
+                [loading]="progressBarAnswer"></button>
       </div>
     </div>
   </div>
@@ -85,6 +92,17 @@
   </div>
 </form>
 
+<!--Message-->
+<div *ngIf="codeVerified=='valid'" class="formgrid grid">
+  <div class="field col-10 panel-question">
+    <p>El llenado de este chat no te tomará más de 10 minutos. Para continuar con el proceso de aplicación por favor
+      registra tú información.
+      Te informaremos sobre los resultados y estos se mantendrán en estricta confidencialidad.
+    </p>
+  </div>
+</div>
+
+
 <!--Agent Registration-->
 <app-registration-agent *ngIf="younger"
                         (progressBarAnswerOut)="progressBarAnswerOut.emit($event)"
@@ -95,6 +113,7 @@
 
 <!--Patient Registration-->
 <app-registration-patient *ngIf="codeVerified=='valid'"
+                          [younger]="younger"
                           (progressBarAnswerOut)="progressBarAnswerOut.emit($event)"
                           (activatedTest)="activatedTestOut.emit($event)"
                           (stepsOut)="steps=$event">

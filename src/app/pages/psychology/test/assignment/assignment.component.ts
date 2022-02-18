@@ -3,8 +3,9 @@ import {Subject, takeUntil} from 'rxjs';
 import {AbstractControl, FormArray, FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {CatalogueModel, LocationModel, PhoneModel, UserModel} from '@models/core';
 import {CoreHttpService, MessageService, UserAdministrationHttpService} from '@services/core';
-import {TestModel} from '@models/psychology';
+import {InstitutionModel, TestModel} from '@models/psychology';
 import {TestHttpService} from '@services/psychology/test-http.service';
+import {InstitutionHttpService} from '@services/psychology/institution-http.service';
 
 @Component({
   selector: 'app-assignment',
@@ -16,31 +17,23 @@ export class AssignmentComponent implements OnInit {
   @Input() tests: TestModel[] = [];
   private unsubscribe$ = new Subject<void>();
   public form: FormGroup = this.newForm;
-  public automaticPassword: FormControl = new FormControl(false);
   public progressBar: boolean = false;
-  public identificationTypes: CatalogueModel[] = [];
-  public phoneOperators: CatalogueModel[] = [];
+  public institutions: InstitutionModel[] = [];
   public phoneTypes: CatalogueModel[] = [];
-  public phoneLocations: LocationModel[] = [];
 
   constructor(private formBuilder: FormBuilder,
               private userAdministrationHttpService: UserAdministrationHttpService,
-              private coreHttpService: CoreHttpService,
-              private testHttpService: TestHttpService,
+              private institutionHttpService: InstitutionHttpService,
               public messageService: MessageService,
   ) {
+    this.testsField.clear();
   }
 
   ngOnInit(): void {
-    this.loadIdentificationTypes();
-    this.loadPhoneOperators();
-    this.loadPhoneTypes();
-    this.loadPhoneLocations();
+    this.loadInstitutions();
     this.tests?.forEach(test => {
       this.addTest(test);
     });
-
-    // console.log(this.testsField.value);
   }
 
   ngOnDestroy(): void {
@@ -50,71 +43,23 @@ export class AssignmentComponent implements OnInit {
 
   get newForm(): FormGroup {
     return this.formBuilder.group({
-      email: [null, [Validators.required, Validators.email]],
-      id: [null],
-      identificationType: [null, [Validators.required]],
-      lastname: [null, [Validators.required]],
-      name: [null, [Validators.required]],
-      password: [null, [Validators.required, Validators.minLength(8)]],
-      passwordChanged: [true],
-      phones: this.formBuilder.array([this.newFormPhone], Validators.required),
       tests: this.formBuilder.array([], Validators.required),
-      username: [null, [Validators.required]],
-    });
-  }
-
-  get newFormPhone(): FormGroup {
-    return this.formBuilder.group({
-      id: [null],
-      location: [null, [Validators.required]],
-      number: [null, [Validators.required]],
-      operator: [null, [Validators.required]],
-      type: [null, [Validators.required]],
+      institution: [null, [Validators.required]],
     });
   }
 
   get newFormTest(): FormGroup {
     return this.formBuilder.group({
       id: [null],
-      name: [null, [Validators.required]],
-      user: [null, [Validators.required]],
+      name: [null],
+      user: [null],
     });
   }
 
-  loadIdentificationTypes() {
-    this.coreHttpService.getCatalogues('IDENTIFICATION_PROFESSIONAL_TYPE').subscribe(
+  loadInstitutions() {
+    this.institutionHttpService.all().subscribe(
       response => {
-        this.identificationTypes = response.data;
-      }, error => {
-        this.messageService.error(error);
-      }
-    );
-  }
-
-  loadPhoneOperators() {
-    this.coreHttpService.getCatalogues('PHONE_OPERATOR').subscribe(
-      response => {
-        this.phoneOperators = response.data;
-      }, error => {
-        this.messageService.error(error);
-      }
-    );
-  }
-
-  loadPhoneTypes() {
-    this.coreHttpService.getCatalogues('PHONE_TYPE').subscribe(
-      response => {
-        this.phoneTypes = response.data;
-      }, error => {
-        this.messageService.error(error);
-      }
-    );
-  }
-
-  loadPhoneLocations() {
-    this.coreHttpService.getLocations('COUNTRY').subscribe(
-      response => {
-        this.phoneLocations = response.data;
+        this.institutions = response.data;
       }, error => {
         this.messageService.error(error);
       }
@@ -122,20 +67,20 @@ export class AssignmentComponent implements OnInit {
   }
 
   onSubmit() {
+    console.log(this.institutionField.valid);
+    console.log(this.institutionField);
+    console.log(this.testsField.valid);
+    console.log(this.testsField);
     if (this.form.valid) {
-      if (this.idField.value) {
-        this.updateUser(this.form.value);
-      } else {
-        this.storeUser(this.form.value);
-      }
+      this.assignment();
     } else {
       this.form.markAllAsTouched();
     }
   }
 
-  storeUser(user: UserModel): void {
+  assignment(): void {
     this.progressBar = true;
-    this.userAdministrationHttpService.storeUser(user).subscribe(
+    this.institutionHttpService.assignment(this.institutionField.value, this.testsField.value).subscribe(
       response => {
         this.messageService.success(response);
         this.progressBar = false;
@@ -146,38 +91,6 @@ export class AssignmentComponent implements OnInit {
         this.progressBar = false;
       }
     );
-  }
-
-  updateUser(user: UserModel): void {
-    this.progressBar = true;
-    this.userAdministrationHttpService.updateUser(user.id!, user).subscribe(
-      response => {
-        this.messageService.success(response);
-        this.progressBar = false;
-        this.dialogForm.emit(false);
-      },
-      error => {
-        this.messageService.error(error);
-        this.progressBar = false;
-      }
-    );
-  }
-
-  generateAutomaticPassword(event: any) {
-    this.automaticPassword.setValue(event.checked);
-    if (event.checked) {
-      this.passwordField.setValue(Math.random().toString(36).slice(-8));
-    } else {
-      this.passwordField.setValue(null);
-    }
-  }
-
-  addPhone(data: PhoneModel = {}) {
-    const formPhone = this.newFormPhone;
-    if (data.id !== undefined) {
-      formPhone.patchValue(data);
-    }
-    this.phonesField.push(formPhone);
   }
 
   addTest(data: TestModel = {}) {
@@ -186,15 +99,6 @@ export class AssignmentComponent implements OnInit {
       formTest.patchValue(data);
     }
     this.testsField.push(formTest);
-  }
-
-  removePhone(index: number) {
-    if (this.phonesField.length > 1) {
-      this.phonesField.removeAt(index);
-    } else {
-      this.phonesField.markAllAsTouched();
-      this.messageService.errorRequired();
-    }
   }
 
   removeTest(index: number) {
@@ -211,43 +115,11 @@ export class AssignmentComponent implements OnInit {
   }
 
   // Getters
-  get emailField() {
-    return this.form.controls['email'];
-  }
-
-  get idField() {
-    return this.form.controls['id'];
-  }
-
-  get identificationTypeField() {
-    return this.form.controls['identificationType'];
-  }
-
-  get lastnameField() {
-    return this.form.controls['lastname'];
-  }
-
-  get nameField() {
-    return this.form.controls['name'];
-  }
-
-  get passwordField() {
-    return this.form.controls['password'];
-  }
-
-  get passwordChangedField() {
-    return this.form.controls['passwordChanged'];
-  }
-
-  get phonesField(): FormArray {
-    return this.form.controls['phones'] as FormArray;
-  }
-
   get testsField(): FormArray {
     return this.form.controls['tests'] as FormArray;
   }
 
-  get usernameField() {
-    return this.form.controls['username'];
+  get institutionField() {
+    return this.form.controls['institution'];
   }
 }

@@ -19,6 +19,7 @@ import {DialogModule} from 'primeng/dialog';
 import {DividerModule} from 'primeng/divider';
 import {BadgeModule} from 'primeng/badge';
 import {CalendarModule} from 'primeng/calendar';
+import {MultiSelectModule} from 'primeng/multiselect';
 
 
 
@@ -31,24 +32,25 @@ import {CalendarModule} from 'primeng/calendar';
   exports: [
 
   ],
-  imports: [
-    CommonModule,
-    TestRoutingModule,
-    ToolbarModule,
-    ButtonModule,
-    RippleModule,
-    SharedModule,
-    InputTextModule,
-    ReactiveFormsModule,
-    CardModule,
-    PaginatorModule,
-    TableModule,
-    SplitButtonModule,
-    ToastModule,
-    DialogModule,
-    DividerModule,
-    BadgeModule,
-    CalendarModule
-  ]
+    imports: [
+        CommonModule,
+        TestRoutingModule,
+        ToolbarModule,
+        ButtonModule,
+        RippleModule,
+        SharedModule,
+        InputTextModule,
+        ReactiveFormsModule,
+        CardModule,
+        PaginatorModule,
+        TableModule,
+        SplitButtonModule,
+        ToastModule,
+        DialogModule,
+        DividerModule,
+        BadgeModule,
+        CalendarModule,
+        MultiSelectModule
+    ]
 })
 export class TestModule { }

@@ -1,81 +1,145 @@
 <p-dialog header="Asignar Institución" [(visible)]="dialogForm" [maximizable]="true" [modal]="true">
-  <app-assignment *ngIf="dialogForm" [tests]="selectedTests"></app-assignment>
+  <app-assignment *ngIf="dialogForm" [tests]="selectedTests"
+                  (dialogForm)="dialogForm=$event;loadTests();loadCountPriorities();loadCountAllPriorities()"></app-assignment>
 </p-dialog>
 
 <div class="container">
+
   <div class="grid">
-    <div class="panel-toolbar field xl:col-12 lg:col-12 md:col-12 sm:col-12">
+    <div class="panel-toolbar-left field xl:col-8 lg:col-8 md:col-12 sm:col-12">
       <div class="grid">
         <div class="field xl:col-6 lg:col-6 md:col-12 sm:col-12 text-center">
           <h2>Detalles de la Jornada</h2>
-          <p>Tamizajes Totales:
-            <p-badge [value]="paginator?.total?.toString()!" size="large"></p-badge>
+          <p>
+            Del
+            <b>{{rangeDates[0]|date:'longDate'}}</b>
+            al
+            <b>{{rangeDates[1]|date:'longDate'}}</b>
           </p>
-          <p>Sin Problemas:
-            <p-badge [value]="countPriorities[3]?.testsCount!" size="large" severity="success"></p-badge>
+          <p>
+            Tamizajes Totales:
           </p>
-          <p>Fecha:
-            <b><span *ngIf="!rangeDates[1]">hasta</span> {{rangeDates[0]|date}} <span *ngIf="rangeDates[1]">al</span> {{rangeDates[1]|date}}</b>
-          </p>
+          <button pButton type="button" [label]="countAllTests!"
+                  class="p-button-rounded"
+                  [loading]="(loaded$|async)!"></button>
+          <p>Sin Problemas:</p>
+          <button pButton type="button" [label]="(countPriorities[3]?.testsCount!)?.toString()!"
+                  class="p-button-rounded p-button-success"
+                  [loading]="(loaded$|async)!"></button>
         </div>
         <div class="field xl:col-6 lg:col-6 md:col-12 sm:col-12 text-center">
-          <h2>Acciones requeridas</h2>
+          <h2>Acciones requeridas:</h2>
           <p>Alta Intensidad:
-            <p-badge [value]="countPriorities[0]?.testsCount!" size="large" severity="danger"></p-badge>
+            <button pButton type="button" [label]="(countPriorities[0]?.testsCount!)?.toString()!"
+                    class="p-button-rounded p-button-danger"
+                    [loading]="(loaded$|async)!"></button>
           </p>
+
           <p>Media Intensidad:
-            <p-badge [value]="countPriorities[1]?.testsCount!" size="large" severity="warning"></p-badge>
+            <button pButton type="button" [label]="(countPriorities[1]?.testsCount!)?.toString()!"
+                    class="p-button-rounded p-button-warning"
+                    [loading]="(loaded$|async)!"></button>
           </p>
           <p>Baja Intensidad:
-            <p-badge [value]="countPriorities[2]?.testsCount!" size="large" severity="info"></p-badge>
+            <button pButton type="button" [label]="(countPriorities[2]?.testsCount!)?.toString()!"
+                    class="p-button-rounded p-button-info"
+                    [loading]="(loaded$|async)!"></button>
+          </p>
+        </div>
+      </div>
+    </div>
+    <div class="panel-toolbar-right field xl:col-4 lg:col-4 md:col-12 sm:col-12">
+      <div class="grid">
+        <div class="field xl:col-12 lg:col-12 md:col-12 sm:col-12 text-center">
+          <h2>Acciones requeridas totales</h2>
+          <p>Alta Intensidad:
+            <button pButton type="button" [label]="(countAllPriorities[0]?.testsCount!)?.toString()!"
+                    class="p-button-rounded p-button-danger"
+                    [loading]="(loaded$|async)!"></button>
+          </p>
+          <p>Media Intensidad:
+            <button pButton type="button" [label]="(countAllPriorities[1]?.testsCount!)?.toString()!"
+                    class="p-button-rounded p-button-warning"
+                    [loading]="(loaded$|async)!"></button>
+          </p>
+          <p>Baja Intensidad:
+            <button pButton type="button" [label]="(countAllPriorities[2]?.testsCount!)?.toString()!"
+                    class="p-button-rounded p-button-info"
+                    [loading]="(loaded$|async)!"></button>
           </p>
         </div>
       </div>
     </div>
   </div>
+
+  <br>
   <p-card>
-    <p-toolbar styleClass="panel-toolbar">
+    <div class="grid">
+      <div class="field xl:col-2 lg:col-2 md:col-12 sm:col-12">
+        <p-calendar id="range"
+                    [(ngModel)]="rangeDates"
+                    selectionMode="range"
+                    [readonlyInput]="true"
+                    [showIcon]="true"
+                    inputId="range"
+                    dateFormat="yy-mm-dd"
+                    (onSelect)="loadCountPriorities();loadCountAllTests();loadTests()"></p-calendar>
+      </div>
+      <div class="field xl:col-2 lg:col-2 md:col-12 sm:col-12">
+        <p-multiSelect [options]="priorities"
+                       [(ngModel)]="selectedPriorities"
+                       display="chip"
+                       optionLabel="name"
+                       [selectionLimit]="1"
+                       placeholder="Todas las prioridades"
+                       (onChange)="loadTests()"></p-multiSelect>
+      </div>
+      <div class="field xl:col-2 lg:col-2 md:col-12 sm:col-12">
+        <p-multiSelect [options]="states"
+                       [(ngModel)]="selectedStates"
+                       display="chip"
+                       optionLabel="name"
+                       [selectionLimit]="1"
+                       placeholder="Todos los estados"
+                       (onChange)="loadTests()"></p-multiSelect>
+      </div>
+      <div class="field xl:col-6 lg:col-6 md:col-12 sm:col-12">
+        <p-multiSelect [options]="provinces"
+                       [(ngModel)]="selectedProvinces"
+                       display="chip"
+                       optionLabel="name"
+                       placeholder="Todas las provincias"
+                       (onChange)="loadCountAllPriorities();loadCountPriorities();loadCountAllTests();loadTests()"></p-multiSelect>
+      </div>
+    </div>
+  </p-card>
+  <br>
+  <p-card>
+    <p-toolbar>
       <div class="p-toolbar-group-left">
-        <div *ngIf="!selectedTests?.length">
-          <!--        <p-button label="Alta Intensidad" icon="pi pi-exclamation-circle"-->
-          <!--                  styleClass="p-button-lg p-button-danger"></p-button>-->
-          <!--        <p-badge value="14" size="large" severity="danger"></p-badge>-->
-          <!--        <p-button label="Media Intensidad" icon="pi pi-exclamation-triangle"-->
-          <!--                  styleClass="p-button-lg p-button-warning ml-2"></p-button>-->
-          <!--        <p-badge value="25" size="large" severity="warning"></p-badge>-->
-
-          <!--        <p-button label="Baja Intensidad" icon="pi pi-thumbs-up"-->
-          <!--                  styleClass="p-button-lg p-button-info ml-2"></p-button>-->
-          <!--        <p-badge value="18" size="large" severity="info"></p-badge>-->
-
-          <!--        <p-button label="Sin Problemas" icon="pi pi-thumbs-up"-->
-          <!--                  styleClass="p-button-lg p-button-success ml-2"></p-button>-->
-          <!--        <p-badge value="10" size="large" severity="success"></p-badge>-->
-        </div>
         <button pButton pRipple type="button" label="Refrescar Página"
                 class="p-button-info mr-2" icon="pi pi-sync"
-                (click)="loadTests(paginator.current_page)"
+                (click)="loadTests(paginator.current_page);loadCountAllTests();loadCountAllPriorities();loadCountPriorities()"
                 [loading]="(loaded$|async)!"></button>
-        <button *ngIf="selectedTests?.length" pButton pRipple type="button" label="Eliminar seleccionados"
+        <button pButton pRipple type="button" label="Eliminar Tests"
                 class="p-button-danger mr-2" icon="pi pi-trash"
-                (click)="deleteTests()"></button>
-        <button *ngIf="selectedTests?.length" pButton pRipple type="button" label="Asignar Tests"
+                (click)="deleteTests()"
+                [disabled]="!selectedTests?.length"></button>
+        <button pButton pRipple type="button" label="Asignar Tests"
                 class="mr-2"
                 icon="pi pi-share-alt"
-                (click)="assignmentForms()"></button>
+                (click)="assignmentForms()"
+                [disabled]="!selectedTests?.length"></button>
+        <button pButton pRipple type="button" label="Descargar Excel"
+                class="p-button-success"
+                icon="pi pi-download"
+                (click)="assignmentForms()"
+                [disabled]="!(rangeDates?.length===2)"></button>
         <app-progress-bar *ngIf="progressBarDelete" [message]="messageService.progressBarDelete"
                           class="ml-2"></app-progress-bar>
       </div>
       <div class="p-toolbar-group-right">
-        <p-dropdown id="states" [options]="states" optionLabel="name" class="mr-2"></p-dropdown>
-        <p-calendar id="range"
-                    [(ngModel)]="rangeDates"
-                    class="mr-2"
-                    selectionMode="range"
-                    [readonlyInput]="true"
-                    [showIcon]="true"
-                    [showButtonBar]="true"
-                    inputId="range"></p-calendar>
+
         <div class="p-inputgroup">
           <input pInputText id="search" [formControl]="search" (keypress)="filter($event)">
           <button pButton pRipple type="button" icon="pi pi-search" (click)="filter($event)"
@@ -84,28 +148,44 @@
       </div>
     </p-toolbar>
   </p-card>
-  <p-divider></p-divider>
+  <br>
   <p-card>
     <p-paginator [rows]="paginator.per_page!"
                  [totalRecords]="paginator.total!"
                  (onPageChange)="paginate($event)"></p-paginator>
-    <p-table *appRolesPermissions="['permission:view-users']"
-             dataKey="id"
-             [value]="(tests$|async)?.data"
-             [columns]="cols"
-             styleClass="p-datatable-striped"
-             [lazy]="true"
-             [loading]="(loaded$|async)!"
-             [(selection)]="selectedTests"
-             [responsive]="true">
+    <p-table
+      dataKey="id"
+      styleClass="p-datatable-striped"
+      [value]="(tests$|async)?.data"
+      [columns]="cols"
+      [loading]="(loaded$|async)!"
+      [(selection)]="selectedTests"
+      [responsive]="true">
       <ng-template pTemplate="header" let-columns>
         <tr>
           <th style="width: 3rem">
             <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
           </th>
-          <th *ngFor="let col of columns" [pSortableColumn]="col.field">
-            {{col.header}}
-            <p-sortIcon [field]="col.field"></p-sortIcon>
+          <th pSortableColumn="code">Test
+            <p-sortIcon field="code"></p-sortIcon>
+          </th>
+          <th pSortableColumn="user.name">Usuario
+            <p-sortIcon field="user.name"></p-sortIcon>
+          </th>
+          <th pSortableColumn="province.name">Provincia
+            <p-sortIcon field="province.name"></p-sortIcon>
+          </th>
+          <th pSortableColumn="assignment.institution.name">Institución
+            <p-sortIcon field="assignment.institution.name"></p-sortIcon>
+          </th>
+          <th pSortableColumn="priority.name">Prioridad
+            <p-sortIcon field="priority.name"></p-sortIcon>
+          </th>
+          <th pSortableColumn="state.name">Estado
+            <p-sortIcon field="state.name"></p-sortIcon>
+          </th>
+          <th pSortableColumn="createdAt">Fecha
+            <p-sortIcon field="createdAt"></p-sortIcon>
           </th>
           <th style="text-align: center">
             <button pButton pRipple type="button" class="p-button-rounded p-button-info" icon="pi pi-cog"></button>
@@ -140,6 +220,9 @@
                 {{rowData[col.field].username}}
                 {{rowData[col.field].name}}
                 {{rowData[col.field].lastname}}
+              </span>
+              <span *ngSwitchCase="'province'">
+                {{rowData[col.field].name}}
               </span>
             </span>
             <span *ngIf="!rowData[col.field]?.id" [ngSwitch]="col.field">

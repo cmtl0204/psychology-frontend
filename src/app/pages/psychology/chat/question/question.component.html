@@ -1,10 +1,33 @@
+<!--Welcome-->
+<div class="formgrid grid">
+  <div *ngIf="questionSteps>0" class="field col-10 panel-question">
+    <p>
+      Hola nuevamente, soy tu amigo Jorgebot. Muchas gracias por participar. Te estaré realizando unas preguntas para
+      conocer juntos sobre tu estado de ánimo en las últimas dos semanas.
+    </p>
+  </div>
+  <div *ngIf="questionSteps>1" class="field col-10 panel-question">
+    <p>
+      No hay respuesta correcta o incorrecta, por ello te pido que respondas con toda sinceridad. Recuerda que la
+      información que me compartas será confidencial y
+      se guardará de forma segura para proteger tu privacidad e integridad.
+    </p>
+  </div>
+  <div *ngIf="questionSteps>2" class="field col-10 panel-question">
+    <p>
+      El llenado te tomará máximo 10 minutos.
+    </p>
+  </div>
+</div>
+
 <!--Results-->
 <div *ngIf="results?.length">
   <div *ngFor="let result of results">
     <div class="formgrid grid">
       <div class="field col-10 panel-question">
         <p>
-          {{result.question.order}}. [{{result.question.type}}] {{result.question.value}}
+          <!--          {{result.question.order}}. [{{result.question.type}}] {{result.question.value}}-->
+          {{result.question.value}}
         </p>
       </div>
     </div>
@@ -24,20 +47,21 @@
 <!--Current Message-->
 <form [formGroup]="formChat" (ngSubmit)="onSubmit()" class="p-fluid">
   <div *ngFor="let question of questions">
-    <div *ngIf="question.order===actualQuestion">
+    <div *ngIf="question.order===actualQuestion && questionSteps>3">
       <div class="formgrid grid">
         <div class="field col-10 panel-question">
-          <p>{{question.order}}. [{{question.type}}] {{question.value}}</p>
+          <!--          <p>{{question.order}}. [{{question.type}}] {{question.value}}</p>-->
+          <p>{{question.value}}</p>
         </div>
-        <app-skeleton *ngIf="progressBarAnswer" [type]="'point'"></app-skeleton>
       </div>
       <div class="formgrid grid">
         <div *ngFor="let answer of question.answers"
-             class="field col-7 col-offset-5">
-          <button *ngIf="!progressBarAnswer" pButton type="button" [label]="answer.value!"
+             class="field col-8 col-offset-4">
+          <button pButton type="button" [label]="answer.value!"
                   [class]="answer.class!"
                   [icon]="answer.icon!"
-                  (click)="reply(question,answer)"></button>
+                  (click)="reply(question,answer)"
+                  [loading]="progressBarAnswer"></button>
         </div>
       </div>
     </div>

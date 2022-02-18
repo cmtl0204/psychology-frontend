@@ -1,10 +1,8 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {Component, EventEmitter, OnInit, Output} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
-import {PrimeIcons} from 'primeng/api';
-import {AuthHttpService, CoreHttpService, MessageService} from '@services/core';
-import {LocationModel} from '@models/core';
-import {Subject, takeUntil} from 'rxjs';
+import {CoreHttpService, MessageService} from '@services/core';
 import {TestHttpService} from '@services/psychology/test-http.service';
+import {LocationModel} from '@models/core';
 
 @Component({
   selector: 'app-registration-agent',
@@ -12,18 +10,14 @@ import {TestHttpService} from '@services/psychology/test-http.service';
   styleUrls: ['./registration-agent.component.scss']
 })
 export class RegistrationAgentComponent implements OnInit {
-  formAgent: FormGroup;
-  primeIcons = PrimeIcons;
-  progressBarAnswer: boolean = false;
   @Output() progressBarAnswerOut = new EventEmitter<boolean>();
   @Output() stepsOut = new EventEmitter<number>();
   @Output() codeVerifiedOut = new EventEmitter<string>();
+  formAgent: FormGroup;
+  progressBarAnswer: boolean = false;
   steps: number = 1;
-  currentDate: Date = new Date();
-  ageValid: boolean = false;
-  adult: boolean = false;
-  public provinces: LocationModel[] = [];
-  public cantons: LocationModel[] = [];
+  provinces: LocationModel[] = [];
+  cantons: LocationModel[] = [];
   verifiedCode: string = '';
 
   constructor(private formBuilder: FormBuilder,

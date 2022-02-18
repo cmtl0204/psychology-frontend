@@ -27,6 +27,7 @@ import {RegistrationAgentComponent} from './chat/registration-agent/registration
 import {RegistrationPatientComponent} from './chat/registration-patient/registration-patient.component';
 import {TestModule} from './test/test.module';
 import {ListboxModule} from 'primeng/listbox';
+import {AutoCompleteModule} from 'primeng/autocomplete';
 
 @NgModule({
   declarations: [
@@ -60,6 +61,7 @@ import {ListboxModule} from 'primeng/listbox';
         KeyFilterModule,
         TestModule,
         ListboxModule,
+        AutoCompleteModule,
 
     ]
 })
