@@ -20,6 +20,7 @@ import {DividerModule} from 'primeng/divider';
 import {BadgeModule} from 'primeng/badge';
 import {CalendarModule} from 'primeng/calendar';
 import {MultiSelectModule} from 'primeng/multiselect';
+import {TooltipModule} from 'primeng/tooltip';
 
 
 
@@ -50,7 +51,8 @@ import {MultiSelectModule} from 'primeng/multiselect';
         DividerModule,
         BadgeModule,
         CalendarModule,
-        MultiSelectModule
+        MultiSelectModule,
+        TooltipModule
     ]
 })
 export class TestModule { }

@@ -41,6 +41,7 @@ export class TestListComponent implements OnInit {
       name: 'Sin Sroblemas'
     }];
   rangeDates: Date[] = [new Date(), new Date()];
+  currentDate: Date = new Date();
   state: FormControl = new FormControl(null);
   provinces: LocationModel[] = [];
   selectedProvinces: any[] = [];
@@ -153,6 +154,13 @@ export class TestListComponent implements OnInit {
     );
   }
 
+  loadAllMethods(page:number=1) {
+    this.loadTests(page);
+    this.loadCountPriorities();
+    this.loadCountAllTests();
+    this.loadCountAllPriorities();
+  }
+
   selectTest(test: TestModel) {
     this.selectedTest = test;
   }
@@ -180,6 +188,7 @@ export class TestListComponent implements OnInit {
           const ids = this.selectedTests.map(element => element.id);
           this.testHttpService.deleteTests(ids).subscribe(
             response => {
+              this.selectedTests = [];
               this.messageService.success(response);
             },
             error => {

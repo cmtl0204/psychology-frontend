@@ -145,7 +145,7 @@ export class TestHttpService {
   }
 
   deleteTests(ids: (number | undefined)[]): Observable<ServerResponse> {
-    const url = `${this.API_URL}/test/destroys`;
+    const url = `${this.API_URL}/tests/destroys`;
 
     this.loaded.next(true);
     return this.httpClient.patch<ServerResponse>(url, {ids})

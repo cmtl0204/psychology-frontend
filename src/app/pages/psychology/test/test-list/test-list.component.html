@@ -1,81 +1,12 @@
 <p-dialog header="Asignar Institución" [(visible)]="dialogForm" [maximizable]="true" [modal]="true">
   <app-assignment *ngIf="dialogForm" [tests]="selectedTests"
-                  (dialogForm)="dialogForm=$event;loadTests();loadCountPriorities();loadCountAllPriorities()"></app-assignment>
+                  (dialogForm)="dialogForm=$event;loadAllMethods(paginator.current_page);selectedTests=[]"></app-assignment>
 </p-dialog>
 
 <div class="container">
-
-  <div class="grid">
-    <div class="panel-toolbar-left field xl:col-8 lg:col-8 md:col-12 sm:col-12">
-      <div class="grid">
-        <div class="field xl:col-6 lg:col-6 md:col-12 sm:col-12 text-center">
-          <h2>Detalles de la Jornada</h2>
-          <p>
-            Del
-            <b>{{rangeDates[0]|date:'longDate'}}</b>
-            al
-            <b>{{rangeDates[1]|date:'longDate'}}</b>
-          </p>
-          <p>
-            Tamizajes Totales:
-          </p>
-          <button pButton type="button" [label]="countAllTests!"
-                  class="p-button-rounded"
-                  [loading]="(loaded$|async)!"></button>
-          <p>Sin Problemas:</p>
-          <button pButton type="button" [label]="(countPriorities[3]?.testsCount!)?.toString()!"
-                  class="p-button-rounded p-button-success"
-                  [loading]="(loaded$|async)!"></button>
-        </div>
-        <div class="field xl:col-6 lg:col-6 md:col-12 sm:col-12 text-center">
-          <h2>Acciones requeridas:</h2>
-          <p>Alta Intensidad:
-            <button pButton type="button" [label]="(countPriorities[0]?.testsCount!)?.toString()!"
-                    class="p-button-rounded p-button-danger"
-                    [loading]="(loaded$|async)!"></button>
-          </p>
-
-          <p>Media Intensidad:
-            <button pButton type="button" [label]="(countPriorities[1]?.testsCount!)?.toString()!"
-                    class="p-button-rounded p-button-warning"
-                    [loading]="(loaded$|async)!"></button>
-          </p>
-          <p>Baja Intensidad:
-            <button pButton type="button" [label]="(countPriorities[2]?.testsCount!)?.toString()!"
-                    class="p-button-rounded p-button-info"
-                    [loading]="(loaded$|async)!"></button>
-          </p>
-        </div>
-      </div>
-    </div>
-    <div class="panel-toolbar-right field xl:col-4 lg:col-4 md:col-12 sm:col-12">
-      <div class="grid">
-        <div class="field xl:col-12 lg:col-12 md:col-12 sm:col-12 text-center">
-          <h2>Acciones requeridas totales</h2>
-          <p>Alta Intensidad:
-            <button pButton type="button" [label]="(countAllPriorities[0]?.testsCount!)?.toString()!"
-                    class="p-button-rounded p-button-danger"
-                    [loading]="(loaded$|async)!"></button>
-          </p>
-          <p>Media Intensidad:
-            <button pButton type="button" [label]="(countAllPriorities[1]?.testsCount!)?.toString()!"
-                    class="p-button-rounded p-button-warning"
-                    [loading]="(loaded$|async)!"></button>
-          </p>
-          <p>Baja Intensidad:
-            <button pButton type="button" [label]="(countAllPriorities[2]?.testsCount!)?.toString()!"
-                    class="p-button-rounded p-button-info"
-                    [loading]="(loaded$|async)!"></button>
-          </p>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <br>
   <p-card>
     <div class="grid">
-      <div class="field xl:col-2 lg:col-2 md:col-12 sm:col-12">
+      <div class="field xl:col-2 lg:col-2 md:col-12 sm:col-12  text-right">
         <p-calendar id="range"
                     [(ngModel)]="rangeDates"
                     selectionMode="range"
@@ -83,43 +14,116 @@
                     [showIcon]="true"
                     inputId="range"
                     dateFormat="yy-mm-dd"
-                    (onSelect)="loadCountPriorities();loadCountAllTests();loadTests()"></p-calendar>
+                    (onSelect)="loadAllMethods()"></p-calendar>
       </div>
-      <div class="field xl:col-2 lg:col-2 md:col-12 sm:col-12">
-        <p-multiSelect [options]="priorities"
-                       [(ngModel)]="selectedPriorities"
-                       display="chip"
-                       optionLabel="name"
-                       [selectionLimit]="1"
-                       placeholder="Todas las prioridades"
-                       (onChange)="loadTests()"></p-multiSelect>
-      </div>
-      <div class="field xl:col-2 lg:col-2 md:col-12 sm:col-12">
-        <p-multiSelect [options]="states"
-                       [(ngModel)]="selectedStates"
-                       display="chip"
-                       optionLabel="name"
-                       [selectionLimit]="1"
-                       placeholder="Todos los estados"
-                       (onChange)="loadTests()"></p-multiSelect>
-      </div>
-      <div class="field xl:col-6 lg:col-6 md:col-12 sm:col-12">
+      <div class="field xl:col-10 lg:col-10 md:col-12 sm:col-12">
         <p-multiSelect [options]="provinces"
                        [(ngModel)]="selectedProvinces"
                        display="chip"
                        optionLabel="name"
                        placeholder="Todas las provincias"
-                       (onChange)="loadCountAllPriorities();loadCountPriorities();loadCountAllTests();loadTests()"></p-multiSelect>
+                       (onChange)="loadAllMethods()"></p-multiSelect>
       </div>
     </div>
   </p-card>
+  <br>
+  <div class="grid">
+    <div class="panel-toolbar-left field xl:col-4 lg:col-4 md:col-12 sm:col-12 text-center">
+      <h2>Detalles de la Jornada</h2>
+      <p>
+        Del
+        <b>{{rangeDates[0]|date:'longDate'}}</b>
+        al
+        <b>{{rangeDates[1]|date:'longDate'}}</b>
+      </p>
+      <div class="grid">
+        <div class="field xl:col-6 lg:col-6 md:col-12 sm:col-12">
+          <p>
+            Tamizajes Totales:
+          </p>
+          <button pButton type="button" [label]="countAllTests!"
+                  class="p-button-rounded"
+                  [loading]="(loaded$|async)!"></button>
+        </div>
+        <div class="field xl:col-6 lg:col-6 md:col-12 sm:col-12">
+          <p>Sin Problemas:</p>
+          <button pButton type="button" icon="pi pi-check" [label]="(countPriorities[3]?.testsCount!)?.toString()!"
+                  class="p-button-rounded p-button-success"
+                  [loading]="(loaded$|async)!"></button>
+        </div>
+      </div>
+    </div>
+    <div class="panel-toolbar-center field xl:col-4 lg:col-4 md:col-12 sm:col-12 text-center">
+      <h2>Acciones requeridas:</h2>
+      <p>
+        Del
+        <b>{{rangeDates[0]|date:'longDate'}}</b>
+        al
+        <b>{{rangeDates[1]|date:'longDate'}}</b>
+      </p>
+      <div class="grid">
+        <div class="field xl:col-4 lg:col-4 md:col-12 sm:col-12">
+          <p>Alta Intensidad:</p>
+          <button pButton type="button" icon="pi pi-arrow-up" [label]="(countPriorities[0]?.testsCount!)?.toString()!"
+                  class="p-button-rounded p-button-danger"
+                  [loading]="(loaded$|async)!"></button>
+        </div>
+        <div class="field xl:col-4 lg:col-4 md:col-12 sm:col-12">
+          <p>Media Intensidad:</p>
+          <button pButton type="button" icon="pi pi-arrows-h" [label]="(countPriorities[1]?.testsCount!)?.toString()!"
+                  class="p-button-rounded p-button-warning"
+                  [loading]="(loaded$|async)!"></button>
+        </div>
+        <div class="field xl:col-4 lg:col-4 md:col-12 sm:col-12">
+          <p>Baja Intensidad:</p>
+          <button pButton type="button" icon="pi pi-arrow-down" [label]="(countPriorities[2]?.testsCount!)?.toString()!"
+                  class="p-button-rounded p-button-info"
+                  [loading]="(loaded$|async)!"></button>
+        </div>
+      </div>
+    </div>
+    <div class="panel-toolbar-right field xl:col-4 lg:col-4 md:col-12 sm:col-12 text-center">
+      <div class="grid">
+        <div class="field xl:col-12 lg:col-12 md:col-12 sm:col-12">
+          <h2>Acciones requeridas totales</h2>
+          <p>
+            Registros al
+            <b>{{currentDate|date:'longDate'}}</b>
+          </p>
+          <div class="grid">
+            <div class="field xl:col-4 lg:col-4 md:col-12 sm:col-12 text-center">
+              <p>Alta Intensidad:</p>
+              <button pButton type="button" icon="pi pi-arrow-up"
+                      [label]="(countAllPriorities[0]?.testsCount!)?.toString()!"
+                      class="p-button-rounded p-button-danger"
+                      [loading]="(loaded$|async)!"></button>
+            </div>
+            <div class="field xl:col-4 lg:col-4 md:col-12 sm:col-12 text-center">
+              <p>Media Intensidad:</p>
+              <button pButton type="button" icon="pi pi-arrows-h"
+                      [label]="(countAllPriorities[1]?.testsCount!)?.toString()!"
+                      class="p-button-rounded p-button-warning"
+                      [loading]="(loaded$|async)!"></button>
+            </div>
+            <div class="field xl:col-4 lg:col-4 md:col-12 sm:col-12 text-center">
+              <p>Baja Intensidad:</p>
+              <button pButton type="button" icon="pi pi-arrow-down"
+                      [label]="(countAllPriorities[2]?.testsCount!)?.toString()!"
+                      class="p-button-rounded p-button-info"
+                      [loading]="(loaded$|async)!"></button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
   <br>
   <p-card>
     <p-toolbar>
       <div class="p-toolbar-group-left">
         <button pButton pRipple type="button" label="Refrescar Página"
                 class="p-button-info mr-2" icon="pi pi-sync"
-                (click)="loadTests(paginator.current_page);loadCountAllTests();loadCountAllPriorities();loadCountPriorities()"
+                (click)="loadAllMethods()"
                 [loading]="(loaded$|async)!"></button>
         <button pButton pRipple type="button" label="Eliminar Tests"
                 class="p-button-danger mr-2" icon="pi pi-trash"
@@ -139,7 +143,22 @@
                           class="ml-2"></app-progress-bar>
       </div>
       <div class="p-toolbar-group-right">
-
+        <p-multiSelect [options]="priorities"
+                       [(ngModel)]="selectedPriorities"
+                       class="mr-2"
+                       display="chip"
+                       optionLabel="name"
+                       [selectionLimit]="1"
+                       placeholder="Todas las prioridades"
+                       (onChange)="loadTests()"></p-multiSelect>
+        <p-multiSelect [options]="states"
+                       [(ngModel)]="selectedStates"
+                       display="chip"
+                       class="mr-2"
+                       optionLabel="name"
+                       [selectionLimit]="1"
+                       placeholder="Todos los estados"
+                       (onChange)="loadTests()"></p-multiSelect>
         <div class="p-inputgroup">
           <input pInputText id="search" [formControl]="search" (keypress)="filter($event)">
           <button pButton pRipple type="button" icon="pi pi-search" (click)="filter($event)"
@@ -195,16 +214,32 @@
       <ng-template pTemplate="body" let-rowData let-columns="columns" let-rowIndex="rowIndex">
         <tr [pSelectableRow]="rowData" [pSelectableRowIndex]="rowIndex">
           <td>
-            <p-tableCheckbox [value]="rowData"></p-tableCheckbox>
+            <p-tableCheckbox *ngIf="rowData['state']?.code==='NOT_ASSIGNED'" [value]="rowData"></p-tableCheckbox>
           </td>
           <td *ngFor="let col of columns">
             <span *ngIf="rowData[col.field]?.id" [ngSwitch]="col.field">
+              <span *ngSwitchCase="'user'">
+                {{rowData[col.field].username}}
+                {{rowData[col.field].name}}
+                {{rowData[col.field].lastname}}
+              </span>
+              <span *ngSwitchCase="'province'">
+                {{rowData[col.field].name}}
+              </span>
                <span *ngSwitchCase="'assignment'">
                 {{rowData[col.field].institution.shortName}}
               </span>
-              <span *ngSwitchCase="'priority'">
+               <span *ngSwitchCase="'priority'">
                 <button pButton type="button"
-                        [label]="rowData[col.field].name"
+                        class="p-button-rounded"
+                        [pTooltip]="
+                        rowData[col.field].level===1?'Alta Intensidad':
+                        rowData[col.field].level===2?'Media Intensidad':
+                        rowData[col.field].level===3?'Baja Intensidad':'Sin Problemas'"
+                        [icon]="
+                        rowData[col.field].level===1?'pi pi-arrow-up':
+                        rowData[col.field].level===2?'pi pi-arrows-h':
+                        rowData[col.field].level===3?'pi pi-arrow-down':'pi pi-check'"
                         [ngClass]="{
                         'p-button-danger':rowData[col.field].level===1,
                         'p-button-warning':rowData[col.field].level===2,
@@ -214,14 +249,6 @@
                 ></button>
               </span>
               <span *ngSwitchCase="'state'">
-                {{rowData[col.field].name}}
-              </span>
-              <span *ngSwitchCase="'user'">
-                {{rowData[col.field].username}}
-                {{rowData[col.field].name}}
-                {{rowData[col.field].lastname}}
-              </span>
-              <span *ngSwitchCase="'province'">
                 {{rowData[col.field].name}}
               </span>
             </span>
