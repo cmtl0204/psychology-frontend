@@ -31,6 +31,9 @@ export class RegistrationComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.testHttpService.removeAge();
+    this.testHttpService.removeAgent();
+    this.testHttpService.removePatient();
     this.loadLocations();
     this.loadCantons();
   }

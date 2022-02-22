@@ -3,8 +3,9 @@ import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {PrimeIcons} from 'primeng/api';
 import {MessageService} from '@services/core';
 import {TestHttpService} from '@services/psychology/test-http.service';
-import {AnswerModel, PatientModel, QuestionModel, TestModel} from '@models/psychology';
+import {AnswerModel, PatientModel, QuestionModel} from '@models/psychology';
 import {QuestionHttpService} from '@services/psychology/question-http.service';
+import {ChatModel} from '@models/psychology/chat.model';
 
 @Component({
   selector: 'app-question',
@@ -31,7 +32,7 @@ export class QuestionComponent implements OnInit, OnDestroy {
   time: any;
   patient: PatientModel = {};
   agent: PatientModel = {};
-  test: TestModel = {};
+  chat: ChatModel = {};
   age: number = 0;
   testType: string = '';
   questionSteps: number = 0;
@@ -139,14 +140,13 @@ export class QuestionComponent implements OnInit, OnDestroy {
   }
 
   saveTest() {
-    this.test.patient = this.patient;
-    this.test.agent = this.agent;
-    this.test.results = this.results;
-    this.test.type = this.testType;
+    this.chat.patient = this.patient;
+    this.chat.agent = this.agent;
+    this.chat.results = this.results;
+    this.chat.type = this.testType;
     this.progressBarAnswerOut.emit(true);
-    this.testHttpService.storeTest(this.test).subscribe(
+    this.testHttpService.storeChat(this.chat).subscribe(
       response => {
-
         this.progressBarAnswerOut.emit(false);
       }, error => {
         this.messageService.error(error);

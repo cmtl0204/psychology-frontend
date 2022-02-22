@@ -83,6 +83,18 @@ export class MessageService {
     this.messageService.add({severity: 'error', summary: 'No se puede eliminar', detail: 'El campo es requerido'});
   }
 
+  questionCloseTest({title = '¿Está seguro de cerrar el caso?', text = ''}) {
+    return Swal.fire({
+      title,
+      text,
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#d33',
+      cancelButtonColor: '#3085d6',
+      confirmButtonText: '<i class="pi pi-lock"> Si, cerrar</i>'
+    });
+  }
+
   questionDelete({title = '¿Está seguro de eliminar?', text = 'No podrá recuperar esta información!'}) {
     return Swal.fire({
       title,

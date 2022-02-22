@@ -2,8 +2,8 @@
   <app-assignment *ngIf="dialogForm" [tests]="selectedTests"
                   (dialogForm)="dialogForm=$event;loadAllMethods(paginator.current_page);selectedTests=[]"></app-assignment>
 </p-dialog>
-
 <div class="container">
+  <!--Dates && Provinces-->
   <p-card>
     <div class="grid">
       <div class="field xl:col-2 lg:col-2 md:col-12 sm:col-12  text-right">
@@ -27,6 +27,7 @@
     </div>
   </p-card>
   <br>
+  <!---->
   <div class="grid">
     <div class="panel-toolbar-left field xl:col-4 lg:col-4 md:col-12 sm:col-12 text-center">
       <h2>Detalles de la Jornada</h2>
@@ -36,6 +37,7 @@
         al
         <b>{{rangeDates[1]|date:'longDate'}}</b>
       </p>
+      <p-tag *ngFor="let province of selectedProvinces" [value]="province.name" class="mr-2"></p-tag>
       <div class="grid">
         <div class="field xl:col-6 lg:col-6 md:col-12 sm:col-12">
           <p>
@@ -61,6 +63,7 @@
         al
         <b>{{rangeDates[1]|date:'longDate'}}</b>
       </p>
+      <p-tag *ngFor="let province of selectedProvinces" [value]="province.name" class="mr-2"></p-tag>
       <div class="grid">
         <div class="field xl:col-4 lg:col-4 md:col-12 sm:col-12">
           <p>Alta Intensidad:</p>
@@ -90,6 +93,7 @@
             Registros al
             <b>{{currentDate|date:'longDate'}}</b>
           </p>
+          <p-tag *ngFor="let province of selectedProvinces" [value]="province.name" class="mr-2"></p-tag>
           <div class="grid">
             <div class="field xl:col-4 lg:col-4 md:col-12 sm:col-12 text-center">
               <p>Alta Intensidad:</p>
@@ -117,7 +121,7 @@
       </div>
     </div>
   </div>
-  <br>
+  <!--ToolBar-->
   <p-card>
     <p-toolbar>
       <div class="p-toolbar-group-left">
@@ -148,7 +152,7 @@
                        class="mr-2"
                        display="chip"
                        optionLabel="name"
-                       [selectionLimit]="1"
+                       [selectionLimit]="4"
                        placeholder="Todas las prioridades"
                        (onChange)="loadTests()"></p-multiSelect>
         <p-multiSelect [options]="states"
@@ -156,7 +160,7 @@
                        display="chip"
                        class="mr-2"
                        optionLabel="name"
-                       [selectionLimit]="1"
+                       [selectionLimit]="3"
                        placeholder="Todos los estados"
                        (onChange)="loadTests()"></p-multiSelect>
         <div class="p-inputgroup">
@@ -168,6 +172,7 @@
     </p-toolbar>
   </p-card>
   <br>
+  <!--Table-->
   <p-card>
     <p-paginator [rows]="paginator.per_page!"
                  [totalRecords]="paginator.total!"
@@ -177,10 +182,11 @@
       styleClass="p-datatable-striped"
       [value]="(tests$|async)?.data"
       [columns]="cols"
+      [lazy]="true"
       [loading]="(loaded$|async)!"
       [(selection)]="selectedTests"
       [responsive]="true">
-      <ng-template pTemplate="header" let-columns>
+      <ng-template pTemplate="header">
         <tr>
           <th style="width: 3rem">
             <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
@@ -260,8 +266,8 @@
             </span>
           </td>
           <td style="text-align: center">
-            <p-splitButton label="Más" styleClass="" icon="pi pi-bars"
-                           (onClick)="assignmentForm()"
+            <p-splitButton icon="pi pi-ellipsis-v"
+                           (onClick)="selectTest(rowData)"
                            (onDropdownClick)="selectTest(rowData)"
                            [model]="items"></p-splitButton>
           </td>

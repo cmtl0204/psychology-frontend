@@ -21,6 +21,8 @@ import {BadgeModule} from 'primeng/badge';
 import {CalendarModule} from 'primeng/calendar';
 import {MultiSelectModule} from 'primeng/multiselect';
 import {TooltipModule} from 'primeng/tooltip';
+import {TagModule} from 'primeng/tag';
+import { ResultComponent } from './result/result.component';
 
 
 
@@ -28,7 +30,8 @@ import {TooltipModule} from 'primeng/tooltip';
   declarations: [
     TestComponent,
     TestListComponent,
-    AssignmentComponent
+    AssignmentComponent,
+    ResultComponent
   ],
   exports: [
 
@@ -52,7 +55,8 @@ import {TooltipModule} from 'primeng/tooltip';
         BadgeModule,
         CalendarModule,
         MultiSelectModule,
-        TooltipModule
+        TooltipModule,
+        TagModule
     ]
 })
 export class TestModule { }

@@ -20,20 +20,8 @@ const routes: Routes = [
         canActivate: [TokenGuard, RoleGuard]
       },
       {
-        path: 'chat',
-        loadChildren: () => import('./pages/psychology/psychology.module').then(m => m.PsychologyModule),
-        data: {
-          roles: [RolesEnum.ADMIN]
-        },
-        // canActivate: [TokenGuard, RoleGuard]
-      },
-      {
         path: 'test',
-        loadChildren: () => import('./pages/psychology/psychology.module').then(m => m.PsychologyModule),
-        data: {
-          roles: [RolesEnum.ADMIN]
-        },
-        // canActivate: [TokenGuard, RoleGuard]
+        loadChildren: () => import('./pages/psychology/psychology.module').then(m => m.PsychologyModule)
       }
     ]
   },

@@ -1,13 +1,21 @@
 import {NgModule} from '@angular/core';
 import {RouterModule, Routes} from '@angular/router';
-import {ChatComponent} from './chat/chat.component';
 import {TestModule} from './test/test.module';
+import {ChatModule} from './chat/chat.module';
+import {RolesEnum} from '@shared/enums/roles.enum';
 
 const routes: Routes = [
-  {path: '', component: ChatComponent},
+  {
+    path: 'chat',
+    loadChildren: () => import('./chat/chat.module').then(m => ChatModule)
+  },
   {
     path: 'dashboard',
-    loadChildren: () => import('./test/test.module').then(m => TestModule)
+    loadChildren: () => import('./test/test.module').then(m => TestModule),
+    data: {
+      roles: [RolesEnum.ADMIN]
+    },
+    // canActivate: [TokenGuard, RoleGuard]
   },
 ];
 

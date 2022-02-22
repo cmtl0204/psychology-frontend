@@ -7,6 +7,7 @@ import {ServerResponse} from '@models/core/server.response';
 import {Handler} from '../../exceptions/handler';
 import {PaginatorModel} from '@models/core';
 import {AgentModel, AssignmentModel, PatientModel, TestModel} from '@models/psychology';
+import {ChatModel} from '@models/psychology/chat.model';
 
 @Injectable({
   providedIn: 'root'
@@ -86,11 +87,11 @@ export class TestHttpService {
       );
   }
 
-  storeTest(test: TestModel): Observable<ServerResponse> {
-    const url = `${this.API_URL}/tests`;
+  storeChat(chat: ChatModel): Observable<ServerResponse> {
+    const url = `${this.API_URL}/tests/chat`;
 
     this.loaded.next(true);
-    return this.httpClient.post<ServerResponse>(url, test)
+    return this.httpClient.post<ServerResponse>(url, chat)
       .pipe(
         map(response => response),
         tap(response => {
@@ -180,6 +181,25 @@ export class TestHttpService {
       );
   }
 
+  closeTest(id: number): Observable<ServerResponse> {
+    const url = `${this.API_URL}/tests/${id}/close`;
+
+    this.loaded.next(true);
+    return this.httpClient.patch<ServerResponse>(url, null)
+      .pipe(
+        map(response => response),
+        tap(response => {
+          this.loaded.next(false);
+          const index = this.testsList.data.findIndex((test: TestModel) => test.id === response.data.id);
+          this.testsList.data[index] = response.data;
+          this.tests.next(this.testsList);
+        }, error => {
+          this.loaded.next(false);
+        }),
+        catchError(Handler.render)
+      );
+  }
+
   requestTransactionalCode(agent: AgentModel): Observable<ServerResponse> {
     const url = `${this.API_URL}/tests/generate-transactional-code`;
     return this.httpClient.post<ServerResponse>(url, agent)
@@ -204,12 +224,12 @@ export class TestHttpService {
       .append('provinces', provinceIds.toString())
       .append('startedAt', startedAt)
       .append('endedAt', endedAt);
-    this.loaded.next(true);
+    // this.loaded.next(true);
     return this.httpClient.get<ServerResponse>(url, {params})
       .pipe(
         map(response => response),
         tap(() => {
-          this.loaded.next(false);
+          // this.loaded.next(false);
         }),
         catchError(Handler.render)
       );
@@ -220,14 +240,14 @@ export class TestHttpService {
     const params = new HttpParams()
       .append('provinces', provinceIds.toString());
 
-    this.loaded.next(true);
+    // this.loaded.next(true);
     return this.httpClient.get<ServerResponse>(url, {params})
       .pipe(
         map(response => response),
         tap(() => {
-          this.loaded.next(false);
+          // this.loaded.next(false);
         }, error => {
-          this.loaded.next(false);
+          // this.loaded.next(false);
         }),
         catchError(Handler.render)
       );
@@ -239,12 +259,12 @@ export class TestHttpService {
       .append('provinces', provinceIds.toString())
       .append('startedAt', startedAt)
       .append('endedAt', endedAt);
-    this.loaded.next(true);
+    // this.loaded.next(true);
     return this.httpClient.get<ServerResponse>(url, {params})
       .pipe(
         map(response => response),
         tap(() => {
-          this.loaded.next(false);
+          // this.loaded.next(false);
         }),
         catchError(Handler.render)
       );
@@ -282,15 +302,15 @@ export class TestHttpService {
     return JSON.parse(String(localStorage.getItem('age')));
   }
 
-  private removePatient() {
+  public removePatient() {
     localStorage.removeItem('patient');
   }
 
-  private removeAgent() {
+  public removeAgent() {
     localStorage.removeItem('agent');
   }
 
-  private removeAge() {
+  public removeAge() {
     localStorage.removeItem('age');
   }
 

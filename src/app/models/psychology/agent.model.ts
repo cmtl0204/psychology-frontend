@@ -1,6 +1,8 @@
 export interface AgentModel {
-  name?: string;
+  id?: number;
+  identification?: string;
   lastname?: string;
+  name?: string;
   phone?: string;
   email?: string;
 }

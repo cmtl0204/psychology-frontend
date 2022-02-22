@@ -6,6 +6,7 @@ import {isDate, isBefore, isAfter, format} from 'date-fns';
 import {PriorityModel, TestModel} from '@models/psychology';
 import {CoreHttpService, MessageService} from '@services/core';
 import {TestHttpService} from '@services/psychology/test-http.service';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-test-list',
@@ -50,7 +51,8 @@ export class TestListComponent implements OnInit {
 
   constructor(private testHttpService: TestHttpService,
               private coreHttpService: CoreHttpService,
-              public messageService: MessageService) {
+              public messageService: MessageService,
+              private router: Router) {
     this.cols = [
       {field: 'code', header: 'Test'},
       {field: 'user', header: 'Usuario'},
@@ -63,12 +65,17 @@ export class TestListComponent implements OnInit {
     this.items = [
       {
         label: 'Ver Informe', icon: 'pi pi-eye', command: () => {
-          this.assignmentForm();
+          this.router.navigate(['/test/result', this.selectedTest.id]);
         }
       },
       {
         label: 'Asignar', icon: 'pi pi-share-alt', command: () => {
           this.assignmentForm();
+        }
+      },
+      {
+        label: 'Cerrar Caso', icon: 'pi pi-lock', command: () => {
+          this.closeTest();
         }
       },
       {
@@ -154,7 +161,7 @@ export class TestListComponent implements OnInit {
     );
   }
 
-  loadAllMethods(page:number=1) {
+  loadAllMethods(page: number = 1) {
     this.loadTests(page);
     this.loadCountPriorities();
     this.loadCountAllTests();
@@ -163,6 +170,7 @@ export class TestListComponent implements OnInit {
 
   selectTest(test: TestModel) {
     this.selectedTest = test;
+    this.testHttpService.selectTest(test);
   }
 
   deleteTest(test: TestModel): void {
@@ -219,5 +227,21 @@ export class TestListComponent implements OnInit {
     this.selectedTests = [this.selectedTest];
 
     this.dialogForm = true;
+  }
+
+  closeTest(){
+    this.messageService.questionCloseTest({})
+      .then((result) => {
+        if (result.isConfirmed) {
+          this.testHttpService.closeTest(this.selectedTest.id!).subscribe(
+            response => {
+              this.messageService.success(response);
+            },
+            error => {
+              this.messageService.error(error);
+            }
+          );
+        }
+      });
   }
 }

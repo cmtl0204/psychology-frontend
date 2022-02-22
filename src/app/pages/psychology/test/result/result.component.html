@@ -1,0 +1,157 @@
+<div class="grid">
+  <div class="panel-toolbar-left field xl:col-4 lg:col-4 md:col-12 sm:col-12 text-center">
+    <h1 class="text-center">Participante</h1>
+    <div class="grid">
+      <div class="field xl:col-3 lg:col-3 md:col-12 sm:col-12">
+        <h3>Cédula</h3>
+        <p>{{test.user?.username}}</p>
+      </div>
+      <div class="field xl:col-7 lg:col-7 md:col-12 sm:col-12">
+        <h3>Nombres</h3>
+        <p>{{test.user?.name}} {{test.user?.lastname}}</p>
+      </div>
+      <div class="field xl:col-2 lg:col-2 md:col-12 sm:col-12">
+        <h3>Edad</h3>
+        <p>{{test.age}}</p>
+      </div>
+    </div>
+    <div class="grid">
+      <div class="field xl:col-6 lg:col-6 md:col-12 sm:col-12">
+        <h3 *ngIf="!test.agent">Correo electrónico</h3>
+        <p *ngIf="!test.agent">{{test.user?.email}}</p>
+      </div>
+      <div class="field xl:col-6 lg:col-6 md:col-12 sm:col-12">
+        <h3 *ngIf="!test.agent">Teléfono</h3>
+        <p *ngIf="!test.agent">{{test.user?.phone}}</p>
+      </div>
+    </div>
+    <div class="grid">
+      <div class="field xl:col-6 lg:col-6 md:col-12 sm:col-12">
+        <h3>Provincia</h3>
+        <p>{{test.province?.name}}</p>
+      </div>
+      <div class="field xl:col-6 lg:col-6 md:col-12 sm:col-12">
+        <h3>Cantón</h3>
+        <p>{{test.canton?.name}}</p>
+      </div>
+    </div>
+  </div>
+  <div class="panel-toolbar-center field xl:col-4 lg:col-4 md:col-12 sm:col-12 text-center">
+    <h1>Resultados:</h1>
+    <div class="grid">
+      <div class="field xl:col-6 lg:col-6 md:col-12 sm:col-12 text-center">
+        <h3>Test:</h3>
+        <p>{{test.code}}</p>
+      </div>
+      <div class="field xl:col-6 lg:col-6 md:col-12 sm:col-12 text-center">
+        <h3>Puntaje Total</h3>
+        <button pButton pRipple type="button" [label]="test.score?.toString()!"></button>
+      </div>
+    </div>
+    <div class="grid">
+      <div class="field xl:col-6 lg:col-6 md:col-12 sm:col-12 text-center">
+        <h3>Prioridad</h3>
+        <button *ngIf="test.priority?.level===1" pButton pRipple type="button"
+                [label]="test.priority?.name!"
+                class="p-button-danger"
+                icon="pi pi-arrow-up"></button>
+        <button *ngIf="test.priority?.level===2" pButton pRipple type="button"
+                [label]="test.priority?.name!"
+                class="p-button-warning"
+                icon="pi pi-arrows-h"></button>
+        <button *ngIf="test.priority?.level===3" pButton pRipple type="button"
+                [label]="test.priority?.name!"
+                class="p-button-info"
+                icon="pi pi-arrow-down"></button>
+        <button *ngIf="test.priority?.level===4" pButton pRipple type="button"
+                [label]="test.priority?.name!"
+                class="p-button-success"
+                icon="pi pi-check"></button>
+      </div>
+      <div class="field xl:col-6 lg:col-6 md:col-12 sm:col-12 text-center">
+        <h3>Estado</h3>
+        <p>{{test.state?.name}}</p>
+      </div>
+    </div>
+  </div>
+  <div class="panel-toolbar-right field xl:col-4 lg:col-4 md:col-12 sm:col-12 text-center">
+    <h1>Representante Legal</h1>
+    <div *ngIf="test.agent">
+      <div class="grid">
+        <div class="field xl:col-6 lg:col-6 md:col-12 sm:col-12 text-center">
+          <h3>Cédula</h3>
+          <p>{{test.agent?.identification}}</p>
+        </div>
+        <div class="field xl:col-6 lg:col-6 md:col-12 sm:col-12 text-center">
+          <h3>Nombres</h3>
+          <p>{{test.agent?.name}} {{test.agent?.lastname}}</p>
+        </div>
+      </div>
+      <div class="grid">
+        <div class="field xl:col-6 lg:col-6 md:col-12 sm:col-12 text-center">
+          <h3>Correo electrónico</h3>
+          <p>{{test.agent?.email}}</p>
+        </div>
+        <div class="field xl:col-6 lg:col-6 md:col-12 sm:col-12 text-center">
+          <h3>Teléfono</h3>
+          <p>{{test.agent?.phone}}</p>
+        </div>
+      </div>
+    </div>
+    <div *ngIf="!test.agent">
+      <h3>No tiene representante legal</h3>
+    </div>
+  </div>
+</div>
+<!--ToolBar-->
+<p-card>
+  <p-toolbar>
+    <div class="p-toolbar-group-left">
+      <h2 *ngIf="test.assignment">{{test.assignment?.institution?.name}}</h2>
+      <h2 *ngIf="!test.assignment">No tiene una Institución asignada</h2>
+    </div>
+    <div class="p-toolbar-group-right">
+      <button pButton pRipple type="button" label="Descargar Informe"
+              icon="pi pi-download"></button>
+    </div>
+  </p-toolbar>
+</p-card>
+<p-card>
+  <p-table
+    dataKey="id"
+    styleClass="p-datatable-striped"
+    [value]="test.results!"
+    [columns]="cols"
+    [loading]="(loaded$|async)!"
+    [responsive]="true">
+    <ng-template pTemplate="header">
+      <tr>
+        <th pSortableColumn="question.type">Tipo de Pregunta
+          <p-sortIcon field="question.type"></p-sortIcon>
+        </th>
+        <th pSortableColumn="question.value">Pregunta
+          <p-sortIcon field="question.value"></p-sortIcon>
+        </th>
+        <th pSortableColumn="answer.value">Respuesta
+          <p-sortIcon field="answer.value"></p-sortIcon>
+        </th>
+        <th pSortableColumn="answer.score">Puntaje
+          <p-sortIcon field="answer.score"></p-sortIcon>
+        </th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-rowData>
+      <tr>
+        <td
+          [ngClass]="{'text-pink-500':rowData['answer'].score>0 && rowData['question'].type=='phq9a' &&
+          rowData['question'].order==9}">{{rowData['question'].type}}</td>
+        <td [ngClass]="{'text-pink-500':rowData['answer'].score>0 && rowData['question'].type=='phq9a' &&
+          rowData['question'].order==9}">{{rowData['question'].value}}</td>
+        <td [ngClass]="{'text-pink-500':rowData['answer'].score>0 && rowData['question'].type=='phq9a' &&
+          rowData['question'].order==9}">{{rowData['answer'].value}}</td>
+        <td [ngClass]="{'text-pink-500':rowData['answer'].score>0 && rowData['question'].type=='phq9a' &&
+          rowData['question'].order==9}">{{rowData['answer'].score}}</td>
+      </tr>
+    </ng-template>
+  </p-table>
+</p-card>

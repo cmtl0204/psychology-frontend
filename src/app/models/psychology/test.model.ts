@@ -1,10 +1,19 @@
-import {PatientModel} from '@models/psychology/patient.model';
-import {ResultModel} from '@models/psychology/result.model';
+import {LocationModel, StateModel, UserModel} from '@models/core';
+import {AgentModel, AssignmentModel, PriorityModel, ResultModel} from '@models/psychology';
 
 export interface TestModel {
   id?: number;
-  patient?: PatientModel;
-  agent?: PatientModel;
+  agent?: AgentModel;
+  assignment?: AssignmentModel;
+  canton?: LocationModel;
+  priority?: PriorityModel;
+  province?: LocationModel;
   results?: ResultModel[];
+  state?: StateModel;
+  user?: UserModel;
+  age?: number;
+  code?: string;
+  score?: number;
+  termsConditions?: boolean;
   type?: string;
 }
