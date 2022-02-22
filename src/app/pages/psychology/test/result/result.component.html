@@ -1,3 +1,7 @@
+<p-dialog header="Asignar Institución" [(visible)]="dialogForm" [maximizable]="true" [modal]="true">
+  <app-assignment *ngIf="dialogForm" [tests]="selectedTests"
+                  (dialogForm)="dialogForm=$event;loadTest()"></app-assignment>
+</p-dialog>
 <div class="grid">
   <div class="panel-toolbar-left field xl:col-4 lg:col-4 md:col-12 sm:col-12 text-center">
     <h1 class="text-center">Participante</h1>
@@ -45,7 +49,22 @@
       </div>
       <div class="field xl:col-6 lg:col-6 md:col-12 sm:col-12 text-center">
         <h3>Puntaje Total</h3>
-        <button pButton pRipple type="button" [label]="test.score?.toString()!"></button>
+        <button *ngIf="test.priority?.level===1" pButton pRipple type="button"
+                [label]="test.score?.toString()!"
+                class="p-button-danger"
+                icon="pi pi-star"></button>
+        <button *ngIf="test.priority?.level===2" pButton pRipple type="button"
+                [label]="test.score?.toString()!"
+                class="p-button-warning"
+                icon="pi pi-star"></button>
+        <button *ngIf="test.priority?.level===3" pButton pRipple type="button"
+                [label]="test.score?.toString()!"
+                class="p-button-info"
+                icon="pi pi-star"></button>
+        <button *ngIf="test.priority?.level===4" pButton pRipple type="button"
+                [label]="test.score?.toString()!"
+                class="p-button-success"
+                icon="pi pi-star"></button>
       </div>
     </div>
     <div class="grid">
@@ -107,8 +126,10 @@
 <p-card>
   <p-toolbar>
     <div class="p-toolbar-group-left">
-      <h2 *ngIf="test.assignment">{{test.assignment?.institution?.name}}</h2>
-      <h2 *ngIf="!test.assignment">No tiene una Institución asignada</h2>
+      <h2 *ngIf="test.assignment" class="mr-4">{{test.assignment?.institution?.name}}</h2>
+      <h2 *ngIf="!test.assignment" class="mr-4">No tiene una Institución asignada</h2>
+      <button pButton pRipple type="button" label="Asignar" icon="pi pi-share-alt" class="mr-2" (click)="assignmentForm()"></button>
+      <button pButton pRipple type="button" label="Cerrar Caso" class="p-button-help" icon="pi pi-lock" (click)="closeTest()"></button>
     </div>
     <div class="p-toolbar-group-right">
       <button pButton pRipple type="button" label="Descargar Informe"

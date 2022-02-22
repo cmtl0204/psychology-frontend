@@ -190,9 +190,6 @@ export class TestHttpService {
         map(response => response),
         tap(response => {
           this.loaded.next(false);
-          const index = this.testsList.data.findIndex((test: TestModel) => test.id === response.data.id);
-          this.testsList.data[index] = response.data;
-          this.tests.next(this.testsList);
         }, error => {
           this.loaded.next(false);
         }),

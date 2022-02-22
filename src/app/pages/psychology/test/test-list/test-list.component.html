@@ -122,55 +122,71 @@
     </div>
   </div>
   <!--ToolBar-->
-  <p-card>
-    <p-toolbar>
-      <div class="p-toolbar-group-left">
-        <button pButton pRipple type="button" label="Refrescar Página"
-                class="p-button-info mr-2" icon="pi pi-sync"
-                (click)="loadAllMethods()"
-                [loading]="(loaded$|async)!"></button>
-        <button pButton pRipple type="button" label="Eliminar Tests"
-                class="p-button-danger mr-2" icon="pi pi-trash"
-                (click)="deleteTests()"
-                [disabled]="!selectedTests?.length"></button>
-        <button pButton pRipple type="button" label="Asignar Tests"
-                class="mr-2"
-                icon="pi pi-share-alt"
-                (click)="assignmentForms()"
-                [disabled]="!selectedTests?.length"></button>
-        <button pButton pRipple type="button" label="Descargar Excel"
-                class="p-button-success"
-                icon="pi pi-download"
-                (click)="assignmentForms()"
-                [disabled]="!(rangeDates?.length===2)"></button>
-        <app-progress-bar *ngIf="progressBarDelete" [message]="messageService.progressBarDelete"
-                          class="ml-2"></app-progress-bar>
-      </div>
-      <div class="p-toolbar-group-right">
-        <p-multiSelect [options]="priorities"
-                       [(ngModel)]="selectedPriorities"
-                       class="mr-2"
-                       display="chip"
-                       optionLabel="name"
-                       [selectionLimit]="4"
-                       placeholder="Todas las prioridades"
-                       (onChange)="loadTests()"></p-multiSelect>
-        <p-multiSelect [options]="states"
-                       [(ngModel)]="selectedStates"
-                       display="chip"
-                       class="mr-2"
-                       optionLabel="name"
-                       [selectionLimit]="3"
-                       placeholder="Todos los estados"
-                       (onChange)="loadTests()"></p-multiSelect>
-        <div class="p-inputgroup">
-          <input pInputText id="search" [formControl]="search" (keypress)="filter($event)">
-          <button pButton pRipple type="button" icon="pi pi-search" (click)="filter($event)"
+  <div class="grid">
+    <div class="panel-toolbar-left field xl:col-6 lg:col-6 md:col-12 sm:col-12">
+      <div class="grid">
+        <div class="field xl:col-6 lg:col-6 md:col-12 sm:col-12">
+          <button pButton pRipple type="button" label="Refrescar Página"
+                  class="p-button-info mr-2" icon="pi pi-sync"
+                  (click)="loadAllMethods()"
                   [loading]="(loaded$|async)!"></button>
         </div>
+        <div class="field xl:col-6 lg:col-6 md:col-12 sm:col-12">
+          <button pButton pRipple type="button" label="Eliminar Tests"
+                  class="p-button-danger mr-2" icon="pi pi-trash"
+                  (click)="deleteTests()"
+                  [disabled]="!selectedTests?.length"></button>
+        </div>
+        <div class="field xl:col-6 lg:col-6 md:col-12 sm:col-12">
+          <button pButton pRipple type="button" label="Asignar Tests"
+                  class="mr-2"
+                  icon="pi pi-share-alt"
+                  (click)="assignmentForms()"
+                  [disabled]="!selectedTests?.length"></button>
+        </div>
+        <div class="field xl:col-6 lg:col-6 md:col-12 sm:col-12">
+          <button pButton pRipple type="button" label="Descargar Excel"
+                  class="p-button-success"
+                  icon="pi pi-download"
+                  (click)="assignmentForms()"
+                  [disabled]="!(rangeDates?.length===2)"></button>
+        </div>
+        <!--        <app-progress-bar *ngIf="progressBarDelete" [message]="messageService.progressBarDelete"-->
+        <!--                          class="ml-2"></app-progress-bar>-->
       </div>
-    </p-toolbar>
-  </p-card>
+    </div>
+    <div class="panel-toolbar-left field xl:col-6 lg:col-6 md:col-12 sm:col-12">
+      <div class="grid">
+        <div class="field lg:col-12 lg:col-12 md:col-12 sm:col-12">
+          <div class="p-inputgroup">
+            <input pInputText id="search" [formControl]="search" (keypress)="filter($event)">
+            <button pButton pRipple type="button" icon="pi pi-search" (click)="filter($event)"
+                    [loading]="(loaded$|async)!"></button>
+          </div>
+        </div>
+        <div class="field lg:col-12 lg:col-12 md:col-12 sm:col-12 text-right">
+          <p-multiSelect [options]="priorities"
+                         [(ngModel)]="selectedPriorities"
+                         class="mr-2"
+                         display="chip"
+                         optionLabel="name"
+                         [selectionLimit]="4"
+                         placeholder="Todas las prioridades"
+                         (onChange)="loadTests()"></p-multiSelect>
+        </div>
+        <div class="field lg:col-12 lg:col-12 md:col-12 sm:col-12 text-right">
+          <p-multiSelect [options]="states"
+                         [(ngModel)]="selectedStates"
+                         display="chip"
+                         class="mr-2"
+                         optionLabel="name"
+                         [selectionLimit]="3"
+                         placeholder="Todos los estados"
+                         (onChange)="loadTests()"></p-multiSelect>
+        </div>
+      </div>
+    </div>
+  </div>
   <br>
   <!--Table-->
   <p-card>
@@ -213,7 +229,8 @@
             <p-sortIcon field="createdAt"></p-sortIcon>
           </th>
           <th style="text-align: center">
-            <button pButton pRipple type="button" class="p-button-rounded p-button-info" icon="pi pi-cog"></button>
+            <button pButton pRipple type="button" class="p-button-rounded p-button-info"
+                    icon="pi pi-cog"></button>
           </th>
         </tr>
       </ng-template>

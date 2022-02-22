@@ -16,6 +16,9 @@ export class ResultComponent implements OnInit {
   paginator$ = this.testHttpService.paginator$;
   paginator: PaginatorModel = {};
   cols: ColModel[];
+  dialogForm: boolean = false;
+  selectedTests: TestModel[] = [];
+
   constructor(private testHttpService: TestHttpService, private activatedRoute: ActivatedRoute,
               public messageService: MessageService) {
     this.cols = [
@@ -32,7 +35,30 @@ export class ResultComponent implements OnInit {
   loadTest() {
       this.testHttpService.getTest(this.activatedRoute.snapshot.params['testId']).subscribe(response => {
         this.test = response.data;
-        console.log(this.test);
+      });
+  }
+
+  assignmentForm() {
+    this.selectedTests = [this.test];
+    this.dialogForm = true;
+  }
+
+  closeTest(){
+    this.messageService.questionCloseTest({})
+      .then((result) => {
+        if (result.isConfirmed) {
+          this.testHttpService.closeTest(this.test.id!).subscribe(
+            response => {
+              console.log(response);
+              this.messageService.success(response);
+              // this.loadTest();
+            },
+            error => {
+              console.log(error);
+              this.messageService.error(error);
+            }
+          );
+        }
       });
   }
 }

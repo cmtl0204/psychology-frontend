@@ -225,7 +225,6 @@ export class TestListComponent implements OnInit {
 
   assignmentForm() {
     this.selectedTests = [this.selectedTest];
-
     this.dialogForm = true;
   }
 
@@ -236,6 +235,7 @@ export class TestListComponent implements OnInit {
           this.testHttpService.closeTest(this.selectedTest.id!).subscribe(
             response => {
               this.messageService.success(response);
+              this.loadAllMethods(this.paginator.current_page);
             },
             error => {
               this.messageService.error(error);
