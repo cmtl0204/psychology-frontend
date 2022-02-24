@@ -184,7 +184,7 @@ export class InstitutionHttpService {
   }
 
   assignment(institution: InstitutionModel, tests: TestModel[]): Observable<ServerResponse> {
-    const url = `${this.API_URL}/institutions/${institution.id}/assignment-tests`;
+    const url = `${this.API_URL}/institutions/${institution.id}/tests`;
 
     this.loaded.next(true);
     return this.httpClient.post<ServerResponse>(url, {tests})

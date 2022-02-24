@@ -32,6 +32,7 @@ export class AuthHttpService {
             this.authService.token = response.token;
             this.authService.user = response.data.user;
             this.authService.roles = response.data.roles;
+            this.authService.role = response.data.roles[0];
             this.authService.permissions = response.data.permissions;
           }
         ),

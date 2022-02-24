@@ -56,12 +56,12 @@ export class LoginComponent implements OnInit {
         response => {
           this.messageService.success(response);
           this.progressBar = false;
-          switch (this.authService.role?.code) {
-            case 'ADMIN':
+          switch (this.authService.role?.name) {
+            case 'admin':
               this.redirectAdmin();
               break;
-            case 'SUPPORT':
-            case 'VIEWER':
+            case 'support':
+            case 'viewer':
               this.redirectSupport();
               break;
             default:
@@ -109,7 +109,7 @@ export class LoginComponent implements OnInit {
   }
 
   redirectSupport() {
-    this.router.navigate(['/test']);
+    this.router.navigate(['/test/dashboard']);
   }
 
   redirectChat() {
