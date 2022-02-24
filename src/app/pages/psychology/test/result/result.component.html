@@ -1,3 +1,8 @@
+<p-dialog header="Asignar Institución" [(visible)]="dialogForm" [maximizable]="true" [modal]="true">
+  <app-assignment *ngIf="dialogForm" [tests]="selectedTests"
+                  (dialogForm)="dialogForm=$event;loadTest()"></app-assignment>
+</p-dialog>
+
 <div class="grid">
   <div class="panel-toolbar-left field xl:col-4 lg:col-4 md:col-12 sm:col-12 text-center">
     <h1 class="text-center">Participante</h1>
@@ -107,8 +112,10 @@
 <p-card>
   <p-toolbar>
     <div class="p-toolbar-group-left">
-      <h2 *ngIf="test.assignment">{{test.assignment?.institution?.name}}</h2>
-      <h2 *ngIf="!test.assignment">No tiene una Institución asignada</h2>
+      <h2 *ngIf="test.assignment" class="mr-4">{{test.assignment?.institution?.name}}</h2>
+      <h2 *ngIf="!test.assignment" class="mr-4">No tiene una Institución asignada</h2>
+      <button pButton pRipple type="button" label="Asignar" icon="pi pi-share-alt" class="mr-2" (click)="assignmentForm()"></button>
+      <button pButton pRipple type="button" label="Cerrar Caso" class="p-button-help" icon="pi pi-lock" (click)="closeTest()"></button>
     </div>
     <div class="p-toolbar-group-right">
       <button pButton pRipple type="button" label="Descargar Informe"
