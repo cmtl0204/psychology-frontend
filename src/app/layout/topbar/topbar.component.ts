@@ -10,23 +10,36 @@ import {Router} from "@angular/router";
   styleUrls: ['./topbar.component.scss']
 })
 export class TopbarComponent implements OnInit {
-  display = false;
-  items: MenuItem[] = [];
-  showNav: boolean = true;
+  itemsRight: MenuItem[] = [];
+  itemsLeft: MenuItem[] = [];
 
   constructor(private menuHttpService: MenuHttpService,
               private authHttpService: AuthHttpService, private messageService: MessageService,
               private router: Router) {
+    this.itemsRight = [{
+      label: 'Cesar Tamayo',
+      items: [
+        {
+          label: 'Cerrar Sesión',
+          icon: 'pi pi-power-off',
+          command: () => {
+            this.logout();
+          }
+        }
+      ]
+    }
+    ];
   }
 
   ngOnInit(): void {
-    // this.getMenus();
+    this.getMenus();
   }
 
   getMenus() {
     this.menuHttpService.getMenus().subscribe(
       response => {
-        this.items = response.data;
+        console.log(response);
+        this.itemsLeft = response.data;
       }, error => {
         console.log(error);
       }

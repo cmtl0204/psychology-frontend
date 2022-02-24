@@ -6,9 +6,10 @@ import {Component, OnInit} from '@angular/core';
   styleUrls: ['./main.component.css']
 })
 export class MainComponent implements OnInit {
-  imgs = [...Array(18).keys()];
+
 
   constructor() {
+
   }
 
   ngOnInit(): void {

@@ -39,6 +39,13 @@ import {HashLocationStrategy, LocationStrategy} from '@angular/common';
 import {SharedModule} from '@shared/shared.module';
 import {BreadcrumbModule} from 'primeng/breadcrumb';
 import {MessageService} from 'primeng/api';
+import {DockModule} from 'primeng/dock';
+import {ToastModule} from 'primeng/toast';
+import {DialogModule} from 'primeng/dialog';
+import {TreeModule} from 'primeng/tree';
+import {TerminalModule} from 'primeng/terminal';
+import {GalleriaModule} from 'primeng/galleria';
+import {MenuModule} from 'primeng/menu';
 
 @NgModule({
   declarations: [
@@ -72,6 +79,13 @@ import {MessageService} from 'primeng/api';
     SharedModule,
     BreadcrumbModule,
     ProgressSpinnerModule,
+    DockModule,
+    ToastModule,
+    DialogModule,
+    TreeModule,
+    TerminalModule,
+    GalleriaModule,
+    MenuModule,
   ],
   providers: [
     {provide: LOCALE_ID, useValue: 'es'},

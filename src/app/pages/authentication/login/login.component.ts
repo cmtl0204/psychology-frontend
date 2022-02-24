@@ -56,7 +56,17 @@ export class LoginComponent implements OnInit {
         response => {
           this.messageService.success(response);
           this.progressBar = false;
-          this.redirect();
+          switch (this.authService.role?.code) {
+            case 'ADMIN':
+              this.redirectAdmin();
+              break;
+            case 'SUPPORT':
+            case 'VIEWER':
+              this.redirectSupport();
+              break;
+            default:
+              this.redirectChat();
+          }
         }, error => {
           this.messageService.error(error);
           this.progressBar = false;
@@ -87,19 +97,23 @@ export class LoginComponent implements OnInit {
         response => {
           this.messageService.success(response);
           this.progressBar = false;
-          this.redirect();
+          // this.redirect();
         }, error => {
           this.messageService.error(error);
           this.progressBar = false;
         });
   }
 
-  redirect() {
+  redirectAdmin() {
     this.router.navigate(['/user-administration']);
   }
 
-  redirectRegistration() {
-    this.router.navigate(['/registration/professional']);
+  redirectSupport() {
+    this.router.navigate(['/test']);
+  }
+
+  redirectChat() {
+    this.router.navigate(['/']);
   }
 
   get usernameField() {

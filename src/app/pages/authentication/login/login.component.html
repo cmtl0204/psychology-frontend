@@ -4,7 +4,7 @@
       <form [formGroup]="formLogin" (ngSubmit)="onSubmit()">
         <div class="field text-center">
           <h1>Ingreso al sistema</h1>
-          <img src="assets/images/components/authentication/login/logo.png" alt="">
+          <img src="assets/images/components/authentication/login/logo.svg" alt="">
         </div>
 
         <div class="field">
@@ -51,17 +51,17 @@
         <div class="formgrid grid">
           <div class="field xl:col-6 lg:col-6 md:col-12 sm:col-12">
             <button pButton pRipple type="button" label="Recuperar contraseña"
-                    class="p-button-outlined p-button-secondary"
+                    class="p-button-outlined p-button-info"
                     icon="pi pi-key" (click)="requestPasswordReset()"></button>
           </div>
           <!--          <div class="field xl:col-6 lg:col-6 md:col-12 sm:col-12">-->
           <!--            <button pButton pRipple type="button" label="Desbloquear usuario" class="p-button-outlined p-button-info"-->
           <!--                    icon="pi pi-unlock" (click)="requestUserUnlock()"></button>-->
           <!--          </div>-->
-          <div class="field xl:col-6 lg:col-6 md:col-12 sm:col-12">
-            <button pButton pRipple type="button" label="Crear cuenta" class="p-button-outlined p-button-info"
-                    icon="pi pi-user-plus" (click)="redirectRegistration()"></button>
-          </div>
+<!--          <div class="field xl:col-6 lg:col-6 md:col-12 sm:col-12">-->
+<!--            <button pButton pRipple type="button" label="Crear cuenta" class="p-button-outlined p-button-info"-->
+<!--                    icon="pi pi-user-plus" (click)="redirectRegistration()"></button>-->
+<!--          </div>-->
         </div>
 
         <div *ngIf="progressBarRequestPasswordReset" class="field">
