@@ -1,8 +1,8 @@
-import { Component, OnInit, OnDestroy, Input, Output, EventEmitter } from '@angular/core';
-import { Subject, takeUntil } from 'rxjs';
-import { AbstractControl, FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { CoreHttpService, MessageService, UserAdministrationHttpService } from '@services/core';
-import { CatalogueModel, LocationModel, PhoneModel, UserModel } from '@models/core';
+import {Component, OnInit, OnDestroy, Input, Output, EventEmitter} from '@angular/core';
+import {Subject, takeUntil} from 'rxjs';
+import {AbstractControl, FormArray, FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
+import {CoreHttpService, MessageService, UserAdministrationHttpService} from '@services/core';
+import {CatalogueModel, LocationModel, PhoneModel, UserModel} from '@models/core';
 
 @Component({
   selector: 'app-user-administration-form',
@@ -45,9 +45,6 @@ export class UserAdministrationFormComponent implements OnInit, OnDestroy {
         response.phones?.forEach(phone => {
           // this.addPhone(phone);
         });
-        console.log(response);
-        console.log(this.formUser);
-        console.log(this.phonesField.value);
       });
   }
 
@@ -73,7 +70,7 @@ export class UserAdministrationFormComponent implements OnInit, OnDestroy {
       password: [null, [Validators.required, Validators.minLength(8)]],
       passwordChanged: [true],
       phones: this.formBuilder.array([this.newFormPhone], Validators.required),
-      username: [null, [Validators.required]],
+      username: [null, [Validators.required]]
     });
   }
 

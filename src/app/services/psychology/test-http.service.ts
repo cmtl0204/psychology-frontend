@@ -99,8 +99,6 @@ export class TestHttpService {
           this.removeAge();
           this.removeAgent();
           this.removePatient();
-          this.testsList.data.push(response.data);
-          this.tests.next(this.testsList);
         }, error => {
           this.loaded.next(false);
         }),
@@ -198,6 +196,25 @@ export class TestHttpService {
         }),
         catchError(Handler.render)
       );
+  }
+
+  downloadTestResults(testId: number) {
+    const url = `${this.API_URL}/reports/tests/${testId}/results`;
+    this.loaded.next(true);
+    return this.httpClient.get(url, {responseType: 'blob' as 'json'})
+      .subscribe(response => {
+        this.loaded.next(false);
+        const binaryData = [] as BlobPart[];
+        binaryData.push(response as BlobPart);
+        const filePath = URL.createObjectURL(new Blob(binaryData, {type: 'pdf'}));
+        const downloadLink = document.createElement('a');
+        downloadLink.href = filePath;
+        downloadLink.setAttribute('download', `resultado.pdf`);
+        document.body.appendChild(downloadLink);
+        downloadLink.click();
+      }, error => {
+        this.loaded.next(false);
+      });
   }
 
   requestTransactionalCode(agent: AgentModel): Observable<ServerResponse> {

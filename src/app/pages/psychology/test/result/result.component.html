@@ -112,7 +112,7 @@
     </div>
     <div class="p-toolbar-group-right">
       <button pButton pRipple type="button" label="Descargar Informe"
-              icon="pi pi-download"></button>
+              icon="pi pi-download" [loading]="(loaded$|async)!" (click)="download()"></button>
     </div>
   </p-toolbar>
 </p-card>

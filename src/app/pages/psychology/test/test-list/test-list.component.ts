@@ -80,7 +80,7 @@ export class TestListComponent implements OnInit {
       },
       {
         label: 'Descargar Informe', icon: 'pi pi-download', command: () => {
-          this.deleteTest(this.selectedTest);
+          this.download(this.selectedTest);
         }
       },
       {
@@ -208,6 +208,10 @@ export class TestListComponent implements OnInit {
 
   }
 
+  download(test: TestModel) {
+    this.testHttpService.downloadTestResults(test.id!);
+  }
+
   filter(event: any) {
     if (event.key === 'Enter' || event.type === 'click') {
       this.loadTests();
@@ -229,7 +233,7 @@ export class TestListComponent implements OnInit {
     this.dialogForm = true;
   }
 
-  closeTest(){
+  closeTest() {
     this.messageService.questionCloseTest({})
       .then((result) => {
         if (result.isConfirmed) {

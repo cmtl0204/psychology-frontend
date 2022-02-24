@@ -1,10 +1,7 @@
 <form [formGroup]="formPatient" class="p-fluid">
   <div class="formgrid grid">
     <div class="field col-10 panel-question">
-      <p>El llenado de este chat no te tomará más de 10 minutos. Para continuar con el proceso de aplicación por favor
-        registra tú información.
-        Te informaremos sobre los resultados y estos se mantendrán en estricta confidencialidad.
-      </p>
+      <p>Muchas gracias por tu participación. Ayúdame con los siguientes datos:</p>
     </div>
   </div>
   <!--Username-->
@@ -40,7 +37,7 @@
   <!--Lastname-->
   <div *ngIf="steps>=2" class="formgrid grid">
     <div class="field col-10 panel-question">
-      <p>Dinos tus apellidos</p>
+      <p>¿Cuál son tus apellidos?</p>
     </div>
   </div>
   <!--Input-->
@@ -71,7 +68,7 @@
   <!--Name-->
   <div *ngIf="steps>=3" class="formgrid grid">
     <div class="field col-10 panel-question">
-      <p>Dinos tu nombres</p>
+      <p>¿Cuál son tus nombres?</p>
     </div>
   </div>
   <!--Input-->
@@ -103,7 +100,7 @@
   <div *ngIf="!younger">
     <div *ngIf="steps>=4" class="formgrid grid">
       <div class="field col-10 panel-question">
-        <p>Dinos tu número de celular</p>
+        <p>¿A qué número de teléfono podríamos contactarte?</p>
       </div>
     </div>
     <!--Input-->
@@ -131,11 +128,11 @@
     </div>
   </div>
 
+  <!--Email-->
   <div *ngIf="!younger">
-    <!--Email-->
     <div *ngIf="steps>=5" class="formgrid grid">
       <div class="field col-10 panel-question">
-        <p>Dinos tu correo electrónico</p>
+        <p>Un correo electrónico para poder enviarte una copia de tus respuestas</p>
       </div>
     </div>
     <!--Input-->

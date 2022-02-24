@@ -32,7 +32,10 @@ export class ResultComponent implements OnInit {
   loadTest() {
       this.testHttpService.getTest(this.activatedRoute.snapshot.params['testId']).subscribe(response => {
         this.test = response.data;
-        console.log(this.test);
       });
+  }
+
+  download(){
+    this.testHttpService.downloadTestResults(this.test.id!);
   }
 }

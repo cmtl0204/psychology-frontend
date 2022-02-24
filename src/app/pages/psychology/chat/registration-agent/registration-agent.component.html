@@ -8,7 +8,7 @@
   <!--Identification-->
   <div *ngIf="steps>=1" class="formgrid grid">
     <div class="field col-10 panel-question">
-      <p>Número de cédula de tu Representante Legal</p>
+      <p>Número de cédula de tu representante legal</p>
     </div>
   </div>
   <!--Input-->
@@ -37,7 +37,7 @@
   <!--lastname-->
   <div *ngIf="steps>=2" class="formgrid grid">
     <div class="field col-10 panel-question">
-      <p>Apellidos de tu Representante Legal</p>
+      <p>Apellidos de tu representante legal</p>
     </div>
   </div>
   <!--Input-->
@@ -68,7 +68,7 @@
   <!--Name-->
   <div *ngIf="steps>=3" class="formgrid grid">
     <div class="field col-10 panel-question">
-      <p>Nombres de tu Representante Legal</p>
+      <p>Nombres de tu representante legal</p>
     </div>
   </div>
   <!--Input-->
@@ -100,7 +100,7 @@
   <!--Phone-->
   <div *ngIf="steps>=4" class="formgrid grid">
     <div class="field col-10 panel-question">
-      <p>Número celular de tu Representante Legal</p>
+      <p>¿A qué número de teléfono de tu representante legal podríamos contactarte?</p>
     </div>
   </div>
   <!--Input-->
@@ -130,8 +130,7 @@
   <!--Email-->
   <div *ngIf="steps>=5" class="formgrid grid">
     <div class="field col-10 panel-question">
-      <p>Correo electrónico de tu Representante Legal</p>
-
+      <p>Un correo electrónico de tu representante legal para poder enviar una copia de las respuestas</p>
     </div>
   </div>
   <!--Input-->
@@ -178,7 +177,7 @@
   <div *ngIf="steps===6" class="formgrid grid">
     <div class="field col-12">
       <div class="p-inputgroup">
-        <input type="number" pInputText formControlName="code" pKeyFilter="pint" class="mr-1">
+        <input type="text" pInputText formControlName="code" pKeyFilter="pint" class="mr-1">
         <button *ngIf="codeField.valid"
                 type="button" pButton pRipple
                 class="p-button-rounded"

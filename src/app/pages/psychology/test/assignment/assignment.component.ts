@@ -67,10 +67,6 @@ export class AssignmentComponent implements OnInit {
   }
 
   onSubmit() {
-    console.log(this.institutionField.valid);
-    console.log(this.institutionField);
-    console.log(this.testsField.valid);
-    console.log(this.testsField);
     if (this.form.valid) {
       this.assignment();
     } else {

@@ -29,7 +29,9 @@ export class RegistrationPatientComponent implements OnInit {
               private testHttpService: TestHttpService) {
     this.formPatient = this.newFormPatient;
     this.provinceField.valueChanges.subscribe(province => {
-      this.cantons = this.allCantons.filter(canton => canton.parent?.id === province.id)
+      if (province) {
+        this.cantons = this.allCantons.filter(canton => canton.parent?.id === province.id)
+      }
     });
   }
 

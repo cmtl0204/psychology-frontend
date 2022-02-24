@@ -36,6 +36,7 @@ export class QuestionComponent implements OnInit, OnDestroy {
   age: number = 0;
   testType: string = '';
   questionSteps: number = 0;
+  finalMessage: string = '';
 
   constructor(private formBuilder: FormBuilder,
               private messageService: MessageService,
@@ -66,16 +67,15 @@ export class QuestionComponent implements OnInit, OnDestroy {
       response => {
         this.baseQuestions = response.data;
         this.questions = this.baseQuestions.filter(question => question.type === 'phq2');
-        console.log(this.questions);
       }
     );
   }
 
   get newFormChat(): FormGroup {
     return this.formBuilder.group({
-      username: ['1234567890', [Validators.required]],
-      password: ['12345678', [Validators.required]],
-      // password: [null, [Validators.required]],
+      patient: [null, [Validators.required]],
+      agent: [null, [Validators.required]],
+      results: [null, [Validators.required]],
     });
   }
 
@@ -93,41 +93,42 @@ export class QuestionComponent implements OnInit, OnDestroy {
         question, answer, registeredAt: new Date()
       });
       clearInterval(this.time);
-      this.saveTest();
-    }
-
-    this.progressBarAnswerOut.emit(true);
-    this.progressBarAnswer = true;
-    setTimeout(() => {
-      this.results.push({
-        question, answer, registeredAt: new Date()
-      });
       this.actualQuestion = question?.order! + 1;
-      this.progressBarAnswer = false;
-      this.progressBarAnswerOut.emit(false);
+      this.saveTest();
+    } else {
 
-      if (this.results.length == 2) {
-        this.actualQuestion = 1;
-        const scorePhq2 = this.validatePhq2();
+      this.progressBarAnswerOut.emit(true);
+      this.progressBarAnswer = true;
+      setTimeout(() => {
+        this.results.push({
+          question, answer, registeredAt: new Date()
+        });
+        this.actualQuestion = question?.order! + 1;
+        this.progressBarAnswer = false;
+        this.progressBarAnswerOut.emit(false);
 
-        if (scorePhq2 > 0) {
-          this.testType = 'phq9a';
-          this.questions = this.baseQuestions.filter(question => question.type == 'phq9a');
+        if (this.results.length == 2) {
+          this.actualQuestion = 1;
+          const scorePhq2 = this.validatePhq2();
+
+          if (scorePhq2 > 0) {
+            this.testType = 'phq9a';
+            this.questions = this.baseQuestions.filter(question => question.type == 'phq9a');
+          }
+
+          if (scorePhq2 == 0) {
+            this.testType = 'psc17';
+            this.questions = this.baseQuestions.filter(question => question.type == 'psc17');
+          }
         }
 
-        if (scorePhq2 == 0) {
-          this.testType = 'psc17';
-          this.questions = this.baseQuestions.filter(question => question.type == 'psc17');
+        if (!this.flagDuel && this.actualQuestion > this.questions.length && this.results.length > 2) {
+          this.actualQuestion = 1;
+          this.flagDuel = true;
+          this.questions = this.baseQuestions.filter(question => question.type == 'duel');
         }
-      }
-
-      if (!this.flagDuel && this.actualQuestion > this.questions.length && this.results.length > 2) {
-        this.actualQuestion = 1;
-        this.flagDuel = true;
-        this.questions = this.baseQuestions.filter(question => question.type == 'duel');
-      }
-    }, Math.random() * (1500 - 1000) + 1000);
-
+      }, Math.random() * (1500 - 1000) + 1000);
+    }
   }
 
   validatePhq2() {
@@ -145,12 +146,21 @@ export class QuestionComponent implements OnInit, OnDestroy {
     this.chat.results = this.results;
     this.chat.type = this.testType;
     this.progressBarAnswerOut.emit(true);
+    this.progressBarAnswer = true;
     this.testHttpService.storeChat(this.chat).subscribe(
       response => {
+        this.progressBarAnswer = false;
+        if (response.data.priority.level === 4) {
+          this.finalMessage = 'Muchas gracias por tu participación. Recuerda que este es un servicio gratuito. Te animo a seguir cuidando de ti y recuerda que Jorgebot, tu amigo, estará disponible para cuando lo necesites. ¡Hasta pronto!';
+        } else {
+          this.finalMessage = 'Muchas gracias por tu participación.  Ponemos a disposición nuestros servicios de atención psicológica gratuita. En función a tus respuestas, te recomiendo hacer uso de nuestros servicios de atención psicológica gratuita. Un psicólogo o psicóloga se comunicará contigo en estos días. Recuerda que tu bienestar es una prioridad. ¡Hasta pronto!';
+        }
         this.progressBarAnswerOut.emit(false);
+        this.progressBarAnswer = false;
       }, error => {
         this.messageService.error(error);
         this.progressBarAnswerOut.emit(false);
+        this.progressBarAnswer = false;
       });
   }
 
