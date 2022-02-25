@@ -109,7 +109,7 @@ export class LoginComponent implements OnInit {
   }
 
   redirectSupport() {
-    this.router.navigate(['/test/dashboard']);
+    this.router.navigate(['/test']);
   }
 
   redirectChat() {

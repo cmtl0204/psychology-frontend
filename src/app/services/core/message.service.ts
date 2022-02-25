@@ -89,20 +89,30 @@ export class MessageService {
       text,
       icon: 'warning',
       showCancelButton: true,
-      confirmButtonColor: '#d33',
-      cancelButtonColor: '#3085d6',
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#EEEEEE',
       confirmButtonText: '<i class="pi pi-lock"> Si, cerrar</i>'
     });
   }
-
+  suspendUser({title = '¿Está seguro de suspender al usuario?', text = 'El usuario no tendrá acceso al sistema!'}) {
+    return Swal.fire({
+      title,
+      text,
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#eeeeee',
+      confirmButtonText: '<i class="pi pi-ban"> Si, suspender</i>'
+    });
+  }
   questionDelete({title = '¿Está seguro de eliminar?', text = 'No podrá recuperar esta información!'}) {
     return Swal.fire({
       title,
       text,
       icon: 'warning',
       showCancelButton: true,
-      confirmButtonColor: '#d33',
-      cancelButtonColor: '#3085d6',
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#eeeeee',
       confirmButtonText: '<i class="pi pi-trash"> Si, eliminar</i>'
     });
   }

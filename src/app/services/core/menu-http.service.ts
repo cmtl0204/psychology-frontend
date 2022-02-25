@@ -4,7 +4,7 @@ import {Observable} from 'rxjs';
 import {catchError, map} from 'rxjs/operators';
 import {Handler} from '../../exceptions/handler';
 import {environment} from '@env/environment';
-import {LoginModel, ServerResponse} from '@models/core';
+import {LoginModel, RoleModel, ServerResponse} from '@models/core';
 import {LoginResponse} from '@models/core/login.response';
 
 @Injectable({
@@ -18,8 +18,8 @@ export class MenuHttpService {
 
   }
 
-  getMenus(): Observable<ServerResponse> {
-    const url = `${this.API_URL}/menus`;
+  getMenus(role: RoleModel): Observable<ServerResponse> {
+    const url = `${this.API_URL}/menus/catalogue/${role.id}`;
     return this.httpClient.get<ServerResponse>(url)
       .pipe(
         map(response => response),

@@ -1,4 +1,4 @@
-import {CatalogueModel} from './catalogue.model';
+import {CatalogueModel, RoleModel} from '@models/core';
 
 export interface UserModel {
   id?: number;
@@ -10,11 +10,13 @@ export interface UserModel {
   civilStatus?: CatalogueModel;
   phones?: CatalogueModel[];
   emails?: CatalogueModel[];
+  roles?: RoleModel[];
   avatar?: string;
   birthdate?: string;
   email?: string;
   lastname?: string;
   name?: string;
   phone?: string;
+  suspended?: boolean;
   username?: string;
 }

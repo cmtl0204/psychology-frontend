@@ -150,6 +150,44 @@ export class UserAdministrationHttpService {
       );
   }
 
+  suspendUser(id: number): Observable<ServerResponse> {
+    const url = `${this.API_URL}/users/${id}/suspend`;
+
+    this.loaded.next(true);
+    return this.httpClient.patch<ServerResponse>(url,null)
+      .pipe(
+        map(response => response),
+        tap(response => {
+          this.loaded.next(false);
+          const index = this.usersList.data.findIndex((user: UserModel) => user.id === response.data.id);
+          this.usersList.data[index] = response.data;
+          this.users.next(this.usersList);
+        },error => {
+          this.loaded.next(false);
+        }),
+        catchError(Handler.render)
+      );
+  }
+
+  reactiveUser(id: number): Observable<ServerResponse> {
+    const url = `${this.API_URL}/users/${id}/reactive`;
+
+    this.loaded.next(true);
+    return this.httpClient.patch<ServerResponse>(url,null)
+      .pipe(
+        map(response => response),
+        tap(response => {
+          this.loaded.next(false);
+          const index = this.usersList.data.findIndex((user: UserModel) => user.id === response.data.id);
+          this.usersList.data[index] = response.data;
+          this.users.next(this.usersList);
+        },error => {
+          this.loaded.next(false);
+        }),
+        catchError(Handler.render)
+      );
+  }
+
   selectUser(user: UserModel) {
     this.user.next(user);
   }

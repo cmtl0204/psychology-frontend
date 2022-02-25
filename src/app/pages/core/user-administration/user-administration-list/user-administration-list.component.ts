@@ -32,29 +32,40 @@ export class UserAdministrationListComponent implements OnInit {
       {field: 'name', header: 'Nombres'},
       {field: 'lastname', header: 'Apellidos'},
       {field: 'email', header: 'Correo'},
-      {field: 'updatedAt', header: 'Última actualización'},
+      {field: 'roles', header: 'Rol'},
+      // {field: 'updatedAt', header: 'Última actualización'},
     ];
     this.items = [
+      // {
+      //   label: 'Cambiar Contraseña', icon: 'pi pi-key', command: () => {
+      //     this.changePassword();
+      //   }
+      // },
       {
-        label: 'Cambiar Contraseña', icon: 'pi pi-key', command: () => {
-          this.changePassword();
+        label: 'Suspender', icon: 'pi pi-ban', command: () => {
+          this.suspendUser(this.selectedUser);
         }
       },
       {
-        label: 'Suspender Usuario', icon: 'pi pi-user-minus', command: () => {
+        label: 'Reactivar', icon: 'pi pi-sync', command: () => {
+          this.reactiveUser(this.selectedUser);
+        }
+      },
+      {
+        label: 'Eliminar', icon: 'pi pi-trash', command: () => {
           this.deleteUser(this.selectedUser);
         }
       },
-      {
-        label: 'Cambiar Roles', icon: 'pi pi-id-card', command: () => {
-          this.changePassword();
-        }
-      },
-      {
-        label: 'Cambiar Permisos', icon: 'pi pi-sitemap', command: () => {
-          this.changePassword();
-        }
-      }
+      // {
+      //   label: 'Cambiar Roles', icon: 'pi pi-id-card', command: () => {
+      //     this.changePassword();
+      //   }
+      // },
+      // {
+      //   label: 'Cambiar Permisos', icon: 'pi pi-sitemap', command: () => {
+      //     this.changePassword();
+      //   }
+      // }
     ];
 
     this.paginator$.subscribe(response => {
@@ -95,6 +106,33 @@ export class UserAdministrationListComponent implements OnInit {
           );
         }
       });
+  }
+
+  suspendUser(user: UserModel): void {
+    this.messageService.suspendUser({})
+      .then((result) => {
+        if (result.isConfirmed) {
+          this.userAdministrationHttpService.suspendUser(user.id!).subscribe(
+            response => {
+              this.messageService.success(response);
+            },
+            error => {
+              this.messageService.error(error);
+            }
+          );
+        }
+      });
+  }
+
+  reactiveUser(user: UserModel): void {
+    this.userAdministrationHttpService.reactiveUser(user.id!).subscribe(
+      response => {
+        this.messageService.success(response);
+      },
+      error => {
+        this.messageService.error(error);
+      }
+    );
   }
 
   deleteUsers(): void {

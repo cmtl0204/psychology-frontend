@@ -50,7 +50,18 @@
       </div>
       <div class="field xl:col-6 lg:col-6 md:col-12 sm:col-12 text-center">
         <h3>Puntaje Total</h3>
-        <button pButton pRipple type="button" [label]="test.score?.toString()!"></button>
+        <button *ngIf="test.priority?.level===1" pButton pRipple type="button"
+                [label]="test.score?.toString()!"
+                class="p-button-danger"></button>
+        <button *ngIf="test.priority?.level===2" pButton pRipple type="button"
+                [label]="test.score?.toString()!"
+                class="p-button-warning"></button>
+        <button *ngIf="test.priority?.level===3" pButton pRipple type="button"
+                [label]="test.score?.toString()!"
+                class="p-button-info"></button>
+        <button *ngIf="test.priority?.level===4" pButton pRipple type="button"
+                [label]="test.score?.toString()!"
+                class="p-button-success"></button>
       </div>
     </div>
     <div class="grid">

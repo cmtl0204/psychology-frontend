@@ -5,7 +5,7 @@
 }
 
 .app-panel {
-  background: #E6E6FA;
+  background: #fff;
   padding-top: 20px;
   padding-left: 20px;
   padding-right: 20px;
@@ -13,15 +13,15 @@
 }
 
 .panel-avatar {
-  background: #483D8B;
+  background: #d1e2f0;
   height: 80px;
   width:  97%;
   border-radius: 15px 15px 15px 15px;
   position: fixed;
 }
 
-.text-jorge {
-  color: #fff;
+.text-bot {
+  color: #1D70B6;
   font-size: 20px;
 }
 
@@ -29,18 +29,19 @@
   float: left;
 }
 
-.jorge-avatar {
-  border-radius: 50px;
+.avatar-bot {
+  //border-radius: 20px;
   padding: 10px;
 }
 
 .panel-question{
-  background: #efa94a;
+  //background: #F7B032;
+  background: #fbdfad;
   border-radius: 15px 15px 15px 15px;
 }
 
 .panel-answer{
-  background: #2c397f;
+  background: #1D70B6;
   color: #fff;
   padding-right: 20px;
   border-radius: 15px 15px 15px 15px;

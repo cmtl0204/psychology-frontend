@@ -84,6 +84,7 @@ export class AssignmentComponent implements OnInit {
       },
       error => {
         this.messageService.error(error);
+        this.dialogForm.emit(false);
         this.progressBar = false;
       }
     );

@@ -113,5 +113,13 @@ export class AuthHttpService {
         catchError(Handler.render)
       );
   }
+  getRoles(): Observable<ServerResponse> {
+    const url = `${this.API_URL}/roles/catalogue`;
+    return this.httpClient.get<ServerResponse>(url)
+      .pipe(
+        map(response => response),
+        catchError(Handler.render)
+      );
+  }
 
 }

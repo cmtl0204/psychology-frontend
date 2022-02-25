@@ -23,7 +23,7 @@ const routes: Routes = [
         path: 'test',
         loadChildren: () => import('./pages/psychology/psychology.module').then(m => m.PsychologyModule),
         data: {
-          roles: [RolesEnum.SUPPORT, RolesEnum.VIEWER]
+          roles: [RolesEnum.ADMIN, RolesEnum.SUPPORT, RolesEnum.VIEWER]
         },
         canActivate: [TokenGuard, RoleGuard]
       }

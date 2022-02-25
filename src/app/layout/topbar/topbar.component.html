@@ -1,9 +1,9 @@
 <p-menubar [model]="itemsLeft">
   <ng-template pTemplate="start">
-    <img src="assets/images/layout/topbar/logo-1.jpg" height="40" class="mr-2" alt="logo">
+    <img src="assets/images/layout/topbar/logo-1.png" height="60" class="mr-2" alt="logo">
   </ng-template>
   <ng-template pTemplate="end">
-    <button type="button" pButton pRipple label="Administrador"
+    <button type="button" pButton pRipple [label]="role?.name!|role"
             icon="pi pi-ellipsis-v" (click)="menu.toggle($event)"></button>
     <p-menu #menu [popup]="true" [model]="itemsRight"></p-menu>
   </ng-template>

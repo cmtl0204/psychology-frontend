@@ -44,7 +44,7 @@ export class AuthService {
     localStorage.setItem('permissions', JSON.stringify(permissions));
   }
 
-  get role(): RoleModel | null {
+  get role(): RoleModel {
     return JSON.parse(String(localStorage.getItem('role')));
   }
 

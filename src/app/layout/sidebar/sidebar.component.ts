@@ -2,6 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {PanelMenuModule} from 'primeng/panelmenu';
 import {MenuItem} from 'primeng/api';
 import {MenuHttpService} from '@services/core/menu-http.service';
+import {AuthService} from '@services/core';
 
 @Component({
   selector: 'app-sidebar',
@@ -12,7 +13,7 @@ export class SidebarComponent implements OnInit {
   display = false;
   items: MenuItem[] = [];
 
-  constructor(private menuHttpService: MenuHttpService) {
+  constructor(private menuHttpService: MenuHttpService, private authService: AuthService) {
   }
 
   ngOnInit(): void {
@@ -20,7 +21,7 @@ export class SidebarComponent implements OnInit {
   }
 
   getMenus() {
-    this.menuHttpService.getMenus().subscribe(
+    this.menuHttpService.getMenus(this.authService.role).subscribe(
       response => {
         this.items = response.data;
       }, error => {

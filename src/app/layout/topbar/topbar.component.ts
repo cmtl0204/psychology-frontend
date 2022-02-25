@@ -1,8 +1,9 @@
 import {Component, OnInit} from '@angular/core';
 import {MenuItem} from 'primeng/api';
 import {MenuHttpService} from '@services/core/menu-http.service';
-import {AuthHttpService, MessageService} from "@services/core";
+import {AuthHttpService, AuthService, MessageService} from "@services/core";
 import {Router} from "@angular/router";
+import {RoleModel} from '@models/core';
 
 @Component({
   selector: 'app-topbar',
@@ -12,12 +13,15 @@ import {Router} from "@angular/router";
 export class TopbarComponent implements OnInit {
   itemsRight: MenuItem[] = [];
   itemsLeft: MenuItem[] = [];
+  role: RoleModel = {};
 
   constructor(private menuHttpService: MenuHttpService,
-              private authHttpService: AuthHttpService, private messageService: MessageService,
+              private authHttpService: AuthHttpService,
+              private messageService: MessageService,
+              private authService: AuthService,
               private router: Router) {
     this.itemsRight = [{
-      label: 'Cesar Tamayo',
+      label: `${authService.user.name} ${authService.user.lastname}`,
       items: [
         {
           label: 'Cerrar Sesión',
@@ -29,6 +33,7 @@ export class TopbarComponent implements OnInit {
       ]
     }
     ];
+    this.role = authService.role;
   }
 
   ngOnInit(): void {
@@ -36,7 +41,7 @@ export class TopbarComponent implements OnInit {
   }
 
   getMenus() {
-    this.menuHttpService.getMenus().subscribe(
+    this.menuHttpService.getMenus(this.authService.role).subscribe(
       response => {
         console.log(response);
         this.itemsLeft = response.data;

@@ -24,16 +24,21 @@ export class AuthenticationInterceptor implements HttpInterceptor {
         this.router.navigate(['/common/under-maintenance']);
       }
 
+      if (error.status === 429) {
+        this.authService.removeLogin();
+        this.router.navigate(['/authentication/login']);
+      }
+
       // Cuando el usuario no tiene permisos para acceder a la ruta solicitada y se encuentra logueado
       if ((error.status === 401 || error.status === 403 || error.status === 423) && this.authService.token) {
-        this.authService.removeLogin();
-        this.router.navigate(['/common/access-denied']);
+        // this.authService.removeLogin();
+        // this.router.navigate(['/common/access-denied']);
       }
 
       // Cuando el usuario no tiene permisos para acceder a la ruta solicitada y no está logueado
       if ((error.status === 401 || error.status === 403 || error.status === 423) && !this.authService.token) {
-        this.authService.removeLogin();
-        this.router.navigate(['/authentication/login']);
+        // this.authService.removeLogin();
+        // this.router.navigate(['/authentication/login']);
       }
 
       return throwError(error);

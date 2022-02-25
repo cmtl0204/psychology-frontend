@@ -4,11 +4,11 @@
       <form [formGroup]="formLogin" (ngSubmit)="onSubmit()">
         <div class="field text-center">
           <h1>Ingreso al sistema</h1>
-          <img src="assets/images/components/authentication/login/logo.svg" alt="">
+          <img src="assets/images/components/authentication/login/logo.png" alt="" width="300px">
         </div>
 
         <div class="field">
-          <label for="username" appLabel label="Número de documento (cédula o pasaporte):"
+          <label for="username" appLabel label="Número de cédula:"
                  [required]="isRequired(usernameField)"
                  [valid]="usernameField.valid"
                  [touched]="usernameField.touched"
@@ -40,7 +40,7 @@
 
         <p-divider></p-divider>
 
-        <div class="field">
+        <div class="field col-12">
           <button pButton pRipple label="Continuar" class="p-button-rounded" icon="pi pi-sign-in"></button>
         </div>
 

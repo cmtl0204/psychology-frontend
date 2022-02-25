@@ -1,8 +1,14 @@
 import {Component, OnInit, OnDestroy, Input, Output, EventEmitter} from '@angular/core';
 import {Subject, takeUntil} from 'rxjs';
 import {AbstractControl, FormArray, FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
-import {CoreHttpService, MessageService, UserAdministrationHttpService} from '@services/core';
-import {CatalogueModel, LocationModel, PhoneModel, UserModel} from '@models/core';
+import {
+  AuthHttpService,
+  AuthService,
+  CoreHttpService,
+  MessageService,
+  UserAdministrationHttpService
+} from '@services/core';
+import {CatalogueModel, LocationModel, PhoneModel, RoleModel, UserModel} from '@models/core';
 
 @Component({
   selector: 'app-user-administration-form',
@@ -21,10 +27,12 @@ export class UserAdministrationFormComponent implements OnInit, OnDestroy {
   public phoneOperators: CatalogueModel[] = [];
   public phoneTypes: CatalogueModel[] = [];
   public phoneLocations: LocationModel[] = [];
+  public roles: RoleModel[] = [];
 
   constructor(private formBuilder: FormBuilder,
               private userAdministrationHttpService: UserAdministrationHttpService,
               private coreHttpService: CoreHttpService,
+              private authHttpService: AuthHttpService,
               public messageService: MessageService,
   ) {
     this.user$
@@ -32,6 +40,9 @@ export class UserAdministrationFormComponent implements OnInit, OnDestroy {
       .subscribe(response => {
         if (response.id !== undefined) {
           this.formUser.reset(response);
+          if (response?.roles) {
+            this.roleField.patchValue(response?.roles[0]);
+          }
         }
 
         if (this.idField.value) {
@@ -39,7 +50,7 @@ export class UserAdministrationFormComponent implements OnInit, OnDestroy {
         }
 
         if (response.phones?.length) {
-          this.phonesField.clear();
+          // this.phonesField.clear();
         }
 
         response.phones?.forEach(phone => {
@@ -53,6 +64,7 @@ export class UserAdministrationFormComponent implements OnInit, OnDestroy {
     this.loadPhoneOperators();
     this.loadPhoneTypes();
     this.loadPhoneLocations();
+    this.loadRoles();
   }
 
   ngOnDestroy(): void {
@@ -65,11 +77,12 @@ export class UserAdministrationFormComponent implements OnInit, OnDestroy {
       email: [null, [Validators.required, Validators.email]],
       id: [null],
       identificationType: [null, [Validators.required]],
+      role: [null, [Validators.required]],
       lastname: [null, [Validators.required]],
       name: [null, [Validators.required]],
       password: [null, [Validators.required, Validators.minLength(8)]],
       passwordChanged: [true],
-      phones: this.formBuilder.array([this.newFormPhone], Validators.required),
+      // phones: this.formBuilder.array([this.newFormPhone], Validators.required),
       username: [null, [Validators.required]]
     });
   }
@@ -118,6 +131,17 @@ export class UserAdministrationFormComponent implements OnInit, OnDestroy {
     this.coreHttpService.getLocations('COUNTRY').subscribe(
       response => {
         this.phoneLocations = response.data;
+      }, error => {
+        this.messageService.error(error);
+      }
+    );
+  }
+
+  loadRoles() {
+    this.authHttpService.getRoles().subscribe(
+      response => {
+        this.roles = response.data;
+        console.log(this.roles);
       }, error => {
         this.messageService.error(error);
       }
@@ -176,7 +200,6 @@ export class UserAdministrationFormComponent implements OnInit, OnDestroy {
   }
 
   addPhone(data: PhoneModel = {}) {
-    console.log(data);
     const formPhone = this.newFormPhone;
     if (data.id !== undefined) {
       formPhone.patchValue(data);
@@ -232,5 +255,9 @@ export class UserAdministrationFormComponent implements OnInit, OnDestroy {
 
   get usernameField() {
     return this.formUser.controls['username'];
+  }
+
+  get roleField() {
+    return this.formUser.controls['role'];
   }
 }
