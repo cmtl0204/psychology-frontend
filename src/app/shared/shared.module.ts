@@ -1,88 +1,80 @@
 import {NgModule,} from '@angular/core';
 import {CommonModule} from '@angular/common';
-import {RolesPermissionsDirective} from '@shared/directives/roles-permissions.directive';
-import {ErrorMessageDirective} from '@shared/directives/error-message.directive';
-import {TokenDirective} from '@shared/directives/token.directive';
+import {ReactiveFormsModule} from "@angular/forms";
+//PrimeNg Modules
+import {ButtonModule} from "primeng/button";
+import {CardModule} from "primeng/card";
+import {DividerModule} from "primeng/divider";
+import {FileUploadModule} from "primeng/fileupload";
+import {InputTextareaModule} from "primeng/inputtextarea";
+import {InputTextModule} from "primeng/inputtext";
+import {MessageModule} from "primeng/message";
+import {OverlayPanelModule} from "primeng/overlaypanel";
+import {PaginatorModule} from "primeng/paginator";
+import {ProgressBarModule} from "primeng/progressbar";
+import {RippleModule} from "primeng/ripple";
 import {SkeletonModule} from 'primeng/skeleton';
 import {TableModule} from 'primeng/table';
-import {LabelDirective} from './directives/label.directive';
-import {CertificatedPipe} from './pipes/professional/academic-formation/certificated.pipe';
-import {WorkedPipe} from './pipes/professional/experience/worked.pipe';
-import {ProgressBarModule} from "primeng/progressbar";
-import {ProgressBarComponent} from './components/progress-bar/progress-bar.component';
-import {SkeletonComponent} from '@shared/components/skeleton/skeleton.component';
-import {ViewFilesComponent} from '@shared/components/file/view-files/view-files.component';
-import {UploadFilesComponent} from '@shared/components/file/upload-files/upload-files.component';
-import {PaginatorModule} from "primeng/paginator";
 import {ToolbarModule} from "primeng/toolbar";
-import {ButtonModule} from "primeng/button";
-import {RippleModule} from "primeng/ripple";
-import {InputTextModule} from "primeng/inputtext";
 import {TooltipModule} from "primeng/tooltip";
-import {ExtensionsPipe} from "@shared/pipes/common/extensions.pipe";
-import {FileUploadModule} from "primeng/fileupload";
-import {MessageModule} from "primeng/message";
-import {InputTextareaModule} from "primeng/inputtextarea";
-import {DividerModule} from "primeng/divider";
-import {CardModule} from "primeng/card";
-import {OverlayPanelModule} from "primeng/overlaypanel";
-import {ReactiveFormsModule} from "@angular/forms";
-import {SearchComponent} from './components/search/search.component';
-import {TermsCondititonsPipe} from '@shared/pipes/chat/terms-condititons.pipe';
-import {RolePipe} from '@shared/pipes/user/role.pipe';
 
+import {LabelDirective, ErrorMessageDirective, RolesPermissionsDirective, TokenDirective} from '@shared/directives';
+import {
+  ProgressBarComponent,
+  SearchComponent,
+  SkeletonComponent,
+  UploadFilesComponent,
+  ViewFilesComponent
+} from '@shared/components';
+import {ExtensionsPipe, RolePipe, TermsCondititonsPipe} from "@shared/pipes";
 
 @NgModule({
   declarations: [
-    RolesPermissionsDirective,
-    ErrorMessageDirective,
-    TokenDirective,
-    LabelDirective,
-    SkeletonComponent,
     ProgressBarComponent,
-    ViewFilesComponent,
-    UploadFilesComponent,
-    CertificatedPipe,
-    WorkedPipe,
-    ExtensionsPipe,
     SearchComponent,
+    SkeletonComponent,
+    UploadFilesComponent,
+    ViewFilesComponent,
+    ErrorMessageDirective,
+    LabelDirective,
+    RolesPermissionsDirective,
+    TokenDirective,
+    ExtensionsPipe,
+    RolePipe,
     TermsCondititonsPipe,
-    RolePipe
   ],
   exports: [
-    RolesPermissionsDirective,
-    ErrorMessageDirective,
-    TokenDirective,
-    LabelDirective,
-    SkeletonComponent,
     ProgressBarComponent,
-    CertificatedPipe,
-    WorkedPipe,
-    ExtensionsPipe,
+    SearchComponent,
+    SkeletonComponent,
     UploadFilesComponent,
     ViewFilesComponent,
-    SearchComponent,
+    ErrorMessageDirective,
+    LabelDirective,
+    RolesPermissionsDirective,
+    TokenDirective,
+    ExtensionsPipe,
+    RolePipe,
     TermsCondititonsPipe,
-    RolePipe
   ],
   imports: [
     CommonModule,
     ReactiveFormsModule,
+    ButtonModule,
+    CardModule,
+    DividerModule,
+    FileUploadModule,
+    InputTextareaModule,
+    InputTextModule,
+    MessageModule,
+    OverlayPanelModule,
+    PaginatorModule,
+    ProgressBarModule,
+    RippleModule,
     SkeletonModule,
     TableModule,
-    ProgressBarModule,
-    PaginatorModule,
     ToolbarModule,
-    ButtonModule,
-    RippleModule,
-    InputTextModule,
     TooltipModule,
-    FileUploadModule,
-    MessageModule,
-    InputTextareaModule,
-    DividerModule,
-    CardModule,
-    OverlayPanelModule
   ]
 })
 export class SharedModule {

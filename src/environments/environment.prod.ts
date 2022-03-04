@@ -1,4 +1,4 @@
-const HOST = 'http://jobboard-servidor.test';
+const HOST = 'https://api.temi.esquel.org.ec';
 
 export const environment = {
   production: true,
