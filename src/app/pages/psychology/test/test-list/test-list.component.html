@@ -141,7 +141,7 @@
         <button pButton pRipple type="button" label="Descargar Excel"
                 class="p-button-success"
                 icon="pi pi-download"
-                (click)="assignmentForms()"
+                (click)="downloadExcel()"
                 [disabled]="!(rangeDates?.length===2)"></button>
         <app-progress-bar *ngIf="progressBarDelete" [message]="messageService.progressBarDelete"
                           class="ml-2"></app-progress-bar>

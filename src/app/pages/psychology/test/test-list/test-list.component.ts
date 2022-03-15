@@ -212,6 +212,10 @@ export class TestListComponent implements OnInit {
     this.testHttpService.downloadTestResults(test.id!);
   }
 
+  downloadExcel() {
+    this.testHttpService.downloadTestsResultsExcel();
+  }
+
   filter(event: any) {
     if (event.key === 'Enter' || event.type === 'click') {
       this.loadTests();

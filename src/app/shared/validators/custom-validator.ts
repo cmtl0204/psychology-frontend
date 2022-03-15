@@ -2,7 +2,7 @@ import {AbstractControl, Validators} from '@angular/forms';
 import {AuthHttpService} from "@services/core";
 import {map} from "rxjs/operators";
 
-export class CustomValidators {
+export class CustomValidator {
   static required({value}: AbstractControl): boolean {
     if (value)
       return value.hasValidator(Validators.required);

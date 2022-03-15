@@ -3,6 +3,7 @@ import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {CoreHttpService} from '@services/core';
 import {LocationModel} from '@models/core';
 import {TestHttpService} from '@services/psychology/test-http.service';
+import {RegularExpresions} from '@shared/regular-expresions/regular-expresions';
 
 @Component({
   selector: 'app-registration-patient',
@@ -50,8 +51,8 @@ export class RegistrationPatientComponent implements OnInit {
       // province: [{id: 265}, [Validators.required]],
       // canton: [{id: 451}, [Validators.required]],
       username: [null, [Validators.required]],
-      name: [null, [Validators.required]],
-      lastname: [null, [Validators.required]],
+      name: [null, [Validators.required, Validators.pattern(RegularExpresions.alphaSpaces())]],
+      lastname: [null, [Validators.required, Validators.pattern(RegularExpresions.alphaSpaces())]],
       email: [null, [Validators.required, Validators.email]],
       phone: [null, [Validators.required]],
       province: [null, [Validators.required]],
@@ -144,7 +145,8 @@ export class RegistrationPatientComponent implements OnInit {
     }
   }
 
-  saveProvince() {
+  saveProvince(province: LocationModel) {
+    this.provinceField.patchValue(province);
     if (this.provinceField.valid) {
       this.progressBarAnswer = true;
       this.progressBarAnswerOut.emit(true);
@@ -156,7 +158,8 @@ export class RegistrationPatientComponent implements OnInit {
     }
   }
 
-  saveCanton() {
+  saveCanton(canton: LocationModel) {
+    this.cantonField.patchValue(canton);
     if (this.cantonField.valid) {
       this.progressBarAnswer = true;
       this.progressBarAnswerOut.emit(true);
@@ -209,6 +212,14 @@ export class RegistrationPatientComponent implements OnInit {
     }
 
     this.filteredCantons = filtered;
+  }
+
+  selectProvince(province: LocationModel) {
+    this.provinceField.patchValue(province);
+  }
+
+  selectCanton(canton: LocationModel) {
+    this.cantonField.patchValue(canton);
   }
 
   get usernameField() {

@@ -2,7 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {AbstractControl, FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {AuthHttpService, AuthService, MessageService} from "@services/core";
 import {ActivatedRoute, Router} from "@angular/router";
-import {CustomValidators} from "@shared/validators/custom-validators";
+import {CustomValidator} from "@shared/validators/custom-validator";
 
 @Component({
   selector: 'app-password-reset',
@@ -35,7 +35,7 @@ export class PasswordResetComponent implements OnInit {
       token: [null, [Validators.required]],
       password: [null, [Validators.required, Validators.minLength(8)]],
       passwordConfirmation: [null, [Validators.required]],
-    }, {validators: CustomValidators.passwordMatchValidator});
+    }, {validators: CustomValidator.passwordMatchValidator});
   }
 
   onSubmit() {

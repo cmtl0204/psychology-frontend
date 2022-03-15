@@ -8,14 +8,14 @@
   <!--Identification-->
   <div *ngIf="steps>=1" class="formgrid grid">
     <div class="field col-10 panel-question">
-      <p>Número de cédula de tu representante legal</p>
+      <p>Ingrea el número de cédula de tu representante legal</p>
     </div>
   </div>
   <!--Input-->
   <div *ngIf="steps===1" class="formgrid grid">
     <div class="field col-12">
       <div class="p-inputgroup">
-        <input type="number" pInputText formControlName="identification" pKeyFilter="pint">
+        <input type="text" pInputText formControlName="identification" pKeyFilter="pint" maxlength="10">
         <button *ngIf="identificationField.valid" type="button" pButton pRipple
                 class="p-button-rounded ml-1"
                 icon="pi pi-send"
@@ -37,7 +37,7 @@
   <!--lastname-->
   <div *ngIf="steps>=2" class="formgrid grid">
     <div class="field col-10 panel-question">
-      <p>Apellidos de tu representante legal</p>
+      <p>Ingresa los apellidos de tu representante legal</p>
     </div>
   </div>
   <!--Input-->
@@ -68,7 +68,7 @@
   <!--Name-->
   <div *ngIf="steps>=3" class="formgrid grid">
     <div class="field col-10 panel-question">
-      <p>Nombres de tu representante legal</p>
+      <p>Ingresa los nombres de tu representante legal</p>
     </div>
   </div>
   <!--Input-->
@@ -100,14 +100,14 @@
   <!--Phone-->
   <div *ngIf="steps>=4" class="formgrid grid">
     <div class="field col-10 panel-question">
-      <p>¿A qué número de teléfono de tu representante legal podríamos contactarte?</p>
+      <p>Ingresa el número de teléfono de tu representante legal al cual podríamos contactarte</p>
     </div>
   </div>
   <!--Input-->
   <div *ngIf="steps===4" class="formgrid grid">
     <div class="field col-12">
       <div class="p-inputgroup">
-        <input type="text" pInputText formControlName="phone" pKeyFilter="pint">
+        <input type="text" pInputText formControlName="phone" pKeyFilter="pint" maxlength="10">
         <button *ngIf="phoneField.valid" type="button" pButton pRipple
                 class="p-button-rounded ml-1"
                 icon="pi pi-send"
@@ -130,7 +130,7 @@
   <!--Email-->
   <div *ngIf="steps>=5" class="formgrid grid">
     <div class="field col-10 panel-question">
-      <p>Un correo electrónico de tu representante legal para poder enviar una copia de las respuestas</p>
+      <p>Ingresa un correo electrónico de tu representante legal para poder enviarte una copia de tus respuestas</p>
     </div>
   </div>
   <!--Input-->
@@ -160,7 +160,8 @@
   <!--Message send code-->
   <div *ngIf="steps>=6" class="formgrid grid">
     <div class="field col-10 panel-question">
-      <p>Se envió un código al correo electrónico, por favor revise y regrese al chat para continuar</p>
+      <p>Una vez que tu representante nos proporcione su consentimiento, le llegará un código de verificación al correo
+        electrónico que registre. Por favor, ingresa el código de verificación para continuar llenando este chat. </p>
     </div>
   </div>
 

@@ -11,6 +11,7 @@ const routes: Routes = [
     component: MainComponent,
     children: [
       {path: '', redirectTo: '/chat', pathMatch: 'full'},
+      {path: 'login', redirectTo: '/authentication/login', pathMatch: 'full'},
       {
         path: 'user-administration',
         loadChildren: () => import('./pages/core/user-administration/user-administration.module').then(m => m.UserAdministrationModule),

@@ -2,15 +2,17 @@
   <!--Terms and Conditions-->
   <div class="formgrid grid">
     <div class="field col-10 panel-question">
-      <p>Hola, soy TEMI , y te estaré realizando unas preguntas para conocer juntos sobre tu estado de
-        ánimo en las últimas dos semanas. La información que me brindes será confidencial y se guardará de forma
-        segura para proteger tu privacidad e integridad.
+      <p>Hola, soy tu amigo TEMI. Te voy a realizar algunas preguntas para conocer juntos sobre tu estado de ánimo en
+        las últimas dos semanas. La información que me brindes será confidencial y se guardará de forma segura para
+        proteger tu privacidad e integridad.
       </p>
     </div>
   </div>
   <div class="formgrid grid">
     <div class="field col-10 panel-question">
-      <p>¿Aceptas los términos y condiciones?</p>
+      <p>Antes de empezar, es importante que puedas leer sobre la política de cuidado de tus datos en el siguiente
+        enlace: Si estás de acuerdo, por favor señala "aceptar" en la casilla inferior para continuar.
+      </p>
       <a class="p-button-text" href="assets/files/terms_conditions.pdf" target="_blank">
         Descargar términos y condiciones
       </a>
@@ -20,14 +22,14 @@
   <div *ngIf="steps===1" class="formgrid grid">
     <div class="field col-6 col-offset-6">
       <button pButton type="button" label="Aceptar"
-              class="p-button-lg"
+              class="p-button-lg p-button-text"
               icon="pi pi-check"
               (click)="saveTermsConditions(true)"
               [loading]="progressBarAnswer"></button>
     </div>
     <div class="field col-6 col-offset-6">
       <button pButton type="button" label="Rechazar"
-              class="p-button-lg p-button-help"
+              class="p-button-lg p-button-help p-button-text"
               icon="pi pi-ban"
               (click)="saveTermsConditions(false)"
               [loading]="progressBarAnswer"></button>
@@ -47,16 +49,23 @@
   <!--No Accept Terms and Conditions-->
   <div *ngIf="termsConditionField.value===false" class="formgrid grid">
     <div class="field col-10 panel-question">
-      <p>Muchas gracias por tu participación. Recuerda que tu bienestar psicólogo es prioridad y TEMI, tu amigo,
-        estará disponible para cuando lo necesites. ¡Hasta pronto!
+      <p>Muchas gracias por tu participación. Recuerda que tu bienestar psicólogo es prioridad y TEMI, te escucha,
+        estará disponible las 24 horas del día y los 7 días de la semana para cuando lo necesites. Sólo debes ingresar a
+        la página web www.esquel.org.ec y seleccionar la opción "Salud Mental". ¡Hasta pronto!
       </p>
     </div>
   </div>
 
+  <!--Start-->
+  <div *ngIf="steps>=2" class="formgrid grid">
+    <div class="field col-10 panel-question">
+      <p>Muchas gracias. Empezamos con el registro de tus datos</p>
+    </div>
+  </div>
   <!--Age-->
   <div *ngIf="steps>=2" class="formgrid grid">
     <div class="field col-10 panel-question">
-      <p>Antes de empezar, es importante que pueda saber tu edad. Ingresa tu edad</p>
+      <p>Selecciona tu edad</p>
     </div>
   </div>
   <!--Age Range-->
@@ -70,9 +79,9 @@
   <div *ngIf="steps===2" class="formgrid grid">
     <div class="field col-12">
       <div class="p-inputgroup">
-        <input type="number" pInputText formControlName="age"
-               [min]="12" [max]="18">
-        <button *ngIf="ageField.value" pButton type="button"
+        <input type="text" pInputText formControlName="age"
+               [min]="12" [max]="18" maxlength="2">
+        <button *ngIf="ageField.valid" pButton type="button"
                 class="p-button-rounded ml-1"
                 icon="pi pi-send"
                 (click)="saveAge()"

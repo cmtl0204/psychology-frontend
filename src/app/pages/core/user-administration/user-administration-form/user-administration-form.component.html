@@ -45,9 +45,9 @@
         </label>
         <input pInputText id="username" formControlName="username">
         <small appErrorMessage
-               [errors]="identificationTypeField.errors"
-               [touched]="identificationTypeField.touched"
-               [dirty]="identificationTypeField.dirty">
+               [errors]="usernameField.errors"
+               [touched]="usernameField.touched"
+               [dirty]="usernameField.dirty">
         </small>
       </div>
     </div>
@@ -105,7 +105,7 @@
     <!--automaticPassword & passwordChanged-->
     <div *ngIf="!idField.value">
       <!--automaticPassword-->
-      <div class="field">
+      <div *ngIf="false" class="field">
         <p-inputSwitch id="automaticPassword"
                        (onChange)="generateAutomaticPassword($event)"></p-inputSwitch>
         <small class="ml-2"> Generar una contraseña automáticamente</small>
@@ -126,7 +126,7 @@
       </div>
 
       <!--passwordChanged-->
-      <div class="field">
+      <div *ngIf="false" class="field">
         <p-inputSwitch id="passwordChanged" formControlName="passwordChanged"></p-inputSwitch>
         <small class="ml-2"> Pedir al usuario que cambie su contraseña cuando inicie sesión</small>
       </div>

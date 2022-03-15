@@ -3,6 +3,7 @@ import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {CoreHttpService, MessageService} from '@services/core';
 import {TestHttpService} from '@services/psychology/test-http.service';
 import {LocationModel} from '@models/core';
+import {RegularExpresions} from '@shared/regular-expresions/regular-expresions';
 
 @Component({
   selector: 'app-registration-agent',
@@ -41,8 +42,8 @@ export class RegistrationAgentComponent implements OnInit {
       // email: ['mayrapaulinaquinatoagomez@yahoo.com', [Validators.required, Validators.email]],
       // lastname: ['VILLAVICENCIO QUINCHIGUANGO', [Validators.required]],
       identification: [null, [Validators.required]],
-      name: [null, [Validators.required]],
-      lastname: [null, [Validators.required]],
+      name: [null, [Validators.required, Validators.pattern(RegularExpresions.alphaSpaces())]],
+      lastname: [null, [Validators.required, Validators.pattern(RegularExpresions.alphaSpaces())]],
       email: [null, [Validators.required, Validators.email]],
       phone: [null, [Validators.required]],
       code: [null, [Validators.required]],

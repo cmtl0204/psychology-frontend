@@ -28,6 +28,7 @@ import {RegistrationPatientComponent} from './chat/registration-patient/registra
 import {TestModule} from './test/test.module';
 import {ListboxModule} from 'primeng/listbox';
 import {AutoCompleteModule} from 'primeng/autocomplete';
+import {TooltipModule} from 'primeng/tooltip';
 
 @NgModule({
   declarations: [
@@ -37,33 +38,34 @@ import {AutoCompleteModule} from 'primeng/autocomplete';
     RegistrationPatientComponent,
     ChatComponent,
   ],
-    imports: [
-        CommonModule,
-        PsychologyRoutingModule,
-        FormsModule,
-        ReactiveFormsModule,
-        InputTextModule,
-        ButtonModule,
-        CardModule,
-        SharedModule,
-        DividerModule,
-        RippleModule,
-        PasswordModule,
-        ScrollPanelModule,
-        PanelModule,
-        ProgressBarModule,
-        AvatarModule,
-        BadgeModule,
-        InputNumberModule,
-        MessageModule,
-        MessagesModule,
-        DropdownModule,
-        KeyFilterModule,
-        TestModule,
-        ListboxModule,
-        AutoCompleteModule,
+  imports: [
+    CommonModule,
+    PsychologyRoutingModule,
+    FormsModule,
+    ReactiveFormsModule,
+    InputTextModule,
+    ButtonModule,
+    CardModule,
+    SharedModule,
+    DividerModule,
+    RippleModule,
+    PasswordModule,
+    ScrollPanelModule,
+    PanelModule,
+    ProgressBarModule,
+    AvatarModule,
+    BadgeModule,
+    InputNumberModule,
+    MessageModule,
+    MessagesModule,
+    DropdownModule,
+    KeyFilterModule,
+    TestModule,
+    ListboxModule,
+    AutoCompleteModule,
+    TooltipModule,
 
-    ]
+  ]
 })
 export class PsychologyModule {
 }

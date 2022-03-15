@@ -8,6 +8,7 @@ import {Handler} from '../../exceptions/handler';
 import {PaginatorModel} from '@models/core';
 import {AgentModel, AssignmentModel, PatientModel, TestModel} from '@models/psychology';
 import {ChatModel} from '@models/psychology/chat.model';
+import {format} from 'date-fns';
 
 @Injectable({
   providedIn: 'root'
@@ -210,6 +211,25 @@ export class TestHttpService {
         const downloadLink = document.createElement('a');
         downloadLink.href = filePath;
         downloadLink.setAttribute('download', `resultado.pdf`);
+        document.body.appendChild(downloadLink);
+        downloadLink.click();
+      }, error => {
+        this.loaded.next(false);
+      });
+  }
+
+  downloadTestsResultsExcel() {
+    const url = `${this.API_URL}/reports/tests/results`;
+    this.loaded.next(true);
+    return this.httpClient.get(url, {responseType: 'blob' as 'json'})
+      .subscribe(response => {
+        this.loaded.next(false);
+        const binaryData = [] as BlobPart[];
+        binaryData.push(response as BlobPart);
+        const filePath = URL.createObjectURL(new Blob(binaryData, {type: 'xlsx'}));
+        const downloadLink = document.createElement('a');
+        downloadLink.href = filePath;
+        downloadLink.setAttribute('download', `tests-${format(new Date(),'yyyy-MM-dd hh:mm:ss')}.xlsx`);
         document.body.appendChild(downloadLink);
         downloadLink.click();
       }, error => {

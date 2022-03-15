@@ -2,15 +2,15 @@
 <div class="formgrid grid">
   <div *ngIf="questionSteps>0" class="field col-10 panel-question">
     <p>
-      Hola nuevamente, soy TEMI. Muchas gracias por participar. Te estaré realizando unas preguntas para
-      conocer juntos sobre tu estado de ánimo en las últimas dos semanas.
+      Muchas gracias por regresar. Te voy a realizar algunas preguntas para conocer juntos sobre tu estado de ánimo en
+      las últimas dos semanas.
     </p>
   </div>
   <div *ngIf="questionSteps>1" class="field col-10 panel-question">
     <p>
       No hay respuesta correcta o incorrecta, por ello te pido que respondas con toda sinceridad. Recuerda que la
-      información que me compartas será confidencial y
-      se guardará de forma segura para proteger tu privacidad e integridad.
+      información que me compartas será confidencial y se guardará de forma segura para proteger tu privacidad e
+      integridad.
     </p>
   </div>
   <div *ngIf="questionSteps>2" class="field col-10 panel-question">
@@ -26,8 +26,7 @@
     <div class="formgrid grid">
       <div class="field col-10 panel-question">
         <p>
-          <!--          {{result.question.order}}. [{{result.question.type}}] {{result.question.value}}-->
-          {{result.question.value}}
+          <b *ngIf="result.question.type!='duel'">{{result.question.order}}.</b> {{result.question.value}}
         </p>
       </div>
     </div>
@@ -50,8 +49,7 @@
     <div *ngIf="question.order===actualQuestion && questionSteps>3">
       <div class="formgrid grid">
         <div class="field col-10 panel-question">
-          <!--          <p>{{question.order}}. [{{question.type}}] {{question.value}}</p>-->
-          <p>{{question.value}}</p>
+          <p><b *ngIf="question.type!='duel'">{{question.order}}.</b> {{question.value}}</p>
         </div>
       </div>
       <div class="formgrid grid">

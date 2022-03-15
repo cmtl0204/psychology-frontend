@@ -7,14 +7,14 @@
   <!--Username-->
   <div *ngIf="steps>=1" class="formgrid grid">
     <div class="field col-10 panel-question">
-      <p>Dinos tu número de cédula</p>
+      <p>Ingresa tu número de cédula</p>
     </div>
   </div>
   <!--Input-->
   <div *ngIf="steps===1" class="formgrid grid">
     <div class="field col-12">
       <div class="p-inputgroup">
-        <input type="text" pInputText formControlName="username" pKeyFilter="pint">
+        <input type="text" pInputText formControlName="username" pKeyFilter="pint" maxlength="10">
         <button *ngIf="usernameField.valid" type="button" pButton pRipple
                 class="p-button-rounded ml-1"
                 icon="pi pi-send"
@@ -37,7 +37,7 @@
   <!--Lastname-->
   <div *ngIf="steps>=2" class="formgrid grid">
     <div class="field col-10 panel-question">
-      <p>¿Cuál son tus apellidos?</p>
+      <p>Ingresa tus apellidos</p>
     </div>
   </div>
   <!--Input-->
@@ -68,7 +68,7 @@
   <!--Name-->
   <div *ngIf="steps>=3" class="formgrid grid">
     <div class="field col-10 panel-question">
-      <p>¿Cuál son tus nombres?</p>
+      <p>Ingresa tus nombres</p>
     </div>
   </div>
   <!--Input-->
@@ -100,14 +100,14 @@
   <div *ngIf="!younger">
     <div *ngIf="steps>=4" class="formgrid grid">
       <div class="field col-10 panel-question">
-        <p>¿A qué número de teléfono podríamos contactarte?</p>
+        <p>Ingresa un número de teléfono al que podríamos contactarte</p>
       </div>
     </div>
     <!--Input-->
     <div *ngIf="steps===4" class="formgrid grid">
       <div class="field col-12">
         <div class="p-inputgroup">
-          <input type="text" pInputText formControlName="phone" pKeyFilter="pint">
+          <input type="text" pInputText formControlName="phone" pKeyFilter="pint" maxlength="10">
           <button *ngIf="phoneField.valid" type="button" pButton pRipple
                   class="p-button-rounded ml-1"
                   icon="pi pi-send"
@@ -132,7 +132,7 @@
   <div *ngIf="!younger">
     <div *ngIf="steps>=5" class="formgrid grid">
       <div class="field col-10 panel-question">
-        <p>Un correo electrónico para poder enviarte una copia de tus respuestas</p>
+        <p>Ingresa un correo electrónico para poder enviarte una copia de tus respuestas</p>
       </div>
     </div>
     <!--Input-->
@@ -163,25 +163,19 @@
   <!--Province-->
   <div *ngIf="steps>=6" class="formgrid grid">
     <div class="field col-10 panel-question">
-      <p>Dinos tu Provincia</p>
+      <p>Selecciona la provincia en que resides</p>
     </div>
   </div>
   <!--Input-->
   <div *ngIf="steps===6" class="formgrid grid">
     <div class="field col-10">
-      <p-autoComplete formControlName="province" [suggestions]="filteredProvinces"
-                      (completeMethod)="filterProvinces($event)"
-                      field="name"
-                      [forceSelection]="true">
-      </p-autoComplete>
+      <div *ngFor="let province of provinces">
+        <button pButton type="button" [label]="province?.name!" class="p-button-text"
+                [loading]="progressBarAnswer"
+                (click)="saveProvince(province)"></button>
+      </div>
     </div>
     <div class="field col-2">
-      <button *ngIf="provinceField.valid" type="button" pButton pRipple
-              class="p-button-rounded"
-              icon="pi pi-send"
-              (click)="saveProvince()"
-              [loading]="progressBarAnswer"></button>
-
     </div>
   </div>
   <!--Result-->
@@ -198,23 +192,19 @@
   <!--Canton-->
   <div *ngIf="steps>=7" class="formgrid grid">
     <div class="field col-10 panel-question">
-      <p>Dinos tu Cantón</p>
+      <p>Selecciona el cantón en que resides</p>
     </div>
   </div>
   <!--Input-->
   <div *ngIf="steps===7" class="formgrid grid">
     <div class="field col-10">
-      <p-autoComplete formControlName="canton" [suggestions]="filteredCantons"
-                      (completeMethod)="filterCantons($event)" field="name"
-                      [forceSelection]="true">
-      </p-autoComplete>
+      <div *ngFor="let canton of cantons">
+        <button pButton type="button" [label]="canton?.name!" class="p-button-text"
+                [loading]="progressBarAnswer"
+                (click)="saveCanton(canton)"></button>
+      </div>
     </div>
     <div class="field col-2">
-      <button *ngIf="cantonField.valid" type="button" pButton pRipple
-              class="p-button-rounded ml-1"
-              icon="pi pi-send"
-              (click)="saveCanton()"
-              [loading]="progressBarAnswer"></button>
     </div>
   </div>
   <!--Result-->

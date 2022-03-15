@@ -9,6 +9,8 @@ import {
   UserAdministrationHttpService
 } from '@services/core';
 import {CatalogueModel, LocationModel, PhoneModel, RoleModel, UserModel} from '@models/core';
+import {CustomValidator} from "@shared/validators/custom-validator";
+import {RegularExpresions} from '@shared/regular-expresions/regular-expresions';
 
 @Component({
   selector: 'app-user-administration-form',
@@ -74,16 +76,16 @@ export class UserAdministrationFormComponent implements OnInit, OnDestroy {
 
   get newFormUser(): FormGroup {
     return this.formBuilder.group({
-      email: [null, [Validators.required, Validators.email]],
       id: [null],
+      email: [null, [Validators.required, Validators.email], CustomValidator.verifyEmail(this.authHttpService)],
       identificationType: [null, [Validators.required]],
       role: [null, [Validators.required]],
-      lastname: [null, [Validators.required]],
-      name: [null, [Validators.required]],
+      lastname: [null, [Validators.required, Validators.pattern(RegularExpresions.alphaSpaces())]],
+      name: [null, [Validators.required, Validators.pattern(RegularExpresions.alphaSpaces())]],
       password: [null, [Validators.required, Validators.minLength(8)]],
       passwordChanged: [true],
       // phones: this.formBuilder.array([this.newFormPhone], Validators.required),
-      username: [null, [Validators.required]]
+      username: [null, [Validators.required], CustomValidator.verifyUser(this.authHttpService)]
     });
   }
 

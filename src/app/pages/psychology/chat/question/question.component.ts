@@ -127,7 +127,7 @@ export class QuestionComponent implements OnInit, OnDestroy {
           this.flagDuel = true;
           this.questions = this.baseQuestions.filter(question => question.type == 'duel');
         }
-      }, Math.random() * (1500 - 1000) + 1000);
+      }, Math.random() * (4000 - 2000) + 2000);
     }
   }
 
@@ -151,9 +151,9 @@ export class QuestionComponent implements OnInit, OnDestroy {
       response => {
         this.progressBarAnswer = false;
         if (response.data.priority.level === 4) {
-          this.finalMessage = 'Muchas gracias por tu participación. Recuerda que este es un servicio gratuito. Te animo a seguir cuidando de ti y recuerda que TEMI, tu amigo, estará disponible para cuando lo necesites. ¡Hasta pronto!';
+          this.finalMessage = 'Muchas gracias por tu participación. Recuerda que este es un servicio gratuito. Te animo a seguir cuidando de ti y recuerda que TEMI, te escucha, estará disponible para cuando lo necesites. ¡Hasta pronto!';
         } else {
-          this.finalMessage = 'Muchas gracias por tu participación.  Ponemos a disposición nuestros servicios de atención psicológica gratuita. En función a tus respuestas, te recomiendo hacer uso de nuestros servicios de atención psicológica gratuita. Un psicólogo o psicóloga se comunicará contigo en estos días. Recuerda que tu bienestar es una prioridad. ¡Hasta pronto!';
+          this.finalMessage = 'Muchas gracias por tu participación.  Ponemos a disposición nuestros servicios de atención psicológica gratuita. Un psicólogo o psicóloga se comunicará contigo en estos días. Recuerda que tu bienestar es una prioridad y que TEMI, te escucha estará disponible para cuando lo necesites. ¡Hasta pronto!';
         }
         this.progressBarAnswerOut.emit(false);
         this.progressBarAnswer = false;

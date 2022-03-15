@@ -1,22 +1,28 @@
+@media(min-width: 800px) {
+  .app-panel {
+    margin-right: 15%;
+    margin-left: 15%;
+  }
+}
+
 .app-messages {
-  padding: 2px 10px 12px;
+  //padding: 2px 10px 12px;
   overflow: auto;
   height: 850px;
 }
 
 .app-panel {
   background: #fff;
-  padding-top: 20px;
+  padding-top: 40px;
   padding-left: 20px;
   padding-right: 20px;
   border-radius: 15px 15px 15px 15px;
 }
-
 .panel-avatar {
-  background: #d1e2f0;
-  height: 80px;
-  width:  97%;
-  border-radius: 15px 15px 15px 15px;
+  background: #d2e4ca;
+  height: 100px;
+  width: 100%;
+  //border-radius: 15px 15px 15px 15px;
   position: fixed;
 }
 
@@ -25,7 +31,7 @@
   font-size: 20px;
 }
 
-.panel-avatar img{
+.panel-avatar img {
   float: left;
 }
 
@@ -34,13 +40,13 @@
   padding: 10px;
 }
 
-.panel-question{
+.panel-question {
   //background: #F7B032;
   background: #fbdfad;
   border-radius: 15px 15px 15px 15px;
 }
 
-.panel-answer{
+.panel-answer {
   background: #1D70B6;
   color: #fff;
   padding-right: 20px;
