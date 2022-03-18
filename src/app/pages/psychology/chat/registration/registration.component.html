@@ -1,6 +1,6 @@
 <form [formGroup]="formChat" class="p-fluid">
   <!--Terms and Conditions-->
-  <div class="formgrid grid">
+  <div *ngIf="stepsTemp>0" class="formgrid grid">
     <div class="field col-10 panel-question">
       <p>Hola, soy tu amigo TEMI. Te voy a realizar algunas preguntas para conocer juntos sobre tu estado de ánimo en
         las últimas dos semanas. La información que me brindes será confidencial y se guardará de forma segura para
@@ -8,7 +8,7 @@
       </p>
     </div>
   </div>
-  <div class="formgrid grid">
+  <div *ngIf="stepsTemp>1" class="formgrid grid">
     <div class="field col-10 panel-question">
       <p>Antes de empezar, es importante que puedas leer sobre la política de cuidado de tus datos en el siguiente
         enlace: Si estás de acuerdo, por favor señala "aceptar" en la casilla inferior para continuar.
@@ -19,7 +19,7 @@
     </div>
   </div>
   <!--Input-->
-  <div *ngIf="steps===1" class="formgrid grid">
+  <div *ngIf="steps===1 && stepsTemp>2" class="formgrid grid">
     <div class="field col-6 col-offset-6">
       <button pButton type="button" label="Aceptar"
               class="p-button-lg p-button-text"

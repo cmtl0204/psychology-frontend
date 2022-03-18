@@ -17,6 +17,7 @@ export class RegistrationComponent implements OnInit {
   formChat: FormGroup;
   progressBarAnswer: boolean = false;
   steps: number = 1;
+  stepsTemp: number = 0;
   ageValid: boolean = false;
   younger: boolean = false;
   codeVerified: string = '';
@@ -36,6 +37,19 @@ export class RegistrationComponent implements OnInit {
     this.testHttpService.removePatient();
     this.loadLocations();
     this.loadCantons();
+    this.progressBarAnswerOut.emit(true);
+    setTimeout(() => {
+      this.stepsTemp++;
+      this.progressBarAnswerOut.emit(false);
+    }, 2000);
+    setTimeout(() => {
+      this.progressBarAnswerOut.emit(true);
+      this.stepsTemp++;
+    }, 4000);
+    setTimeout(() => {
+      this.progressBarAnswerOut.emit(false);
+      this.stepsTemp++;
+    }, 6000);
   }
 
   get newFormChat(): FormGroup {

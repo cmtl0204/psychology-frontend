@@ -179,6 +179,12 @@
     <div class="field col-12">
       <div class="p-inputgroup">
         <input type="text" pInputText formControlName="code" pKeyFilter="pint" class="mr-1">
+        <button *ngIf="codeField.invalid" type="button" pButton pRipple
+                label="Reenviar código"
+                class="p-button-rounded ml-1"
+                icon="pi pi-send"
+                (click)="saveEmail()"
+                [loading]="progressBarAnswer"></button>
         <button *ngIf="codeField.valid"
                 type="button" pButton pRipple
                 class="p-button-rounded"
