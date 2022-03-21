@@ -88,7 +88,7 @@
 
     <!--email-->
     <div class="field">
-      <label for="email" appLabel label="Correo electrónico institucional:"
+      <label for="email" appLabel label="Correo electrónico:"
              [required]="isRequired(emailField)"
              [valid]="emailField.valid"
              [touched]="emailField.touched"
@@ -102,43 +102,13 @@
       </small>
     </div>
 
-    <!--automaticPassword & passwordChanged-->
-    <div *ngIf="!idField.value">
-      <!--automaticPassword-->
-      <div *ngIf="false" class="field">
-        <p-inputSwitch id="automaticPassword"
-                       (onChange)="generateAutomaticPassword($event)"></p-inputSwitch>
-        <small class="ml-2"> Generar una contraseña automáticamente</small>
-      </div>
-      <div *ngIf="!automaticPassword.value" class="field">
-        <label for="password">Contraseña:</label>
-        <p-password id="password" formControlName="password"
-                    mediumLabel="Nivel medio"
-                    promptLabel="Escriba su contraseña"
-                    strongLabel="Fuerte" [toggleMask]="true"
-                    weakLabel="Débil">
-        </p-password>
-        <small appErrorMessage
-               [errors]="passwordField.errors"
-               [touched]="passwordField.touched"
-               [dirty]="passwordField.dirty">
-        </small>
-      </div>
-
-      <!--passwordChanged-->
-      <div *ngIf="false" class="field">
-        <p-inputSwitch id="passwordChanged" formControlName="passwordChanged"></p-inputSwitch>
-        <small class="ml-2"> Pedir al usuario que cambie su contraseña cuando inicie sesión</small>
-      </div>
-    </div>
-
     <!--role-->
-    <div class="field xl:col-6 lg:col-6 md:col-12 sm:col-12">
+    <div class="field">
       <label for="role" appLabel label="Rol:"
-             [required]="isRequired(identificationTypeField)"
-             [valid]="identificationTypeField.valid"
-             [touched]="identificationTypeField.touched"
-             [dirty]="identificationTypeField.dirty">
+             [required]="isRequired(roleField)"
+             [valid]="roleField.valid"
+             [touched]="roleField.touched"
+             [dirty]="roleField.dirty">
       </label>
       <p-dropdown id="role"
                   formControlName="role"
@@ -162,153 +132,12 @@
              [dirty]="roleField.dirty">
       </small>
     </div>
-    <!--    &lt;!&ndash;addPhone()&ndash;&gt;-->
-    <!--    <div class="formgrid grid">-->
-    <!--      &lt;!&ndash;addPhone()&ndash;&gt;-->
-    <!--      <div class="field xl:col-12 lg:col-12 md:col-12 sm:col-12">-->
-    <!--        <button pButton pRipple type="button" label="Añadir Teléfono"-->
-    <!--                class="p-button-secondary p-button-rounded"-->
-    <!--                icon="pi pi-plus"-->
-    <!--                (click)="addPhone()"></button>-->
-    <!--      </div>-->
-    <!--    </div>-->
-
-    <!--    &lt;!&ndash;phones&ndash;&gt;-->
-    <!--    <div formArrayName="phones">-->
-    <!--      <div *ngFor="let phone of phonesField.controls; let i = index;" [formGroupName]="i">-->
-    <!--        &lt;!&ndash;title & removePhone()&ndash;&gt;-->
-    <!--        <div class="field text-center">-->
-    <!--          &lt;!&ndash;title&ndash;&gt;-->
-    <!--          <label [for]="'phone'+i" appLabel [label]="'Teléfono ' + (i + 1) + ':'"-->
-    <!--                 [required]="isRequired(phonesField.controls[i])"-->
-    <!--                 [valid]="phonesField.controls[i].valid"-->
-    <!--                 [touched]="phonesField.controls[i].touched"-->
-    <!--                 [dirty]="phonesField.controls[i].dirty"></label>-->
-
-    <!--          &lt;!&ndash;removePhone()&ndash;&gt;-->
-    <!--          <button pButton pRipple type="button"-->
-    <!--                  class="p-button-danger p-button-rounded ml-2"-->
-    <!--                  iconPos="right"-->
-    <!--                  icon="pi pi-trash"-->
-    <!--                  (click)="removePhone(i)"></button>-->
-    <!--        </div>-->
-
-    <!--        &lt;!&ndash;phoneOperator & phoneTypes&ndash;&gt;-->
-    <!--        <div class="formgrid grid">-->
-    <!--          &lt;!&ndash;phoneOperator&ndash;&gt;-->
-    <!--          <div class="field xl:col-6 lg:col-6 md:col-12 sm:col-12">-->
-    <!--            <p-dropdown [id]="'phoneOperator'+i" formControlName="operator"-->
-    <!--                        [options]="phoneOperators"-->
-    <!--                        dataKey="id"-->
-    <!--                        [filter]="true"-->
-    <!--                        filterBy="name"-->
-    <!--                        placeholder="Operadora">-->
-    <!--              <ng-template pTemplate="selectedItem">-->
-    <!--                <div *ngIf="phonesField.value[i].operator">-->
-    <!--                  <div>-->
-    <!--                    {{phonesField.value[i].operator.name}}-->
-    <!--                  </div>-->
-    <!--                </div>-->
-    <!--              </ng-template>-->
-    <!--              <ng-template let-item pTemplate="item">-->
-    <!--                <div>-->
-    <!--                  {{item.name}}-->
-    <!--                </div>-->
-    <!--              </ng-template>-->
-    <!--            </p-dropdown>-->
-    <!--            <small appErrorMessage-->
-    <!--                   [errors]="phonesField.controls[i]?.get('operator')!.errors"-->
-    <!--                   [touched]="phonesField.controls[i]?.get('operator')!.touched"-->
-    <!--                   [dirty]="phonesField.controls[i]?.get('operator')!.dirty">-->
-    <!--            </small>-->
-    <!--          </div>-->
-    <!--          &lt;!&ndash;phoneTypes&ndash;&gt;-->
-    <!--          <div class="field xl:col-6 lg:col-6 md:col-12 sm:col-12">-->
-    <!--            <p-dropdown [id]="'phoneType'+i" formControlName="type"-->
-    <!--                        [options]="phoneTypes"-->
-    <!--                        dataKey="id"-->
-    <!--                        [filter]="true"-->
-    <!--                        filterBy="name"-->
-    <!--                        placeholder="Tipo">-->
-    <!--              <ng-template pTemplate="selectedItem">-->
-    <!--                <div-->
-    <!--                  *ngIf="phonesField.value[i].type">-->
-    <!--                  <div>-->
-    <!--                    {{phonesField.value[i].type.name}}-->
-    <!--                  </div>-->
-    <!--                </div>-->
-    <!--              </ng-template>-->
-    <!--              <ng-template let-item pTemplate="item">-->
-    <!--                <div>-->
-    <!--                  {{item.name}}-->
-    <!--                </div>-->
-    <!--              </ng-template>-->
-    <!--            </p-dropdown>-->
-    <!--            <small appErrorMessage-->
-    <!--                   [errors]="phonesField.controls[i]?.get('type')!.errors"-->
-    <!--                   [touched]="phonesField.controls[i]?.get('type')!.touched"-->
-    <!--                   [dirty]="phonesField.controls[i]?.get('type')!.dirty">-->
-    <!--            </small>-->
-    <!--          </div>-->
-    <!--        </div>-->
-
-    <!--        &lt;!&ndash;phoneLocation & number & removePhone()&ndash;&gt;-->
-    <!--        <div class="formgrid grid">-->
-    <!--          &lt;!&ndash;phoneLocation&ndash;&gt;-->
-    <!--          <div class="field xl:col-6 lg:col-6 md:col-12 sm:col-12">-->
-    <!--            <p-dropdown [id]="'phoneLocation'+i" formControlName="location"-->
-    <!--                        [options]="phoneLocations"-->
-    <!--                        dataKey="id"-->
-    <!--                        [filter]="true"-->
-    <!--                        filterBy="alpha2_code"-->
-    <!--                        placeholder="Cod. Area">-->
-    <!--              <ng-template pTemplate="selectedItem">-->
-    <!--                <div *ngIf="phonesField.value[i].location">-->
-    <!--                  <div>-->
-    <!--                    <i [class]="'flag-icon flag-icon-'+phonesField.value[i].location.alpha2Code"></i>-->
-    <!--                    {{phonesField.value[i].location.alpha2Code}}-->
-    <!--                    {{phonesField.value[i].location.callingCode}}-->
-    <!--                    {{phonesField.value[i].location.name}}-->
-    <!--                  </div>-->
-    <!--                </div>-->
-    <!--              </ng-template>-->
-    <!--              <ng-template let-item pTemplate="item">-->
-    <!--                <div>-->
-    <!--                  <i [class]="'flag-icon flag-icon-'+item.alpha2Code"></i>-->
-    <!--                  {{item.alpha2Code}}-->
-    <!--                  {{item.callingCode}}-->
-    <!--                  {{item.name}}-->
-    <!--                </div>-->
-    <!--              </ng-template>-->
-    <!--            </p-dropdown>-->
-    <!--            <small appErrorMessage-->
-    <!--                   [errors]="phonesField.controls[i]?.get('location')!.errors"-->
-    <!--                   [touched]="phonesField.controls[i]?.get('location')!.touched"-->
-    <!--                   [dirty]="phonesField.controls[i]?.get('location')!.dirty">-->
-    <!--            </small>-->
-    <!--          </div>-->
-    <!--          &lt;!&ndash;number&ndash;&gt;-->
-    <!--          <div class="field xl:col-6 lg:col-6 md:col-12 sm:col-12">-->
-    <!--            <input pInputText [id]="'number'+i" formControlName="number" pKeyFilter="int" placeholder="Ej. 0987654321">-->
-    <!--            <small appErrorMessage-->
-    <!--                   [errors]="phonesField.controls[i]?.get('number')!.errors"-->
-    <!--                   [touched]="phonesField.controls[i]?.get('number')!.touched"-->
-    <!--                   [dirty]="phonesField.controls[i]?.get('number')!.dirty">-->
-    <!--            </small>-->
-    <!--          </div>-->
-    <!--        </div>-->
-
-    <!--        <p-divider *ngIf="i<phonesField.length-1"></p-divider>-->
-
-    <!--      </div>-->
-    <!--    </div>-->
-
     <p-divider></p-divider>
 
     <!--onSubmit()-->
     <div class="field">
       <button pButton pRipple label="Guardar" class="p-button-rounded"
-              icon="pi pi-save"></button>
+              icon="pi pi-save" [loading]="progressBar"></button>
     </div>
 
     <!--progressBar-->

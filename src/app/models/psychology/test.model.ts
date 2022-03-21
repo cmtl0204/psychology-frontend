@@ -12,6 +12,7 @@ export interface TestModel {
   state?: StateModel;
   user?: UserModel;
   age?: number;
+  createdAt?: Date;
   code?: string;
   score?: number;
   termsConditions?: boolean;

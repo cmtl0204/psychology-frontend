@@ -39,7 +39,7 @@ export class ResultComponent implements OnInit {
   }
 
   download() {
-    this.testHttpService.downloadTestResults(this.test.id!);
+    this.testHttpService.downloadTestResults(this.test!);
   }
 
   assignmentForm() {

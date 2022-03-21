@@ -123,8 +123,8 @@
   </div>
   <!--ToolBar-->
   <p-card>
-    <p-toolbar>
-      <div class="p-toolbar-group-left">
+    <div class="grid">
+      <div class="xl:col-6">
         <button pButton pRipple type="button" label="Refrescar Página"
                 class="p-button-info mr-2" icon="pi pi-sync"
                 (click)="loadAllMethods()"
@@ -146,7 +146,7 @@
         <app-progress-bar *ngIf="progressBarDelete" [message]="messageService.progressBarDelete"
                           class="ml-2"></app-progress-bar>
       </div>
-      <div class="p-toolbar-group-right">
+      <div class="xl:col-6">
         <p-multiSelect [options]="priorities"
                        [(ngModel)]="selectedPriorities"
                        class="mr-2"
@@ -169,7 +169,7 @@
                   [loading]="(loaded$|async)!"></button>
         </div>
       </div>
-    </p-toolbar>
+    </div>
   </p-card>
   <br>
   <!--Table-->

@@ -1,4 +1,6 @@
-.loginForm {
-  padding: 5% 35% 0% 35%;
-  background-color: white;
+@media(min-width: 1000px) {
+  .loginForm {
+    margin-right: 30%;
+    margin-left: 30%;
+  }
 }

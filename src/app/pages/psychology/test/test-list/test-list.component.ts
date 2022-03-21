@@ -209,7 +209,7 @@ export class TestListComponent implements OnInit {
   }
 
   download(test: TestModel) {
-    this.testHttpService.downloadTestResults(test.id!);
+    this.testHttpService.downloadTestResults(test!);
   }
 
   downloadExcel() {
