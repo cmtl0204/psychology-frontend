@@ -137,6 +137,23 @@ export class RegistrationAgentComponent implements OnInit {
     }
   }
 
+  resendEmail() {
+    if (this.emailField.valid) {
+      this.progressBarAnswer = true;
+      this.progressBarAnswerOut.emit(true);
+      this.testHttpService.requestTransactionalCode(this.formAgent.value).subscribe(
+        response => {
+          this.progressBarAnswer = false;
+          this.progressBarAnswerOut.emit(false);
+        }, error => {
+          this.progressBarAnswer = false;
+          this.progressBarAnswerOut.emit(false);
+          this.messageService.error(error);
+        }
+      );
+    }
+  }
+
   saveCode() {
     if (this.codeField.valid) {
       this.progressBarAnswer = true;

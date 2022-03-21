@@ -15,6 +15,7 @@ import {ChatModel} from '@models/psychology/chat.model';
 
 export class QuestionComponent implements OnInit, OnDestroy {
   @Output() progressBarAnswerOut = new EventEmitter<boolean>();
+  @Output() renderScrollOut = new EventEmitter<boolean>();
   questions$ = this.questionHttpService.questions$;
   question$ = this.questionHttpService.question$;
   loaded$ = this.questionHttpService.loaded$;
@@ -29,7 +30,6 @@ export class QuestionComponent implements OnInit, OnDestroy {
   results: any[] = [];
   actualQuestion: number = 1;
   currentDate: Date = new Date();
-  time: any;
   patient: PatientModel = {};
   agent: PatientModel = {};
   chat: ChatModel = {};
@@ -44,10 +44,6 @@ export class QuestionComponent implements OnInit, OnDestroy {
               private testHttpService: TestHttpService,
   ) {
     this.formChat = this.newFormChat;
-    this.time = setInterval(() => {
-      this.currentDate = new Date();
-    }, 1000);
-
     this.patient = this.testHttpService.patient;
     this.patient.age = this.testHttpService.age;
     this.agent = this.testHttpService.agent;
@@ -92,9 +88,8 @@ export class QuestionComponent implements OnInit, OnDestroy {
       this.results.push({
         question, answer, registeredAt: new Date()
       });
-      clearInterval(this.time);
-      this.actualQuestion = question?.order! + 1;
-      this.saveTest();
+
+      this.saveTest(question);
     } else {
 
       this.progressBarAnswerOut.emit(true);
@@ -140,7 +135,7 @@ export class QuestionComponent implements OnInit, OnDestroy {
     }, 0);
   }
 
-  saveTest() {
+  saveTest(question: QuestionModel) {
     this.chat.patient = this.patient;
     this.chat.agent = this.agent;
     this.chat.results = this.results;
@@ -149,6 +144,7 @@ export class QuestionComponent implements OnInit, OnDestroy {
     this.progressBarAnswer = true;
     this.testHttpService.storeChat(this.chat).subscribe(
       response => {
+        this.actualQuestion = question?.order! + 1;
         this.progressBarAnswer = false;
         if (response.data.priority.level === 4) {
           this.finalMessage = 'Muchas gracias por tu participación. Recuerda que este es un servicio gratuito. Te animo a seguir cuidando de ti y recuerda que TEMI, te escucha, estará disponible para cuando lo necesites. ¡Hasta pronto!';

@@ -1,5 +1,5 @@
 export class RegularExpresions {
   public static alphaSpaces(): RegExp {
-    return /^[a-zA-Z ]+$/;
+    return /^[a-zA-ZÀ-ÿ ]+$/;
   }
 }
