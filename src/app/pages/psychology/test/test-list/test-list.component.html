@@ -142,7 +142,8 @@
                 class="p-button-success"
                 icon="pi pi-download"
                 (click)="downloadExcel()"
-                [disabled]="!(rangeDates?.length===2)"></button>
+                [disabled]="!(rangeDates?.length===2)"
+                [loading]="(loaded$|async)!"></button>
         <app-progress-bar *ngIf="progressBarDelete" [message]="messageService.progressBarDelete"
                           class="ml-2"></app-progress-bar>
       </div>

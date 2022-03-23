@@ -213,7 +213,7 @@ export class TestListComponent implements OnInit {
   }
 
   downloadExcel() {
-    this.testHttpService.downloadTestsResultsExcel();
+    this.testHttpService.downloadTestsResultsExcel(this.rangeDates);
   }
 
   filter(event: any) {

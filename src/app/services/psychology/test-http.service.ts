@@ -210,7 +210,7 @@ export class TestHttpService {
         const filePath = URL.createObjectURL(new Blob(binaryData, {type: 'pdf'}));
         const downloadLink = document.createElement('a');
         downloadLink.href = filePath;
-        downloadLink.setAttribute('download', `${test.code}_${format(new Date(),'yyyy-MM-dd hh:mm:ss')}.pdf`);
+        downloadLink.setAttribute('download', `${test.code}_${format(new Date(), 'yyyy-MM-dd hh:mm:ss')}.pdf`);
         document.body.appendChild(downloadLink);
         downloadLink.click();
       }, error => {
@@ -218,10 +218,10 @@ export class TestHttpService {
       });
   }
 
-  downloadTestsResultsExcel() {
+  downloadTestsResultsExcel(dates: Date[]) {
     const url = `${this.API_URL}/reports/tests/results`;
     this.loaded.next(true);
-    return this.httpClient.get(url, {responseType: 'blob' as 'json'})
+    return this.httpClient.post(url, {dates}, {responseType: 'blob' as 'json'})
       .subscribe(response => {
         this.loaded.next(false);
         const binaryData = [] as BlobPart[];
@@ -229,7 +229,7 @@ export class TestHttpService {
         const filePath = URL.createObjectURL(new Blob(binaryData, {type: 'xlsx'}));
         const downloadLink = document.createElement('a');
         downloadLink.href = filePath;
-        downloadLink.setAttribute('download', `tests_${format(new Date(),'yyyy-MM-dd hh:mm:ss')}.xlsx`);
+        downloadLink.setAttribute('download', `tests_${format(new Date(), 'yyyy-MM-dd hh:mm:ss')}.xlsx`);
         document.body.appendChild(downloadLink);
         downloadLink.click();
       }, error => {
