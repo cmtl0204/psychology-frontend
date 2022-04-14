@@ -94,6 +94,19 @@ export class MessageService {
       confirmButtonText: '<i class="pi pi-lock"> Si, cerrar</i>'
     });
   }
+
+  questionDeleteAssignment({title = '¿Está seguro de quitar las asignación?', text = ''}) {
+    return Swal.fire({
+      title,
+      text,
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#EEEEEE',
+      confirmButtonText: '<i class="pi pi-lock"> Si, cerrar</i>'
+    });
+  }
+
   suspendUser({title = '¿Está seguro de suspender al usuario?', text = 'El usuario no tendrá acceso al sistema!'}) {
     return Swal.fire({
       title,

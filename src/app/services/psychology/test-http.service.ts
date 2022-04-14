@@ -199,6 +199,44 @@ export class TestHttpService {
       );
   }
 
+  deleteAssignment(id: number): Observable<ServerResponse> {
+    const url = `${this.API_URL}/tests/${id}/assignments`;
+
+    this.loaded.next(true);
+    return this.httpClient.delete<ServerResponse>(url)
+      .pipe(
+        map(response => response),
+        tap(response => {
+          this.loaded.next(false);
+          const index = this.testsList.data.findIndex((test: TestModel) => test.id === response.data.id);
+          this.testsList.data[index] = response.data;
+          this.tests.next(this.testsList);
+        }, error => {
+          this.loaded.next(false);
+        }),
+        catchError(Handler.render)
+      );
+  }
+
+  updatePriorityTest(id: number, priorityId: number): Observable<ServerResponse> {
+    const url = `${this.API_URL}/tests/${id}/priorities/${priorityId}`;
+
+    this.loaded.next(true);
+    return this.httpClient.patch<ServerResponse>(url, null)
+      .pipe(
+        map(response => response),
+        tap(response => {
+          this.loaded.next(false);
+          const index = this.testsList.data.findIndex((test: TestModel) => test.id === response.data.id);
+          this.testsList.data[index] = response.data;
+          this.tests.next(this.testsList);
+        }, error => {
+          this.loaded.next(false);
+        }),
+        catchError(Handler.render)
+      );
+  }
+
   downloadTestResults(test: TestModel) {
     const url = `${this.API_URL}/reports/tests/${test.id}/results`;
     this.loaded.next(true);
@@ -294,6 +332,24 @@ export class TestHttpService {
     const url = `${this.API_URL}/tests/count-all-tests`;
     const params = new HttpParams()
       .append('provinces', provinceIds.toString())
+      .append('startedAt', startedAt)
+      .append('endedAt', endedAt);
+    // this.loaded.next(true);
+    return this.httpClient.get<ServerResponse>(url, {params})
+      .pipe(
+        map(response => response),
+        tap(() => {
+          // this.loaded.next(false);
+        }),
+        catchError(Handler.render)
+      );
+  }
+
+  countTestsByPrioritues(provinceIds: number[], priorityIds: number[], startedAt: string, endedAt: string): Observable<ServerResponse> {
+    const url = `${this.API_URL}/tests/count-tests-priorities`;
+    const params = new HttpParams()
+      .append('provinces', provinceIds.toString())
+      .append('priorities', priorityIds.toString())
       .append('startedAt', startedAt)
       .append('endedAt', endedAt);
     // this.loaded.next(true);

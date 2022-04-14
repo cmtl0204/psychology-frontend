@@ -49,6 +49,8 @@ export class UserAdministrationFormComponent implements OnInit, OnDestroy {
 
         if (this.idField.value) {
           this.passwordField.clearValidators();
+          this.emailField.clearValidators();
+          this.usernameField.clearValidators();
         }
 
         if (response.phones?.length) {

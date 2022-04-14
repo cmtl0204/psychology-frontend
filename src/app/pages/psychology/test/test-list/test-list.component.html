@@ -2,6 +2,10 @@
   <app-assignment *ngIf="dialogForm" [tests]="selectedTests"
                   (dialogForm)="dialogForm=$event;loadAllMethods(paginator.current_page);selectedTests=[]"></app-assignment>
 </p-dialog>
+<p-dialog header="Resultados" [(visible)]="dialogFormResults" [maximizable]="true" [modal]="true">
+  <app-result *ngIf="dialogFormResults" [test]="selectedTest"
+              (dialogFormResults)="dialogFormResults=$event"></app-result>
+</p-dialog>
 <div class="container">
   <!--Dates && Provinces-->
   <p-card>
@@ -43,14 +47,15 @@
           <p>
             Tamizajes Totales:
           </p>
-          <button pButton type="button" [label]="countAllTests!"
+          <button pButton type="button" [label]="countAllTests"
                   class="p-button-rounded"
                   [loading]="(loaded$|async)!"></button>
         </div>
         <div class="field xl:col-6 lg:col-6 md:col-12 sm:col-12">
-          <p>Sin Problemas:</p>
-          <button pButton type="button" icon="pi pi-check" [label]="(countPriorities[3]?.testsCount!)?.toString()!"
-                  class="p-button-rounded p-button-success"
+          <p>Casos Identificados:</p>
+          <button pButton type="button"
+                  [label]="countTestsPriorities"
+                  class="p-button-rounded p-button-secondary"
                   [loading]="(loaded$|async)!"></button>
         </div>
       </div>
@@ -155,7 +160,7 @@
                        optionLabel="name"
                        [selectionLimit]="4"
                        placeholder="Todas las prioridades"
-                       (onChange)="loadTests()"></p-multiSelect>
+                       (onChange)="loadTests();loadCountTestsByPriorities()"></p-multiSelect>
         <p-multiSelect [options]="states"
                        [(ngModel)]="selectedStates"
                        display="chip"
@@ -237,23 +242,35 @@
                 {{rowData[col.field].institution.shortName}}
               </span>
                <span *ngSwitchCase="'priority'">
-                <button pButton type="button"
-                        class="p-button-rounded"
-                        [pTooltip]="
+<!--                <button pButton type="button"-->
+                 <!--                        class="p-button-rounded"-->
+                 <!--                        [pTooltip]="-->
+                 <!--                        rowData[col.field].level===1?'Alta Intensidad':-->
+                 <!--                        rowData[col.field].level===2?'Media Intensidad':-->
+                 <!--                        rowData[col.field].level===3?'Baja Intensidad':'Sin Problemas'"-->
+                 <!--                        [icon]="-->
+                 <!--                        rowData[col.field].level===1?'pi pi-arrow-up':-->
+                 <!--                        rowData[col.field].level===2?'pi pi-arrows-h':-->
+                 <!--                        rowData[col.field].level===3?'pi pi-arrow-down':'pi pi-check'"-->
+                 <!--                        [ngClass]="{-->
+                 <!--                        'p-button-danger':rowData[col.field].level===1,-->
+                 <!--                        'p-button-warning':rowData[col.field].level===2,-->
+                 <!--                        'p-button-info':rowData[col.field].level===3,-->
+                 <!--                        'p-button-success':rowData[col.field].level===4-->
+                 <!--                        }"-->
+                 <!--                ></button>-->
+                 <p-splitButton [pTooltip]="
                         rowData[col.field].level===1?'Alta Intensidad':
                         rowData[col.field].level===2?'Media Intensidad':
                         rowData[col.field].level===3?'Baja Intensidad':'Sin Problemas'"
-                        [icon]="
+                                [icon]="
                         rowData[col.field].level===1?'pi pi-arrow-up':
                         rowData[col.field].level===2?'pi pi-arrows-h':
                         rowData[col.field].level===3?'pi pi-arrow-down':'pi pi-check'"
-                        [ngClass]="{
-                        'p-button-danger':rowData[col.field].level===1,
-                        'p-button-warning':rowData[col.field].level===2,
-                        'p-button-info':rowData[col.field].level===3,
-                        'p-button-success':rowData[col.field].level===4
-                        }"
-                ></button>
+                                [styleClass]="checkPriorityClass(rowData[col.field].level)"
+                                (onClick)="selectTest(rowData)"
+                                (onDropdownClick)="selectTest(rowData)"
+                                [model]="itemsPriority"></p-splitButton>
               </span>
               <span *ngSwitchCase="'state'">
                 {{rowData[col.field].name}}

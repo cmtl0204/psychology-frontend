@@ -1,4 +1,13 @@
-import {Component, OnInit} from '@angular/core';
+import {
+  AfterContentChecked,
+  AfterContentInit,
+  AfterViewChecked,
+  Component,
+  EventEmitter,
+  Input,
+  OnInit,
+  Output
+} from '@angular/core';
 import {TestHttpService} from '@services/psychology/test-http.service';
 import {TestModel} from '@models/psychology';
 import {ActivatedRoute} from '@angular/router';
@@ -11,7 +20,8 @@ import {MessageService} from '@services/core';
   styleUrls: ['./result.component.scss']
 })
 export class ResultComponent implements OnInit {
-  test: TestModel = {};
+  @Output() dialogFormResults: EventEmitter<boolean> = new EventEmitter<boolean>();
+  @Input() test: TestModel = {};
   loaded$ = this.testHttpService.loaded$;
   paginator$ = this.testHttpService.paginator$;
   paginator: PaginatorModel = {};
@@ -25,17 +35,25 @@ export class ResultComponent implements OnInit {
       {field: 'question', header: 'Pregunta'},
       {field: 'answer', header: 'Respuesta'},
     ];
-
   }
 
   ngOnInit(): void {
-    this.loadTest();
+    // this.loadTest();
   }
 
-  loadTest() {
+  loadTestBackup() {
     this.testHttpService.getTest(this.activatedRoute.snapshot.params['testId']).subscribe(response => {
       this.test = response.data;
     });
+  }
+
+  loadTest() {
+    console.log(this.test);
+    if (this.test) {
+      this.testHttpService.getTest(this.test.id!).subscribe(response => {
+        this.test = response.data;
+      });
+    }
   }
 
   download() {

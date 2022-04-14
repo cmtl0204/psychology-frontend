@@ -23,6 +23,7 @@ import {MultiSelectModule} from 'primeng/multiselect';
 import {TooltipModule} from 'primeng/tooltip';
 import {TagModule} from 'primeng/tag';
 import { ResultComponent } from './result/result.component';
+import {SpeedDialModule} from 'primeng/speeddial';
 
 
 
@@ -56,7 +57,8 @@ import { ResultComponent } from './result/result.component';
         CalendarModule,
         MultiSelectModule,
         TooltipModule,
-        TagModule
+        TagModule,
+        SpeedDialModule
     ]
 })
 export class TestModule { }

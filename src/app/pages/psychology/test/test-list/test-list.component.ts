@@ -22,13 +22,16 @@ export class TestListComponent implements OnInit {
   selectedTest: TestModel = {};
   cols: ColModel[];
   items: MenuItem[] = [];
+  itemsPriority: MenuItem[] = [];
   dialogForm: boolean = false;
+  dialogFormResults: boolean = false;
   progressBarDelete: boolean = false;
   search: FormControl = new FormControl('');
   paginator: PaginatorModel = {};
   countPriorities: PriorityModel[] = [];
   countAllPriorities: PriorityModel[] = [];
   countAllTests: string = '0';
+  countTestsPriorities: string = '0';
   states: any[] = [{id: 1, name: 'SIN ASIGNAR'}, {id: 2, name: 'ASIGNADO'}, {
     id: 3,
     name: 'CERRADO'
@@ -65,11 +68,17 @@ export class TestListComponent implements OnInit {
     this.items = [
       {
         label: 'Ver Informe', icon: 'pi pi-eye', command: () => {
-          this.router.navigate(['/test/result', this.selectedTest.id]);
+          // this.router.navigate(['/test/result', this.selectedTest.id]);
+          this.dialogFormResults = true;
         }
       },
       {
         label: 'Asignar', icon: 'pi pi-share-alt', command: () => {
+          this.assignmentForm();
+        }
+      },
+      {
+        label: 'Quitar Asignación', icon: 'pi pi-share-alt', command: () => {
           this.assignmentForm();
         }
       },
@@ -89,7 +98,36 @@ export class TestListComponent implements OnInit {
         }
       },
     ];
-
+    this.itemsPriority = [
+      {
+        label: 'Alta Intensidad',
+        icon: 'pi pi-arrow-up',
+        command: () => {
+          this.updatePriorityTest(1);
+        }
+      },
+      {
+        label: 'Media Intensidad',
+        icon: 'pi pi-arrows-h',
+        command: () => {
+          this.updatePriorityTest(2);
+        }
+      },
+      {
+        label: 'Baja Intensidad',
+        icon: 'pi pi-arrow-down',
+        command: () => {
+          this.updatePriorityTest(3);
+        }
+      },
+      {
+        label: 'Sin Problemas',
+        icon: 'pi pi pi-check',
+        command: () => {
+          this.updatePriorityTest(4);
+        }
+      },
+    ];
     this.paginator$.subscribe(response => {
       this.paginator = response;
     });
@@ -101,6 +139,7 @@ export class TestListComponent implements OnInit {
     this.loadCountAllPriorities()
     this.loadLocations();
     this.loadCountAllTests();
+    this.loadCountTestsByPriorities();
   }
 
   loadTests(page: number = 1) {
@@ -150,6 +189,20 @@ export class TestListComponent implements OnInit {
     }
   }
 
+  loadCountTestsByPriorities() {
+    if (this.rangeDates[1]) {
+      const startedAt = format(this.rangeDates[0].setHours(0, 0, 0), 'yyyy-MM-dd HH:mm:ss')
+      const endedAt = format(this.rangeDates[1].setHours(23, 59, 59), 'yyyy-MM-dd HH:mm:ss');
+      const provinceIds = this.selectedProvinces.map(province => province.id);
+      const priorityIds = this.selectedPriorities.map(priority => priority.id);
+      this.testHttpService.countTestsByPrioritues(provinceIds,priorityIds, startedAt, endedAt).subscribe(
+        response => {
+          this.countTestsPriorities = response.data.toString();
+        }
+      );
+    }
+  }
+
   loadLocations() {
     this.coreHttpService.getLocations('PROVINCE').subscribe(
       response => {
@@ -165,6 +218,7 @@ export class TestListComponent implements OnInit {
     this.loadTests(page);
     this.loadCountPriorities();
     this.loadCountAllTests();
+    this.loadCountTestsByPriorities();
     this.loadCountAllPriorities();
   }
 
@@ -233,7 +287,6 @@ export class TestListComponent implements OnInit {
 
   assignmentForm() {
     this.selectedTests = [this.selectedTest];
-
     this.dialogForm = true;
   }
 
@@ -251,5 +304,47 @@ export class TestListComponent implements OnInit {
           );
         }
       });
+  }
+
+  deleteAssignment() {
+    this.messageService.questionCloseTest({})
+      .then((result) => {
+        if (result.isConfirmed) {
+          this.testHttpService.deleteAssignment(this.selectedTest.id!).subscribe(
+            response => {
+              this.messageService.success(response);
+            },
+            error => {
+              this.messageService.error(error);
+            }
+          );
+        }
+      });
+  }
+
+  updatePriorityTest(id: number) {
+    this.testHttpService.updatePriorityTest(this.selectedTest.id!, id).subscribe(
+      response => {
+        this.messageService.success(response);
+      },
+      error => {
+        this.messageService.error(error);
+      }
+    );
+  }
+
+  checkPriorityClass(level: number): string {
+    switch (level) {
+      case 1:
+        return 'p-button-danger';
+      case 2:
+        return 'p-button-warning';
+      case 3:
+        return 'p-button-info';
+      case 4:
+        return 'p-button-success';
+      default:
+        return 'p-button-success';
+    }
   }
 }
