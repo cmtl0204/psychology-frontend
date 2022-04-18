@@ -36,13 +36,13 @@ export class TestListComponent implements OnInit {
     id: 3,
     name: 'CERRADO'
   }];
-  priorities: any[] = [{id: 1, name: 'Alta Intensidad'}, {id: 2, name: 'Media Intesidad'},
+  priorities: any[] = [{id: 1, name: 'Alta Intensidad'}, {id: 2, name: 'Media Intensidad'},
     {
       id: 3,
       name: 'Baja Intensidad'
     }, {
       id: 4,
-      name: 'Sin Sroblemas'
+      name: 'Sin Problemas'
     }];
   rangeDates: Date[] = [new Date(), new Date()];
   currentDate: Date = new Date();
@@ -79,7 +79,7 @@ export class TestListComponent implements OnInit {
       },
       {
         label: 'Quitar Asignación', icon: 'pi pi-share-alt', command: () => {
-          this.assignmentForm();
+          this.deleteAssignment();
         }
       },
       {
@@ -307,7 +307,7 @@ export class TestListComponent implements OnInit {
   }
 
   deleteAssignment() {
-    this.messageService.questionCloseTest({})
+    this.messageService.questionDeleteAssignment({})
       .then((result) => {
         if (result.isConfirmed) {
           this.testHttpService.deleteAssignment(this.selectedTest.id!).subscribe(

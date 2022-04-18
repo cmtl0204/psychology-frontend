@@ -149,7 +149,7 @@ export class QuestionComponent implements OnInit, OnDestroy {
         if (response.data.priority.level === 4) {
           this.finalMessage = 'Muchas gracias por tu participación. TEMI, te ha escuchado y te animo a seguir cuidando de ti. Actualmente tu salud mental se encuentra en equlibrio. Recuerda que este es un servicio gratuito. ¡Hasta pronto!';
         } else {
-          this.finalMessage = '';
+          this.finalMessage = 'Muchas gracias por tu participación.  TEMI, te ha escuchado y ponemos a disposición nuestros servicios de atención psicológica gratuita. En las isiguientes dos semanas, un psicólogo o psicóloga se comunicará contigo o con tu representante legal. En caso de que cuentes con alguna emergencia o situación que amerita una atención urgente, por favor comunícate a la línea 171 opción 6, el servicio virtual de salud mental del Ministerio de Salud Pública. Recuerda que tu bienestar es una prioridad. ¡Hasta pronto!';
         }
         this.progressBarAnswerOut.emit(false);
         this.progressBarAnswer = false;
