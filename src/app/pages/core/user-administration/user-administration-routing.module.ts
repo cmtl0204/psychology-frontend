@@ -3,6 +3,7 @@ import {RouterModule, Routes} from '@angular/router';
 import {RolesEnum} from '@shared/enums';
 import {RoleGuard, TokenGuard} from '@shared/guards';
 import {UserAdministrationComponent} from './user-administration.component';
+import {UserAdministrationFormComponent} from './user-administration-form/user-administration-form.component';
 
 const routes: Routes = [
   {
@@ -13,6 +14,10 @@ const routes: Routes = [
       roles: [RolesEnum.ADMIN]
     },
     canActivate: [TokenGuard, RoleGuard]
+  },
+  {
+    path: 'form/:id',
+    component: UserAdministrationFormComponent,
   }
 ];
 
