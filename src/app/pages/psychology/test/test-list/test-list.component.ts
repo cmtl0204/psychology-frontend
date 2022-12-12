@@ -267,7 +267,9 @@ export class TestListComponent implements OnInit {
   }
 
   downloadExcel() {
-    this.testHttpService.downloadTestsResultsExcel(this.rangeDates);
+      this.testHttpService.sendTestsResultsExcel(this.rangeDates).subscribe(response=>{
+
+      });
   }
 
   filter(event: any) {

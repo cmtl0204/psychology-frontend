@@ -10,7 +10,7 @@
   <!--Dates && Provinces-->
   <p-card>
     <div class="grid">
-      <div class="field xl:col-2 lg:col-2 md:col-12 sm:col-12  text-right">
+      <div class="field xl:col-3 lg:col-3 md:col-12 sm:col-12  text-right">
         <p-calendar id="range"
                     [(ngModel)]="rangeDates"
                     selectionMode="range"
@@ -20,7 +20,7 @@
                     dateFormat="yy-mm-dd"
                     (onSelect)="loadAllMethods()"></p-calendar>
       </div>
-      <div class="field xl:col-10 lg:col-10 md:col-12 sm:col-12">
+      <div class="field xl:col-9 lg:col-9 md:col-12 sm:col-12">
         <p-multiSelect [options]="provinces"
                        [(ngModel)]="selectedProvinces"
                        display="chip"

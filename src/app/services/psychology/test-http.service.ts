@@ -9,6 +9,7 @@ import {PaginatorModel} from '@models/core';
 import {AgentModel, AssignmentModel, PatientModel, TestModel} from '@models/psychology';
 import {ChatModel} from '@models/psychology/chat.model';
 import {format} from 'date-fns';
+import {MessageService} from "@services/core";
 
 @Injectable({
   providedIn: 'root'
@@ -38,7 +39,7 @@ export class TestHttpService {
   private paginator = new BehaviorSubject<PaginatorModel>({current_page: 1, per_page: 15, total: 0});
   public paginator$ = this.paginator.asObservable();
 
-  constructor(private httpClient: HttpClient) {
+  constructor(private httpClient: HttpClient,private messageService:MessageService) {
 
   }
 
@@ -273,6 +274,20 @@ export class TestHttpService {
       }, error => {
         this.loaded.next(false);
       });
+  }
+
+  sendTestsResultsExcel(dates: Date[]): Observable<ServerResponse> {
+    const url = `${this.API_URL}/reports/tests/results`;
+    this.loaded.next(true);
+    return this.httpClient.post<ServerResponse>(url, {dates})
+      .pipe(
+        map(response => {
+          this.loaded.next(false);
+          this.messageService.success(response);
+          return response;
+        }),
+        catchError(Handler.render)
+      );
   }
 
   requestTransactionalCode(agent: AgentModel): Observable<ServerResponse> {
