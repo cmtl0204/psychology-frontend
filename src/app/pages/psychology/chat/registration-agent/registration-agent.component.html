@@ -17,7 +17,7 @@
       <div class="p-inputgroup">
         <input type="text" pInputText formControlName="identification" pKeyFilter="pint" maxlength="10">
         <button *ngIf="identificationField.valid" type="button" pButton pRipple
-                class="p-button-rounded ml-1"
+                class="p-button-rounded ml-1 button-send"
                 icon="pi pi-send"
                 [loading]="progressBarAnswer"
                 (click)="saveIdentification()"></button>
@@ -47,7 +47,7 @@
         <!--        <input type="text" pInputText formControlName="lastname" pKeyFilter="alpha">-->
         <input type="text" pInputText formControlName="lastname">
         <button *ngIf="lastnameField.valid" type="button" pButton pRipple
-                class="p-button-rounded ml-1"
+                class="p-button-rounded ml-1 button-send"
                 icon="pi pi-send"
                 (click)="saveLastname()"
                 [loading]="progressBarAnswer"></button>
@@ -78,7 +78,7 @@
         <!--        <input type="text" pInputText formControlName="name" pKeyFilter="alpha">-->
         <input type="text" pInputText formControlName="name">
         <button *ngIf="nameField.valid" type="button" pButton pRipple
-                class="p-button-rounded ml-1"
+                class="p-button-rounded ml-1 button-send"
                 icon="pi pi-send"
                 (click)="saveName()"
                 [loading]="progressBarAnswer"
@@ -109,7 +109,7 @@
       <div class="p-inputgroup">
         <input type="text" pInputText formControlName="phone" pKeyFilter="pint" maxlength="10">
         <button *ngIf="phoneField.valid" type="button" pButton pRipple
-                class="p-button-rounded ml-1"
+                class="p-button-rounded ml-1 button-send"
                 icon="pi pi-send"
                 (click)="savePhone()"
                 [loading]="progressBarAnswer"></button>
@@ -139,7 +139,7 @@
       <div class="p-inputgroup">
         <input type="text" pInputText formControlName="email" pKeyFilter="email">
         <button *ngIf="emailField.valid" type="button" pButton pRipple
-                class="p-button-rounded ml-1"
+                class="p-button-rounded ml-1 button-send"
                 icon="pi pi-send"
                 (click)="saveEmail()"
                 [loading]="progressBarAnswer"></button>
@@ -181,13 +181,13 @@
         <input type="text" pInputText formControlName="code" pKeyFilter="pint" class="mr-1">
         <button *ngIf="codeField.invalid" type="button" pButton pRipple
                 label="Reenviar código"
-                class="p-button-rounded ml-1"
+                class="p-button-rounded ml-1 button-send"
                 icon="pi pi-send"
                 (click)="resendEmail()"
                 [loading]="progressBarAnswer"></button>
         <button *ngIf="codeField.valid"
                 type="button" pButton pRipple
-                class="p-button-rounded"
+                class="p-button-rounded button-send"
                 icon="pi pi-send"
                 (click)="saveCode()"
                 [loading]="progressBarAnswer"></button>

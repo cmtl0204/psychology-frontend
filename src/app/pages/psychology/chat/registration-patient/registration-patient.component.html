@@ -16,7 +16,7 @@
       <div class="p-inputgroup">
         <input type="text" pInputText formControlName="username" pKeyFilter="pint" maxlength="10">
         <button *ngIf="usernameField.valid" type="button" pButton pRipple
-                class="p-button-rounded ml-1"
+                class="p-button-rounded ml-1 button-send"
                 icon="pi pi-send"
                 (click)="saveUsername()"
                 [loading]="progressBarAnswer"></button>
@@ -47,7 +47,7 @@
         <!--        <input type="text" pInputText formControlName="lastname" pKeyFilter="alpha">-->
         <input type="text" pInputText formControlName="lastname">
         <button *ngIf="lastnameField.valid" type="button" pButton pRipple
-                class="p-button-rounded ml-1"
+                class="p-button-rounded ml-1 button-send"
                 icon="pi pi-send"
                 (click)="saveLastname()"
                 [loading]="progressBarAnswer"></button>
@@ -78,7 +78,7 @@
         <!--        <input type="text" pInputText formControlName="name" pKeyFilter="alpha">-->
         <input type="text" pInputText formControlName="name">
         <button *ngIf="nameField.valid" type="button" pButton pRipple
-                class="p-button-rounded ml-1"
+                class="p-button-rounded ml-1 button-send"
                 icon="pi pi-send"
                 (click)="saveName()"
                 [loading]="progressBarAnswer"></button>
@@ -109,7 +109,7 @@
         <div class="p-inputgroup">
           <input type="text" pInputText formControlName="phone" pKeyFilter="pint" maxlength="10">
           <button *ngIf="phoneField.valid" type="button" pButton pRipple
-                  class="p-button-rounded ml-1"
+                  class="p-button-rounded ml-1 button-send"
                   icon="pi pi-send"
                   (click)="savePhone()"
                   [loading]="progressBarAnswer"></button>
@@ -234,7 +234,7 @@
     <div class="field col-12">
       <button type="button" pButton pRipple
               label="Iniciar Test"
-              class="p-button-rounded p-button-help"
+              class="p-button-rounded p-button-help button-send"
               icon="pi pi-send"
               (click)="startTest()"
               [loading]="progressBarAnswer"></button>
