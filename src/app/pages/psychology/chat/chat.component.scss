@@ -12,7 +12,8 @@
 }
 
 .app-panel {
-  background: #fff;
+  //background: #ECE5DD;
+  background-image: url("../../../../assets/images/components/psychology/chat/fondo-whatsapp.jpg");
   padding-top: 40px;
   padding-left: 20px;
   padding-right: 20px;
@@ -20,7 +21,7 @@
 }
 
 .panel-avatar {
-  background: #d2e4ca;
+  background: #128C7E;
   height: 100px;
   width: 100%;
   //border-radius: 15px 15px 15px 15px;
@@ -28,7 +29,7 @@
 }
 
 .text-bot {
-  color: #1D70B6;
+  color: white;
   font-size: 20px;
 }
 
@@ -45,13 +46,18 @@
 
 .panel-question {
   //background: #F7B032;
-  background: #fbdfad;
+  background: white;
   border-radius: 15px 15px 15px 15px;
 }
 
 .panel-answer {
-  background: #1D70B6;
-  color: #fff;
+  background: #DCF8C6;
+  color: #000;
   padding-right: 20px;
   border-radius: 15px 15px 15px 15px;
+}
+
+
+.button-send{
+  background: #128C7E !important;
 }

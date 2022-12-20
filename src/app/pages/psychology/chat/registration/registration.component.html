@@ -82,7 +82,7 @@
         <input type="text" pInputText formControlName="age"
                [min]="12" [max]="18" maxlength="2">
         <button *ngIf="ageField.valid" pButton type="button"
-                class="p-button-rounded ml-1"
+                class="p-button-rounded ml-1 button-send"
                 icon="pi pi-send"
                 (click)="saveAge()"
                 [loading]="progressBarAnswer"></button>
