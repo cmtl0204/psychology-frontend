@@ -22,7 +22,7 @@
 
 .panel-avatar {
   background: #128C7E;
-  height: 100px;
+  height: 90px;
   width: 100%;
   //border-radius: 15px 15px 15px 15px;
   position: fixed;
@@ -57,7 +57,26 @@
   border-radius: 15px 15px 15px 15px;
 }
 
-
 .button-send{
   background: #128C7E !important;
 }
+
+//.panel-answer p{
+//  position: relative;
+//  right: 0;
+//  text-align: right;
+//  max-width: 65%;
+//  padding: 12px;
+//  background: #dcf8c6;
+//  border-radius: 0.9em;
+//}
+//
+//.panel-answer p::before{
+//  content: '';
+//  position: absolute;
+//  top: 0;
+//  right: -12px;
+//  width: 20px;
+//  height: 20px;
+//  background: red;
+//}

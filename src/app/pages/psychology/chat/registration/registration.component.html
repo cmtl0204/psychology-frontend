@@ -21,14 +21,14 @@
   </div>
   <!--Input-->
   <div *ngIf="steps===1 && stepsTemp>2" class="formgrid grid">
-    <div class="field col-6 col-offset-6">
+    <div class="field col-6 col-offset-6 panel-answer">
       <button pButton type="button" label="Aceptar"
               class="p-button-lg p-button-text"
               icon="pi pi-check"
               (click)="saveTermsConditions(true)"
               [loading]="progressBarAnswer"></button>
     </div>
-    <div class="field col-6 col-offset-6">
+    <div class="field col-6 col-offset-6 panel-answer">
       <button pButton type="button" label="Rechazar"
               class="p-button-lg p-button-help p-button-text"
               icon="pi pi-ban"
