@@ -3,8 +3,8 @@
     <img src="assets/images/components/psychology/chat/bot.png" width="120px" class="avatar-bot">
     <p class="text-bot">
       TEMI, te escucha
-<!--      <button pButton type="button" icon="pi pi-replay" class="p-button-info p-button-text p-button-lg ml-6"-->
-<!--              pTooltip="Deshacer"></button>-->
+      <!--      <button pButton type="button" icon="pi pi-replay" class="p-button-info p-button-text p-button-lg ml-6"-->
+      <!--              pTooltip="Deshacer"></button>-->
       <app-skeleton *ngIf="progressBarAnswer" [type]="'point'"></app-skeleton>
     </p>
   </div>
@@ -15,10 +15,14 @@
   <div class="p-fluid app-panel">
     <app-registration *ngIf="!activatedTest"
                       (activatedTestOut)="activatedTest=$event"
+                      (ageOut)="age=$event"
                       (progressBarAnswerOut)="progressBarAnswer=$event"
     ></app-registration>
-    <app-question *ngIf="activatedTest"
+    <app-question *ngIf="activatedTest && age<18"
                   (progressBarAnswerOut)="progressBarAnswer=$event"
     ></app-question>
+    <app-question-adults *ngIf="activatedTest && age>=18"
+                         (progressBarAnswerOut)="progressBarAnswer=$event"
+    ></app-question-adults>
   </div>
 </div>

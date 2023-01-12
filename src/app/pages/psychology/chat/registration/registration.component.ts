@@ -13,6 +13,7 @@ import {TestHttpService} from '@services/psychology/test-http.service';
 export class RegistrationComponent implements OnInit {
   @Output() activatedTestOut = new EventEmitter<boolean>();
   @Output() progressBarAnswerOut = new EventEmitter<boolean>();
+  @Output() ageOut = new EventEmitter<number>();
   loaded$ = this.testHttpService.loaded$;
   formChat: FormGroup;
   progressBarAnswer: boolean = false;
@@ -110,8 +111,13 @@ export class RegistrationComponent implements OnInit {
           this.codeVerified = 'valid';
         }
       } else {
+        this.steps++;
+        this.testHttpService.saveAge(this.ageField.value)
+        this.younger = false;
+        this.codeVerified = 'valid';
         this.ageValid = true;
       }
+      this.ageOut.emit(this.ageField.value);
       this.progressBarAnswer = false;
       this.progressBarAnswerOut.emit(false);
     }, Math.random() * (2000 - 1000) + 1000);

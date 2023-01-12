@@ -9,6 +9,7 @@ export class ChatComponent implements OnInit, AfterViewChecked {
   @ViewChild("appMessages") appMessagesContainer: ElementRef = new ElementRef(undefined);
   activatedTest: boolean = false;
   progressBarAnswer: boolean = false;
+  age: number = 0;
 
   constructor() {
 

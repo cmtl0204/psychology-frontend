@@ -29,6 +29,7 @@ import {TestModule} from './test/test.module';
 import {ListboxModule} from 'primeng/listbox';
 import {AutoCompleteModule} from 'primeng/autocomplete';
 import {TooltipModule} from 'primeng/tooltip';
+import { QuestionAdultsComponent } from './chat/question-adults/question-adults.component';
 
 @NgModule({
   declarations: [
@@ -37,6 +38,7 @@ import {TooltipModule} from 'primeng/tooltip';
     RegistrationAgentComponent,
     RegistrationPatientComponent,
     ChatComponent,
+    QuestionAdultsComponent,
   ],
   imports: [
     CommonModule,
