@@ -1,7 +1,7 @@
 <form [formGroup]="formPatient" class="p-fluid">
   <div class="formgrid grid">
     <div class="field col-10 panel-question">
-      <p>Muchas gracias por tu participación. Ayúdame con los siguientes datos:</p>
+      <p>Muchas gracias. Empezamos con el registro de tus datos</p>
     </div>
   </div>
   <!--Username-->
@@ -110,12 +110,36 @@
           <input type="text" pInputText formControlName="phone" pKeyFilter="pint" maxlength="10">
           <button *ngIf="phoneField.valid" type="button" pButton pRipple
                   class="p-button-rounded ml-1 button-send"
+                  icon="pi pi-send"></button>
+        </div>
+      </div>
+    </div>
+
+    <!--PhoneConfirm-->
+    <div *ngIf="steps>=4 && phoneField.touched" class="formgrid grid">
+      <div class="field col-10 panel-question">
+        <p>Vuelve a ingresar el número de teléfono al que podríamos contactarte</p>
+      </div>
+    </div>
+    <!--Input-->
+    <div *ngIf="steps===4 && phoneField.touched" class="formgrid grid">
+      <div class="field col-12">
+        <div class="p-inputgroup">
+          <input type="text" pInputText formControlName="phoneConfirm" pKeyFilter="pint" maxlength="10">
+          <button *ngIf="phoneField.value === phoneConfirmField.value" type="button" pButton pRipple
+                  class="p-button-rounded ml-1 button-send"
                   icon="pi pi-send"
                   (click)="savePhone()"
                   [loading]="progressBarAnswer"></button>
         </div>
       </div>
+      <div class="field col-12">
+        <p-tag
+          *ngIf="phoneConfirmField.dirty && phoneField.value != phoneConfirmField.value"
+          severity="danger" value="Los número no coinciden"></p-tag>
+      </div>
     </div>
+
     <!--Result-->
     <div *ngIf="steps>4" class="formgrid grid">
       <div class="field col-5 col-offset-7 panel-answer text-right">
@@ -160,26 +184,55 @@
     </div>
   </div>
 
-  <!--Province-->
+  <!--Institution Code-->
   <div *ngIf="steps>=6" class="formgrid grid">
+    <div class="field col-10 panel-question">
+      <p>Si tienes el código de tu institución, ingrésalo aquí. Caso contrario presiona "Continuar"</p>
+    </div>
+  </div>
+  <!--Input-->
+  <div *ngIf="steps===6" class="formgrid grid">
+    <div class="field col-12">
+      <div class="p-inputgroup">
+        <input type="text" pInputText formControlName="institutionCode">
+        <button *ngIf="institutionCodeField.valid" type="button" pButton pRipple
+                class="p-button-rounded ml-1 button-send  "
+                icon="pi pi-send"
+                (click)="saveInstitutionCode()"
+                [loading]="progressBarAnswer"></button>
+      </div>
+    </div>
+  </div>
+  <!--Result-->
+  <div *ngIf="steps>6" class="formgrid grid">
+    <div class="field col-10 col-offset-2 panel-answer text-right">
+      <p>
+        {{institutionCodeField.value}}
+        <i class="pi pi-check" style="font-size: 0.5rem"></i>
+        <i class="pi pi-check" style="font-size: 0.5rem"></i>
+      </p>
+    </div>
+  </div>
+
+
+  <!--Province-->
+  <div *ngIf="steps>=7" class="formgrid grid">
     <div class="field col-10 panel-question">
       <p>Selecciona la provincia en que resides</p>
     </div>
   </div>
   <!--Input-->
-  <div *ngIf="steps===6" class="formgrid grid">
-    <div class="field col-10">
-      <div *ngFor="let province of provinces">
-        <button pButton type="button" [label]="province?.name!" class="p-button-text"
-                [loading]="progressBarAnswer"
-                (click)="saveProvince(province)"></button>
-      </div>
+  <div *ngIf="steps===7" class="formgrid grid">
+    <div *ngFor="let province of provinces" class="field col-4">
+      <button pButton type="button" [label]="province?.name!" class="p-button-text panel-answer"
+              [loading]="progressBarAnswer"
+              (click)="saveProvince(province)"></button>
     </div>
     <div class="field col-2">
     </div>
   </div>
   <!--Result-->
-  <div *ngIf="steps>6" class="formgrid grid">
+  <div *ngIf="steps>7" class="formgrid grid">
     <div class="field col-10 col-offset-2 panel-answer text-right">
       <p>
         {{provinceField.value.name}}
@@ -190,25 +243,23 @@
   </div>
 
   <!--Canton-->
-  <div *ngIf="steps>=7" class="formgrid grid">
+  <div *ngIf="steps>=8" class="formgrid grid">
     <div class="field col-10 panel-question">
       <p>Selecciona el cantón en que resides</p>
     </div>
   </div>
   <!--Input-->
-  <div *ngIf="steps===7" class="formgrid grid">
-    <div class="field col-10">
-      <div *ngFor="let canton of cantons">
-        <button pButton type="button" [label]="canton?.name!" class="p-button-text"
-                [loading]="progressBarAnswer"
-                (click)="saveCanton(canton)"></button>
-      </div>
+  <div *ngIf="steps===8" class="formgrid grid">
+    <div *ngFor="let canton of cantons" class="field col-4">
+      <button pButton type="button" [label]="canton?.name!" class="p-button-text panel-answer"
+              [loading]="progressBarAnswer"
+              (click)="saveCanton(canton)"></button>
     </div>
     <div class="field col-2">
     </div>
   </div>
   <!--Result-->
-  <div *ngIf="steps>7" class="formgrid grid">
+  <div *ngIf="steps>8" class="formgrid grid">
     <div class="field col-10 col-offset-2 panel-answer text-right">
       <p>
         {{cantonField.value.name}}
@@ -230,7 +281,7 @@
   </div>
 
   <!--Start Test-->
-  <div *ngIf="steps===8" class="formgrid grid">
+  <div *ngIf="steps===9" class="formgrid grid">
     <div class="field col-12">
       <button type="button" pButton pRipple
               label="Iniciar Test"

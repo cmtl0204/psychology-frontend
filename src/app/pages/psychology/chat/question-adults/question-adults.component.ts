@@ -25,7 +25,6 @@ export class QuestionAdultsComponent implements OnInit {
   progressBar: boolean = false;
   progressBarAnswer: boolean = false;
   baseQuestions: any[] = [];
-  flagDuel: boolean = false;
   results: any[] = [];
   actualQuestion: number = 1;
   currentDate: Date = new Date();
@@ -100,7 +99,7 @@ export class QuestionAdultsComponent implements OnInit {
         this.actualQuestion = question?.order! + 1;
         this.progressBarAnswer = false;
         this.progressBarAnswerOut.emit(false);
-        console.log(this.results);
+
         if (this.results.length == 2) {
           this.actualQuestion = 1;
           const scorePhq2 = this.validatePhq2();

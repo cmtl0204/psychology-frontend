@@ -1,5 +1,4 @@
 <!--Welcome-->
-<h1>adult</h1>
 <div class="formgrid grid">
   <div *ngIf="questionSteps>0" class="field col-10 panel-question">
     <p>
@@ -68,7 +67,7 @@
 </form>
 
 <!--Finished Message-->
-<div *ngIf="flagDuel && actualQuestion>1 && finalMessage!=''" class="formgrid grid">
+<div *ngIf="actualQuestion>1 && finalMessage!=''" class="formgrid grid">
   <div class="field col-10 panel-question">
     <p>{{finalMessage}}</p>
   </div>

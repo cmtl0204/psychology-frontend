@@ -30,6 +30,7 @@ import {ListboxModule} from 'primeng/listbox';
 import {AutoCompleteModule} from 'primeng/autocomplete';
 import {TooltipModule} from 'primeng/tooltip';
 import { QuestionAdultsComponent } from './chat/question-adults/question-adults.component';
+import {TagModule} from "primeng/tag";
 
 @NgModule({
   declarations: [
@@ -40,34 +41,35 @@ import { QuestionAdultsComponent } from './chat/question-adults/question-adults.
     ChatComponent,
     QuestionAdultsComponent,
   ],
-  imports: [
-    CommonModule,
-    PsychologyRoutingModule,
-    FormsModule,
-    ReactiveFormsModule,
-    InputTextModule,
-    ButtonModule,
-    CardModule,
-    SharedModule,
-    DividerModule,
-    RippleModule,
-    PasswordModule,
-    ScrollPanelModule,
-    PanelModule,
-    ProgressBarModule,
-    AvatarModule,
-    BadgeModule,
-    InputNumberModule,
-    MessageModule,
-    MessagesModule,
-    DropdownModule,
-    KeyFilterModule,
-    TestModule,
-    ListboxModule,
-    AutoCompleteModule,
-    TooltipModule,
+    imports: [
+        CommonModule,
+        PsychologyRoutingModule,
+        FormsModule,
+        ReactiveFormsModule,
+        InputTextModule,
+        ButtonModule,
+        CardModule,
+        SharedModule,
+        DividerModule,
+        RippleModule,
+        PasswordModule,
+        ScrollPanelModule,
+        PanelModule,
+        ProgressBarModule,
+        AvatarModule,
+        BadgeModule,
+        InputNumberModule,
+        MessageModule,
+        MessagesModule,
+        DropdownModule,
+        KeyFilterModule,
+        TestModule,
+        ListboxModule,
+        AutoCompleteModule,
+        TooltipModule,
+        TagModule,
 
-  ]
+    ]
 })
 export class PsychologyModule {
 }
