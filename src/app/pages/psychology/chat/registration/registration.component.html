@@ -10,9 +10,9 @@
   </div>
   <div *ngIf="stepsTemp>1" class="formgrid grid">
     <div class="field col-10 panel-question">
-      <p>Antes de empezar, es importante que puedas leer sobre la política de cuidado de tus datos . Si estás de
-        acuerdo, por favor señala "aceptar" en la casilla inferior para continuar. Descarga los términos y condiciones
-        de servicios.
+      <p>Para poder continuar, necesitamos contar con tu consentimiento informado. Por favor, da click en el siguiente
+        enlace para leer los términos y condiciones de este servicio: . Si estás de acuerdo, selecciona la opción
+        "Acepto", caso contrario selecciona la opción "No Acepto"
       </p>
       <a class="p-button-text" href="assets/files/terms_conditions.pdf" target="_blank">
         Descargar términos y condiciones
@@ -22,7 +22,7 @@
   <!--Input-->
   <div *ngIf="steps===1 && stepsTemp>2" class="formgrid grid">
     <div class="field col-6 col-offset-6 panel-answer">
-      <button pButton type="button" label="Aceptar"
+      <button pButton type="button" label="Acepto"
               class="p-button-lg p-button-text"
               icon="pi pi-check"
               (click)="saveTermsConditions(true)"
@@ -50,8 +50,9 @@
   <!--No Accept Terms and Conditions-->
   <div *ngIf="termsConditionField.value===false" class="formgrid grid">
     <div class="field col-10 panel-question">
-      <p>Recuerda que tu bienestar psicológico es prioridad y TEMI, te escucha, estará disponible las 24 horas del día y
-        los 7 días de la semana para cuando lo necesites. Sólo debes ingresar a www.temi.esquel.org.ec. ¡Hasta pronto!
+      <p>¡Muchas gracias por tu participación! Recuerda que tu bienestar psicológico es prioridad y TEMI, te escucha,
+        estará disponible las 24 horas del día y los 7 días de la semana para cuando lo necesites. Sólo debes ingresar a
+        www.temi.esquel.org.ec. ¡Hasta pronto!
       </p>
     </div>
   </div>
