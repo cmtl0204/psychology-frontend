@@ -2,15 +2,15 @@
 <div class="formgrid grid">
   <div *ngIf="questionSteps>0" class="field col-10 panel-question">
     <p>
-      Muchas gracias por regresar. Te voy a realizar algunas preguntas para conocer juntos sobre tu estado de ánimo en
-      las últimas dos semanas.
+      Muchas gracias por aceptar. A continuación, te voy a realizar algunas preguntas para conocer juntos sobre tu
+      estado de ánimo en las últimas dos semanas.
     </p>
   </div>
   <div *ngIf="questionSteps>1" class="field col-10 panel-question">
     <p>
       No hay respuesta correcta o incorrecta, por ello te pido que respondas con toda sinceridad. Recuerda que la
       información que me compartas será confidencial y se guardará de forma segura para proteger tu privacidad e
-      integridad.
+      integridad. El llenado te tomará máximo 10 minutos.
     </p>
   </div>
   <div *ngIf="questionSteps>2" class="field col-10 panel-question">
@@ -67,7 +67,7 @@
 </form>
 
 <!--Finished Message-->
-<div *ngIf="flagDuel && actualQuestion>1 && finalMessage!=''" class="formgrid grid">
+<div *ngIf="actualQuestion>1 && finalMessage!=''" class="formgrid grid">
   <div class="field col-10 panel-question">
     <p>{{finalMessage}}</p>
   </div>

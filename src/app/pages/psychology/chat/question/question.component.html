@@ -57,6 +57,7 @@
              class="field col-8 col-offset-4">
           <button pButton type="button" [label]="answer.value!"
                   [class]="answer.class!"
+                  class="panel-answer"
                   [icon]="answer.icon!"
                   (click)="reply(question,answer)"
                   [loading]="progressBarAnswer"></button>
@@ -67,7 +68,7 @@
 </form>
 
 <!--Finished Message-->
-<div *ngIf="flagDuel && actualQuestion>1 && finalMessage!=''" class="formgrid grid">
+<div *ngIf="actualQuestion>1 && finalMessage!=''" class="formgrid grid">
   <div class="field col-10 panel-question">
     <p>{{finalMessage}}</p>
   </div>

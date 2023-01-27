@@ -37,6 +37,7 @@ export class QuestionComponent implements OnInit, OnDestroy {
   testType: string = '';
   questionSteps: number = 0;
   finalMessage: string = '';
+  totalQuestions: number = 0;
 
   constructor(private formBuilder: FormBuilder,
               private messageService: MessageService,
@@ -84,7 +85,7 @@ export class QuestionComponent implements OnInit, OnDestroy {
   }
 
   reply(question: QuestionModel, answer: AnswerModel) {
-    if (this.questions.find(question => question.type == 'duel')) {
+    if (this.totalQuestions - 1 === this.results.length) {
       this.results.push({
         question, answer, registeredAt: new Date()
       });
@@ -109,18 +110,14 @@ export class QuestionComponent implements OnInit, OnDestroy {
           if (scorePhq2 > 0) {
             this.testType = 'phq9a';
             this.questions = this.baseQuestions.filter(question => question.type == 'phq9a');
+            this.totalQuestions = this.questions.length + 2;
           }
 
           if (scorePhq2 == 0) {
             this.testType = 'psc17';
             this.questions = this.baseQuestions.filter(question => question.type == 'psc17');
+            this.totalQuestions = this.questions.length + 2;
           }
-        }
-
-        if (!this.flagDuel && this.actualQuestion > this.questions.length && this.results.length > 2) {
-          this.actualQuestion = 1;
-          this.flagDuel = true;
-          this.questions = this.baseQuestions.filter(question => question.type == 'duel');
         }
       }, Math.random() * (4000 - 2000) + 2000);
     }

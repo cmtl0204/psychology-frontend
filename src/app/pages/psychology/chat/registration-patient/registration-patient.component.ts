@@ -55,8 +55,10 @@ export class RegistrationPatientComponent implements OnInit {
       lastname: [null, [Validators.required, Validators.pattern(RegularExpresions.alphaSpaces())]],
       email: [null, [Validators.required, Validators.email]],
       phone: [null, [Validators.required]],
+      phoneConfirm: [null, [Validators.required]],
       province: [null, [Validators.required]],
       canton: [null, [Validators.required]],
+      institutionCode: [null],
     });
   }
 
@@ -145,6 +147,17 @@ export class RegistrationPatientComponent implements OnInit {
     }
   }
 
+  saveInstitutionCode() {
+    if (this.institutionCodeField.valid) {
+      this.progressBarAnswer = true;
+      this.progressBarAnswerOut.emit(true);
+      setTimeout(() => {
+        this.progressBarAnswer = false;
+        this.progressBarAnswerOut.emit(false);
+        this.steps++;
+      }, Math.random() * (2000 - 1000) + 1000);
+    }
+  }
   saveProvince(province: LocationModel) {
     this.provinceField.patchValue(province);
     if (this.provinceField.valid) {
@@ -242,11 +255,19 @@ export class RegistrationPatientComponent implements OnInit {
     return this.formPatient.controls['phone'];
   }
 
+  get phoneConfirmField() {
+    return this.formPatient.controls['phoneConfirm'];
+  }
+
   get provinceField() {
     return this.formPatient.controls['province'];
   }
 
   get cantonField() {
     return this.formPatient.controls['canton'];
+  }
+
+  get institutionCodeField() {
+    return this.formPatient.controls['institutionCode'];
   }
 }

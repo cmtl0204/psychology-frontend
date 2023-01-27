@@ -25,7 +25,6 @@ export class QuestionAdultsComponent implements OnInit {
   progressBar: boolean = false;
   progressBarAnswer: boolean = false;
   baseQuestions: any[] = [];
-  flagDuel: boolean = false;
   results: any[] = [];
   actualQuestion: number = 1;
   currentDate: Date = new Date();
@@ -36,6 +35,7 @@ export class QuestionAdultsComponent implements OnInit {
   testType: string = '';
   questionSteps: number = 0;
   finalMessage: string = '';
+  totalQuestions: number = 0;
 
   constructor(private formBuilder: FormBuilder,
               private messageService: MessageService,
@@ -83,7 +83,7 @@ export class QuestionAdultsComponent implements OnInit {
   }
 
   reply(question: QuestionModel, answer: AnswerModel) {
-    if (this.questions.find(question => question.type == 'duel')) {
+    if (this.totalQuestions - 1 === this.results.length) {
       this.results.push({
         question, answer, registeredAt: new Date()
       });
@@ -99,7 +99,7 @@ export class QuestionAdultsComponent implements OnInit {
         this.actualQuestion = question?.order! + 1;
         this.progressBarAnswer = false;
         this.progressBarAnswerOut.emit(false);
-        console.log(this.results);
+
         if (this.results.length == 2) {
           this.actualQuestion = 1;
           const scorePhq2 = this.validatePhq2();
@@ -107,18 +107,14 @@ export class QuestionAdultsComponent implements OnInit {
           if (scorePhq2 > 0) {
             this.testType = 'phq9';
             this.questions = this.baseQuestions.filter(question => question.type == 'phq9');
+            this.totalQuestions = this.questions.length + 2;
           }
 
           if (scorePhq2 == 0) {
             this.testType = 'srq18';
             this.questions = this.baseQuestions.filter(question => question.type == 'srq18');
+            this.totalQuestions = this.questions.length + 2;
           }
-        }
-
-        if (!this.flagDuel && this.actualQuestion > this.questions.length && this.results.length > 2) {
-          this.actualQuestion = 1;
-          this.flagDuel = true;
-          this.questions = this.baseQuestions.filter(question => question.type == 'duel');
         }
       }, Math.random() * (4000 - 2000) + 2000);
     }
@@ -147,7 +143,7 @@ export class QuestionAdultsComponent implements OnInit {
         if (response.data.priority.level === 4) {
           this.finalMessage = 'Muchas gracias por tu participación. TEMI, te ha escuchado y te animo a seguir cuidando de ti. Actualmente tu salud mental se encuentra en equlibrio. Recuerda que este es un servicio gratuito. ¡Hasta pronto!';
         } else {
-          this.finalMessage = 'Muchas gracias por tu participación.  TEMI, te ha escuchado y ponemos a disposición nuestros servicios de atención psicológica gratuita. En las isiguientes dos semanas, un psicólogo o psicóloga se comunicará contigo o con tu representante legal. En caso de que cuentes con alguna emergencia o situación que amerita una atención urgente, por favor comunícate a la línea 171 opción 6, el servicio virtual de salud mental del Ministerio de Salud Pública. Recuerda que tu bienestar es una prioridad. ¡Hasta pronto!';
+          this.finalMessage = 'Muchas gracias por tu participación.  TEMI, te ha escuchado y ponemos a disposición nuestros servicios de atención psicológica gratuita. En las siguientes dos semanas, un psicólogo o psicóloga se comunicará contigo o con tu representante legal. En caso de que cuentes con alguna emergencia o situación que amerita una atención urgente, por favor comunícate a la línea 171 opción 2, el servicio virtual de salud mental del Ministerio de Salud Pública. Recuerda que tu bienestar es una prioridad. ¡Hasta pronto!';
         }
         this.progressBarAnswerOut.emit(false);
         this.progressBarAnswer = false;
