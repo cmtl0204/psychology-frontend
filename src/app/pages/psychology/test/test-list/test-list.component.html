@@ -2,6 +2,11 @@
   <app-assignment *ngIf="dialogForm" [tests]="selectedTests"
                   (dialogForm)="dialogForm=$event;loadAllMethods(paginator.current_page);selectedTests=[]"></app-assignment>
 </p-dialog>
+<p-dialog header="Observaciones" [(visible)]="dialogObservationsForm" [maximizable]="true" [modal]="true"
+          [style]="{width:'100%'}" (onHide)="loadAllMethods(paginator.current_page)">
+  <app-observation *ngIf="dialogObservationsForm" [test]="selectedTest"
+                  (dialogForm)="dialogObservationsForm=$event;loadAllMethods(paginator.current_page);selectedTests=[]"></app-observation>
+</p-dialog>
 <p-dialog header="Resultados" [(visible)]="dialogFormResults" [maximizable]="true" [modal]="true">
   <app-result *ngIf="dialogFormResults" [test]="selectedTest"
               (dialogFormResults)="dialogFormResults=$event"></app-result>
@@ -20,13 +25,22 @@
                     dateFormat="yy-mm-dd"
                     (onSelect)="loadAllMethods()"></p-calendar>
       </div>
-      <div class="field xl:col-9 lg:col-9 md:col-12 sm:col-12">
+      <div class="field xl:col-2 lg:col-2 md:col-12 sm:col-12">
         <p-multiSelect [options]="provinces"
                        [(ngModel)]="selectedProvinces"
                        display="chip"
                        optionLabel="name"
                        placeholder="Todas las provincias"
                        (onChange)="loadAllMethods()"></p-multiSelect>
+      </div>
+      <div class="field xl:col-2 lg:col-2 md:col-12 sm:col-12">
+        <p-dropdown id="age"
+                    dataKey="id"
+                    [formControl]="ageControl"
+                    [options]="['Adultos','Jóvenes']"
+                    placeholder="Seleccione la Edad"
+                    (onChange)="changeAge($event)">
+        </p-dropdown>
       </div>
     </div>
   </p-card>

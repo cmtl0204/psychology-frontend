@@ -24,6 +24,7 @@ export class TestListComponent implements OnInit {
   items: MenuItem[] = [];
   itemsPriority: MenuItem[] = [];
   dialogForm: boolean = false;
+  dialogObservationsForm: boolean = false;
   dialogFormResults: boolean = false;
   progressBarDelete: boolean = false;
   search: FormControl = new FormControl('');
@@ -51,6 +52,8 @@ export class TestListComponent implements OnInit {
   selectedProvinces: any[] = [];
   selectedStates: any[] = [];
   selectedPriorities: any[] = [];
+  age: number = 18;
+  ageControl : FormControl = new FormControl('Adultos');
 
   constructor(private testHttpService: TestHttpService,
               private coreHttpService: CoreHttpService,
@@ -70,6 +73,11 @@ export class TestListComponent implements OnInit {
         label: 'Ver Informe', icon: 'pi pi-eye', command: () => {
           // this.router.navigate(['/test/result', this.selectedTest.id]);
           this.dialogFormResults = true;
+        }
+      },
+      {
+        label: 'Observaciones', icon: 'pi pi-comments', command: () => {
+          this.observationsForm();
         }
       },
       {
@@ -150,7 +158,7 @@ export class TestListComponent implements OnInit {
       const stateIds = this.selectedStates.map(state => state.id);
       const priorityIds = this.selectedPriorities.map(priority => priority.id);
 
-      this.tests$ = this.testHttpService.getTests(page, this.search.value, priorityIds, stateIds, provinceIds, startedAt, endedAt);
+      this.tests$ = this.testHttpService.getTests(page, this.search.value, priorityIds, stateIds, provinceIds, startedAt, endedAt, this.age);
     }
   }
 
@@ -195,7 +203,7 @@ export class TestListComponent implements OnInit {
       const endedAt = format(this.rangeDates[1].setHours(23, 59, 59), 'yyyy-MM-dd HH:mm:ss');
       const provinceIds = this.selectedProvinces.map(province => province.id);
       const priorityIds = this.selectedPriorities.map(priority => priority.id);
-      this.testHttpService.countTestsByPrioritues(provinceIds,priorityIds, startedAt, endedAt).subscribe(
+      this.testHttpService.countTestsByPrioritues(provinceIds, priorityIds, startedAt, endedAt).subscribe(
         response => {
           this.countTestsPriorities = response.data.toString();
         }
@@ -267,8 +275,9 @@ export class TestListComponent implements OnInit {
   }
 
   downloadExcel() {
-      this.testHttpService.sendTestsResultsExcel(this.rangeDates).subscribe(response=>{});
-      // this.testHttpService.downloadTestsResultsExcel(this.rangeDates);
+    this.testHttpService.sendTestsResultsExcel(this.rangeDates).subscribe(response => {
+    });
+    // this.testHttpService.downloadTestsResultsExcel(this.rangeDates);
   }
 
   filter(event: any) {
@@ -289,6 +298,10 @@ export class TestListComponent implements OnInit {
   assignmentForm() {
     this.selectedTests = [this.selectedTest];
     this.dialogForm = true;
+  }
+
+  observationsForm() {
+    this.dialogObservationsForm = true;
   }
 
   closeTest() {
@@ -347,5 +360,15 @@ export class TestListComponent implements OnInit {
       default:
         return 'p-button-success';
     }
+  }
+
+  changeAge(event: any) {
+    if (event.value === 'Adultos') {
+      this.age = 18;
+    } else {
+      this.age = 17;
+    }
+
+    this.loadTests();
   }
 }

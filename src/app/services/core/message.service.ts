@@ -79,6 +79,14 @@ export class MessageService {
     return Swal.hideLoading();
   }
 
+  successToast() {
+    this.messageService.add({severity: 'success', summary: 'Procesado Correctamente', detail: ''});
+  }
+
+  errorToast() {
+    this.messageService.add({severity: 'error', summary: 'Error al procesar su petición', detail: 'Vuelva a intentar por favor'});
+  }
+
   errorRequired() {
     this.messageService.add({severity: 'error', summary: 'No se puede eliminar', detail: 'El campo es requerido'});
   }

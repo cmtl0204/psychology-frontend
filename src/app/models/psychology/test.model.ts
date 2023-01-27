@@ -17,4 +17,5 @@ export interface TestModel {
   score?: number;
   termsConditions?: boolean;
   type?: string;
+  observations?: string[];
 }

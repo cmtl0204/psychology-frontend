@@ -1,0 +1,51 @@
+<p-toast position="top-center"></p-toast>
+
+<div class="p-fluid">
+  <form [formGroup]="form" (ngSubmit)="onSubmit()">
+    <div class="formgrid grid">
+      <!--institution-->
+      <div class="field xl:col-10 lg:col-10 md:col-10 sm:col-12">
+        <label for="observationControl" appLabel label="Nueva Observación:"
+               [required]="isRequired(observationControl)"
+               [valid]="observationControl.valid"
+               [touched]="observationControl.touched"
+               [dirty]="observationControl.dirty">
+        </label>
+<!--        <p-editor id="observationControl" [formControl]="observationControl" [style]="{'height':'100px'}"></p-editor>-->
+        <textarea pInputTextarea id="observationControl" [formControl]="observationControl"></textarea>
+        <small appErrorMessage
+               [errors]="observationControl.errors"
+               [touched]="observationControl.touched"
+               [dirty]="observationControl.dirty">
+        </small>
+      </div>
+      <div class="field xl:col-2 lg:col-2 md:col-2 sm:col-12">
+        <!--onSubmit()-->
+        <div class="field">
+          <button pButton pRipple type="button" label="Guardar" class="p-button-rounded"
+                  icon="pi pi-save" (click)="saveObservation(observationControl.value)"></button>
+        </div>
+      </div>
+    </div>
+    <!--tests-->
+    <div formArrayName="observations">
+      <div *ngFor="let item of observationsField.controls; let i = index;" [formGroupName]="i">
+        <!--title & removePhone()-->
+        <div class="field text-center">
+          <!--title-->
+          <textarea pInputTextarea disabled>
+            {{item.value}}
+          </textarea>
+
+          <!--removeTest()-->
+          <button pButton pRipple type="button"
+                  class="p-button-danger p-button-rounded ml-2"
+                  iconPos="right"
+                  icon="pi pi-trash"
+                  (click)="removeObservation(i)"></button>
+        </div>
+        <p-divider *ngIf="i<observationsField.length-1"></p-divider>
+      </div>
+    </div>
+  </form>
+</div>

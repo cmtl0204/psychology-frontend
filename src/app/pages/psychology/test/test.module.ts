@@ -24,6 +24,9 @@ import {TooltipModule} from 'primeng/tooltip';
 import {TagModule} from 'primeng/tag';
 import { ResultComponent } from './result/result.component';
 import {SpeedDialModule} from 'primeng/speeddial';
+import { ObservationComponent } from './observation/observation.component';
+import {InputTextareaModule} from 'primeng/inputtextarea';
+import {EditorModule} from 'primeng/editor';
 
 
 
@@ -32,7 +35,8 @@ import {SpeedDialModule} from 'primeng/speeddial';
     TestComponent,
     TestListComponent,
     AssignmentComponent,
-    ResultComponent
+    ResultComponent,
+    ObservationComponent
   ],
   exports: [
 
@@ -58,7 +62,9 @@ import {SpeedDialModule} from 'primeng/speeddial';
         MultiSelectModule,
         TooltipModule,
         TagModule,
-        SpeedDialModule
+        SpeedDialModule,
+        InputTextareaModule,
+        EditorModule
     ]
 })
 export class TestModule { }

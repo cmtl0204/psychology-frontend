@@ -39,11 +39,11 @@ export class TestHttpService {
   private paginator = new BehaviorSubject<PaginatorModel>({current_page: 1, per_page: 15, total: 0});
   public paginator$ = this.paginator.asObservable();
 
-  constructor(private httpClient: HttpClient,private messageService:MessageService) {
+  constructor(private httpClient: HttpClient, private messageService: MessageService) {
 
   }
 
-  getTests(page: number = 1, search: string = '', priorityIds: number[], stateIds: number[], provinceIds: number[], startedAt: string, endedAt: string): Observable<ServerResponse> {
+  getTests(page: number = 1, search: string = '', priorityIds: number[], stateIds: number[], provinceIds: number[], startedAt: string, endedAt: string, age: number): Observable<ServerResponse> {
     const url = `${this.API_URL}/tests`;
 
     const params = new HttpParams()
@@ -53,7 +53,8 @@ export class TestHttpService {
       .append('states', stateIds.toString())
       .append('provinces', provinceIds.toString())
       .append('startedAt', startedAt)
-      .append('endedAt', endedAt); // conditional
+      .append('endedAt', endedAt) // conditional
+      .append('age', age);
 
     this.loaded.next(true);
     return this.httpClient.get<ServerResponse>(url, {params})
@@ -373,6 +374,22 @@ export class TestHttpService {
         map(response => response),
         tap(() => {
           // this.loaded.next(false);
+        }),
+        catchError(Handler.render)
+      );
+  }
+
+  observe(test: TestModel): Observable<ServerResponse> {
+    const url = `${this.API_URL}/tests/${test.id}/observations`;
+
+    this.loaded.next(true);
+    return this.httpClient.post<ServerResponse>(url, {test})
+      .pipe(
+        map(response => response),
+        tap(response => {
+          this.loaded.next(false);
+        }, error => {
+          this.loaded.next(false);
         }),
         catchError(Handler.render)
       );
