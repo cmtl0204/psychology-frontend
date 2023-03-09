@@ -309,12 +309,13 @@ export class TestHttpService {
       );
   }
 
-  countPriorities(provinceIds: number[], startedAt: string, endedAt: string): Observable<ServerResponse> {
+  countPriorities(provinceIds: number[], startedAt: string, endedAt: string,age:number): Observable<ServerResponse> {
     const url = `${this.API_URL}/tests/count-priorities`;
     const params = new HttpParams()
       .append('provinces', provinceIds.toString())
       .append('startedAt', startedAt)
-      .append('endedAt', endedAt);
+      .append('endedAt', endedAt)
+      .append('age', age);
     // this.loaded.next(true);
     return this.httpClient.get<ServerResponse>(url, {params})
       .pipe(
@@ -326,10 +327,11 @@ export class TestHttpService {
       );
   }
 
-  countAllPriorities(provinceIds: number[]): Observable<ServerResponse> {
+  countAllPriorities(provinceIds: number[],age:number): Observable<ServerResponse> {
     const url = `${this.API_URL}/tests/count-all-priorities`;
     const params = new HttpParams()
-      .append('provinces', provinceIds.toString());
+      .append('provinces', provinceIds.toString())
+      .append('age', age);
 
     // this.loaded.next(true);
     return this.httpClient.get<ServerResponse>(url, {params})
@@ -344,12 +346,13 @@ export class TestHttpService {
       );
   }
 
-  countAllTests(provinceIds: number[], startedAt: string, endedAt: string): Observable<ServerResponse> {
+  countAllTests(provinceIds: number[], startedAt: string, endedAt: string,age:number): Observable<ServerResponse> {
     const url = `${this.API_URL}/tests/count-all-tests`;
     const params = new HttpParams()
       .append('provinces', provinceIds.toString())
       .append('startedAt', startedAt)
-      .append('endedAt', endedAt);
+      .append('endedAt', endedAt)
+      .append('age', age);
     // this.loaded.next(true);
     return this.httpClient.get<ServerResponse>(url, {params})
       .pipe(
@@ -361,13 +364,14 @@ export class TestHttpService {
       );
   }
 
-  countTestsByPrioritues(provinceIds: number[], priorityIds: number[], startedAt: string, endedAt: string): Observable<ServerResponse> {
+  countTestsByPrioritues(provinceIds: number[], priorityIds: number[], startedAt: string, endedAt: string,age:number): Observable<ServerResponse> {
     const url = `${this.API_URL}/tests/count-tests-priorities`;
     const params = new HttpParams()
       .append('provinces', provinceIds.toString())
       .append('priorities', priorityIds.toString())
       .append('startedAt', startedAt)
-      .append('endedAt', endedAt);
+      .append('endedAt', endedAt)
+      .append('age', age);
     // this.loaded.next(true);
     return this.httpClient.get<ServerResponse>(url, {params})
       .pipe(

@@ -59,6 +59,7 @@ export class RegistrationPatientComponent implements OnInit {
       province: [null, [Validators.required]],
       canton: [null, [Validators.required]],
       institutionCode: [null],
+      city: [null],
     });
   }
 
@@ -269,5 +270,9 @@ export class RegistrationPatientComponent implements OnInit {
 
   get institutionCodeField() {
     return this.formPatient.controls['institutionCode'];
+  }
+
+  get cityField() {
+    return this.formPatient.controls['city'];
   }
 }

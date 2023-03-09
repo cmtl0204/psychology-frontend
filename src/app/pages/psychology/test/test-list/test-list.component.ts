@@ -53,7 +53,7 @@ export class TestListComponent implements OnInit {
   selectedStates: any[] = [];
   selectedPriorities: any[] = [];
   age: number = 18;
-  ageControl : FormControl = new FormControl('Adultos');
+  ageControl: FormControl = new FormControl('Adultos');
 
   constructor(private testHttpService: TestHttpService,
               private coreHttpService: CoreHttpService,
@@ -167,7 +167,7 @@ export class TestListComponent implements OnInit {
       const startedAt = format(this.rangeDates[0].setHours(0, 0, 0), 'yyyy-MM-dd HH:mm:ss')
       const endedAt = format(this.rangeDates[1].setHours(23, 59, 59), 'yyyy-MM-dd HH:mm:ss');
       const ids = this.selectedProvinces.map(province => province.id);
-      this.testHttpService.countPriorities(ids, startedAt, endedAt).subscribe(
+      this.testHttpService.countPriorities(ids, startedAt, endedAt, this.age).subscribe(
         response => {
           this.countPriorities = response.data;
         }
@@ -177,7 +177,7 @@ export class TestListComponent implements OnInit {
 
   loadCountAllPriorities() {
     const ids = this.selectedProvinces.map(province => province.id);
-    this.testHttpService.countAllPriorities(ids).subscribe(
+    this.testHttpService.countAllPriorities(ids, this.age).subscribe(
       response => {
         this.countAllPriorities = response.data;
       }
@@ -189,7 +189,7 @@ export class TestListComponent implements OnInit {
       const startedAt = format(this.rangeDates[0].setHours(0, 0, 0), 'yyyy-MM-dd HH:mm:ss')
       const endedAt = format(this.rangeDates[1].setHours(23, 59, 59), 'yyyy-MM-dd HH:mm:ss');
       const ids = this.selectedProvinces.map(province => province.id);
-      this.testHttpService.countAllTests(ids, startedAt, endedAt).subscribe(
+      this.testHttpService.countAllTests(ids, startedAt, endedAt,this.age).subscribe(
         response => {
           this.countAllTests = response.data.toString();
         }
@@ -203,7 +203,7 @@ export class TestListComponent implements OnInit {
       const endedAt = format(this.rangeDates[1].setHours(23, 59, 59), 'yyyy-MM-dd HH:mm:ss');
       const provinceIds = this.selectedProvinces.map(province => province.id);
       const priorityIds = this.selectedPriorities.map(priority => priority.id);
-      this.testHttpService.countTestsByPrioritues(provinceIds, priorityIds, startedAt, endedAt).subscribe(
+      this.testHttpService.countTestsByPrioritues(provinceIds, priorityIds, startedAt, endedAt,this.age).subscribe(
         response => {
           this.countTestsPriorities = response.data.toString();
         }
@@ -369,6 +369,6 @@ export class TestListComponent implements OnInit {
       this.age = 17;
     }
 
-    this.loadTests();
+    this.loadAllMethods();
   }
 }
