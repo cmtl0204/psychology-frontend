@@ -44,7 +44,7 @@ export class RegistrationAgentComponent implements OnInit {
       identification: [null, [Validators.required]],
       name: [null, [Validators.required, Validators.pattern(RegularExpresions.alphaSpaces())]],
       lastname: [null, [Validators.required, Validators.pattern(RegularExpresions.alphaSpaces())]],
-      email: [null, [Validators.required, Validators.email]],
+      email: [null, [Validators.required, Validators.pattern(/^(([^<>()\[\]\\.,;:\s@”]+(\.[^<>()\[\]\\.,;:\s@”]+)*)|(“.+”))@((\[[0–9]{1,3}\.[0–9]{1,3}\.[0–9]{1,3}\.[0–9]{1,3}])|(([a-zA-Z\-0–9]+\.)+[a-zA-Z]{2,}))$/)]],
       phone: [null, [Validators.required]],
       code: [null, [Validators.required]],
     });
@@ -108,7 +108,6 @@ export class RegistrationAgentComponent implements OnInit {
   }
 
   savePhone() {
-    this.phoneField.setValue('09' + this.phoneField.value);
     if (this.phoneField.valid) {
       this.progressBarAnswer = true;
       this.progressBarAnswerOut.emit(true);

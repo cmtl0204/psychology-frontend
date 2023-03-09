@@ -53,7 +53,7 @@ export class RegistrationPatientComponent implements OnInit {
       username: [null, [Validators.required]],
       name: [null, [Validators.required, Validators.pattern(RegularExpresions.alphaSpaces())]],
       lastname: [null, [Validators.required, Validators.pattern(RegularExpresions.alphaSpaces())]],
-      email: [null, [Validators.required, Validators.email]],
+      email: [null, [Validators.required, Validators.pattern(/^(([^<>()\[\]\\.,;:\s@”]+(\.[^<>()\[\]\\.,;:\s@”]+)*)|(“.+”))@((\[[0–9]{1,3}\.[0–9]{1,3}\.[0–9]{1,3}\.[0–9]{1,3}])|(([a-zA-Z\-0–9]+\.)+[a-zA-Z]{2,}))$/)]],
       phone: [null, [Validators.required]],
       phoneConfirm: [null, [Validators.required]],
       province: [null, [Validators.required]],

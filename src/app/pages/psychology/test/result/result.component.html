@@ -120,13 +120,22 @@
   </div>
 </div>
 <!--ToolBar-->
+<p-card header="Sesiones">
+  <ul>
+    <li *ngFor="let observation of test.observations,let i= index">
+      <b>{{i + 1}}.</b> {{observation}}
+    </li>
+  </ul>
+</p-card>
 <p-card>
   <p-toolbar>
     <div class="p-toolbar-group-left">
       <h2 *ngIf="test.assignment" class="mr-4">{{test.assignment?.institution?.name}}</h2>
       <h2 *ngIf="!test.assignment" class="mr-4">No tiene una Institución asignada</h2>
-      <button pButton pRipple type="button" label="Asignar" icon="pi pi-share-alt" class="mr-2" (click)="assignmentForm()"></button>
-      <button pButton pRipple type="button" label="Cerrar Caso" class="p-button-help" icon="pi pi-lock" (click)="closeTest()"></button>
+      <button pButton pRipple type="button" label="Asignar" icon="pi pi-share-alt" class="mr-2"
+              (click)="assignmentForm()"></button>
+      <button pButton pRipple type="button" label="Cerrar Caso" class="p-button-help" icon="pi pi-lock"
+              (click)="closeTest()"></button>
     </div>
     <div class="p-toolbar-group-right">
       <button pButton pRipple type="button" label="Descargar Informe"
