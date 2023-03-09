@@ -159,7 +159,9 @@ export class RegistrationPatientComponent implements OnInit {
       }, Math.random() * (2000 - 1000) + 1000);
     }
   }
+
   saveProvince(province: LocationModel) {
+    console.log(province);
     this.provinceField.patchValue(province);
     if (this.provinceField.valid) {
       this.progressBarAnswer = true;

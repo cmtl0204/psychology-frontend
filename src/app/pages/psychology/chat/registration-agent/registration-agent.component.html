@@ -107,7 +107,8 @@
   <div *ngIf="steps===4" class="formgrid grid">
     <div class="field col-12">
       <div class="p-inputgroup">
-        <input type="text" pInputText formControlName="phone" pKeyFilter="pint" maxlength="10">
+        <button type="button" pButton pRipple label="09" class="button-send"></button>
+        <input type="text" pInputText formControlName="phone" pKeyFilter="pint" maxlength="8">
         <button *ngIf="phoneField.valid" type="button" pButton pRipple
                 class="p-button-rounded ml-1 button-send"
                 icon="pi pi-send"
@@ -130,7 +131,7 @@
   <!--Email-->
   <div *ngIf="steps>=5" class="formgrid grid">
     <div class="field col-10 panel-question">
-      <p>Ingresa un correo electrónico de tu representante legal para poder enviarte una copia de tus respuestas</p>
+      <p>Ingresa un correo electrónico de tu representante legal para poder enviarte el resultado de tus respuestas</p>
     </div>
   </div>
   <!--Input-->

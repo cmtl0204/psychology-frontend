@@ -15,6 +15,14 @@ export class MessageService {
   constructor(private messageService: MessagePNService) {
   }
 
+  errorCustom(title = '', text = '') {
+    return Swal.fire({
+      title,
+      text,
+      icon: 'error'
+    });
+  }
+
   error(error: HttpErrorResponse) {
     if (error.status === 400) {
       if (error.error.msg.code === '23505') {
@@ -84,7 +92,11 @@ export class MessageService {
   }
 
   errorToast() {
-    this.messageService.add({severity: 'error', summary: 'Error al procesar su petición', detail: 'Vuelva a intentar por favor'});
+    this.messageService.add({
+      severity: 'error',
+      summary: 'Error al procesar su petición',
+      detail: 'Vuelva a intentar por favor'
+    });
   }
 
   errorRequired() {
@@ -126,6 +138,7 @@ export class MessageService {
       confirmButtonText: '<i class="pi pi-ban"> Si, suspender</i>'
     });
   }
+
   questionDelete({title = '¿Está seguro de eliminar?', text = 'No podrá recuperar esta información!'}) {
     return Swal.fire({
       title,

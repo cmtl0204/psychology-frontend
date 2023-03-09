@@ -1,11 +1,13 @@
 <div #appMessages id="app-messages" class="app-messages">
   <div class="panel-avatar">
-    <img src="assets/images/components/psychology/chat/bot.png" width="120px" class="avatar-bot">
+    <img src="assets/images/components/psychology/chat/bot.png" width="100px" class="avatar-bot">
     <p class="text-bot">
       TEMI, te escucha
       <!--      <button pButton type="button" icon="pi pi-replay" class="p-button-info p-button-text p-button-lg ml-6"-->
       <!--              pTooltip="Deshacer"></button>-->
       <app-skeleton *ngIf="progressBarAnswer" [type]="'point'"></app-skeleton>
+      <br>
+      <span *ngIf="!progressBarAnswer" class="en-linea">En línea</span>
     </p>
   </div>
   <br>

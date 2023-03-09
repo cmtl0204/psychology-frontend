@@ -1,7 +1,7 @@
 import {Component, EventEmitter, OnInit, Output} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {PrimeIcons} from 'primeng/api';
-import {CoreHttpService} from '@services/core';
+import {CoreHttpService, MessageService} from '@services/core';
 import {LocationModel} from '@models/core';
 import {TestHttpService} from '@services/psychology/test-http.service';
 
@@ -27,6 +27,7 @@ export class RegistrationComponent implements OnInit {
   public cantons: LocationModel[] = [];
 
   constructor(private formBuilder: FormBuilder,
+              public messageService: MessageService,
               private coreHttpService: CoreHttpService,
               private testHttpService: TestHttpService) {
     this.formChat = this.newFormChat;
@@ -101,9 +102,16 @@ export class RegistrationComponent implements OnInit {
     this.progressBarAnswer = true;
     this.progressBarAnswerOut.emit(true);
     setTimeout(() => {
+      if (this.ageField.value < 12) {
+        this.messageService.errorCustom('No cumple con la edad mínica requerida (12 en adelante');
+        this.progressBarAnswer = false;
+        this.progressBarAnswerOut.emit(false);
+        return;
+      }
+
       if (this.ageField.value >= 12 && this.ageField.value <= 18) {
         this.steps++;
-        this.testHttpService.saveAge(this.ageField.value)
+        this.testHttpService.saveAge(this.ageField.value);
         if (this.ageField.value < 18) {
           this.younger = true;
         } else {

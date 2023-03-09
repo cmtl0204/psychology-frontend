@@ -108,6 +108,7 @@ export class RegistrationAgentComponent implements OnInit {
   }
 
   savePhone() {
+    this.phoneField.setValue('09' + this.phoneField.value);
     if (this.phoneField.valid) {
       this.progressBarAnswer = true;
       this.progressBarAnswerOut.emit(true);

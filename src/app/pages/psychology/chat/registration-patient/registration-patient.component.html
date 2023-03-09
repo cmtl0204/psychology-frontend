@@ -107,11 +107,17 @@
     <div *ngIf="steps===4" class="formgrid grid">
       <div class="field col-12">
         <div class="p-inputgroup">
-          <input type="text" pInputText formControlName="phone" pKeyFilter="pint" maxlength="10">
+          <button type="button" pButton pRipple label="09" class="button-send"></button>
+          <input type="text" pInputText formControlName="phone" pKeyFilter="pint" maxlength="8">
           <button *ngIf="phoneField.valid" type="button" pButton pRipple
                   class="p-button-rounded ml-1 button-send"
                   icon="pi pi-send"></button>
         </div>
+      </div>
+      <div class="field col-12">
+        <p-tag
+          *ngIf="phoneConfirmField.dirty && phoneField.value != phoneConfirmField.value"
+          severity="danger" value="Los números de teléfono no coinciden"></p-tag>
       </div>
     </div>
 
@@ -125,7 +131,8 @@
     <div *ngIf="steps===4 && phoneField.touched" class="formgrid grid">
       <div class="field col-12">
         <div class="p-inputgroup">
-          <input type="text" pInputText formControlName="phoneConfirm" pKeyFilter="pint" maxlength="10">
+          <button type="button" pButton pRipple label="09" class="button-send"></button>
+          <input type="text" pInputText formControlName="phoneConfirm" pKeyFilter="pint" maxlength="8">
           <button *ngIf="phoneField.value === phoneConfirmField.value" type="button" pButton pRipple
                   class="p-button-rounded ml-1 button-send"
                   icon="pi pi-send"
@@ -136,7 +143,7 @@
       <div class="field col-12">
         <p-tag
           *ngIf="phoneConfirmField.dirty && phoneField.value != phoneConfirmField.value"
-          severity="danger" value="Los número no coinciden"></p-tag>
+          severity="danger" value="Los números de teléfono no coinciden"></p-tag>
       </div>
     </div>
 
@@ -156,7 +163,7 @@
   <div *ngIf="!younger">
     <div *ngIf="steps>=5" class="formgrid grid">
       <div class="field col-10 panel-question">
-        <p>Ingresa un correo electrónico para poder enviarte una copia de tus respuestas</p>
+        <p>Ingresa un correo electrónico para poder enviarte el resultado de tus respuestas</p>
       </div>
     </div>
     <!--Input-->
@@ -197,7 +204,7 @@
         <input type="text" pInputText formControlName="institutionCode">
         <button *ngIf="institutionCodeField.valid" type="button" pButton pRipple
                 class="p-button-rounded ml-1 button-send  "
-                icon="pi pi-send"
+                label="Continuar"
                 (click)="saveInstitutionCode()"
                 [loading]="progressBarAnswer"></button>
       </div>
@@ -223,11 +230,12 @@
   </div>
   <!--Input-->
   <div *ngIf="steps===7" class="formgrid grid">
-    <div *ngFor="let province of provinces" class="field col-4">
-      <button pButton type="button" [label]="province?.name!" class="p-button-text panel-answer"
-              [loading]="progressBarAnswer"
-              (click)="saveProvince(province)"></button>
-    </div>
+        <div *ngFor="let province of provinces" class="field col-6">
+          <p pButton [label]="province?.name!" class="p-button-text panel-answer"
+                  [loading]="progressBarAnswer"
+                  (click)="saveProvince(province)"></p>
+        </div>
+<!--    <p-dropdown [options]="provinces" (onChange)="saveProvince($event)" optionLabel="name"></p-dropdown>-->
     <div class="field col-2">
     </div>
   </div>
