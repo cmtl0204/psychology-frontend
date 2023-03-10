@@ -103,7 +103,7 @@ export class RegistrationComponent implements OnInit {
     this.progressBarAnswerOut.emit(true);
     setTimeout(() => {
       if (this.ageField.value < 12) {
-        this.messageService.errorCustom('No cumple con la edad mínica requerida (12 en adelante');
+        this.messageService.errorCustom('No cumple con la edad mínima requerida (12 en adelante');
         this.progressBarAnswer = false;
         this.progressBarAnswerOut.emit(false);
         return;

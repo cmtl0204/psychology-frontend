@@ -1,10 +1,11 @@
-<div class="p-fluid">
+
+<form [formGroup]="formChat" class="p-fluid">
   <div class="formgrid grid">
     <div class="field col-10 panel-question">
       <p>
         <b>¡Bienvenido a TEMI, te escucha!</b>
       </p>
-      <img src="assets/images/components/psychology/chat/logos.png" class="logos" alt="" height="20%">
+      <img src="assets/images/components/psychology/chat/logos.png" class="logos" alt="" height="20%" width="90%">
       <p>
         Este chatbot es un servicio de tamizaje en salud mental que te permite conocer sobre tu estado de ánimo y
         promover tu bienestar. <b>Para utilizar este servicio por favor presiona en "Continuar".</b>
@@ -15,9 +16,6 @@
       </p>
     </div>
   </div>
-</div>
-
-<form [formGroup]="formChat" class="p-fluid">
   <!--Terms and Conditions-->
   <div *ngIf="stepsTemp>0" class="formgrid grid">
     <div class="field col-10 panel-question">

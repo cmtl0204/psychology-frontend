@@ -258,7 +258,7 @@
   </div>
   <!--Input-->
   <div *ngIf="steps===8" class="formgrid grid">
-    <div *ngFor="let canton of cantons" class="field col-4">
+    <div *ngFor="let canton of cantons" class="field col-6">
       <button pButton type="button" [label]="canton?.name!" class="p-button-text panel-answer"
               [loading]="progressBarAnswer"
               (click)="saveCanton(canton)"></button>
