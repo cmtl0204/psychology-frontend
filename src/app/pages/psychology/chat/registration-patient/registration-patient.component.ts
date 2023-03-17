@@ -22,6 +22,7 @@ export class RegistrationPatientComponent implements OnInit {
   filteredCantons: any[] = [];
 
   provinces: LocationModel[] = [];
+  provincesClone: LocationModel[] = [];
   cantons: LocationModel[] = [];
   allCantons: LocationModel[] = [];
 
@@ -67,6 +68,8 @@ export class RegistrationPatientComponent implements OnInit {
     this.coreHttpService.getLocations('PROVINCE').subscribe(
       response => {
         this.provinces = response.data;
+        this.provincesClone = response.data;
+        this.provincesClone = response.data;
       }, error => {
         // this.messageService.error(error);
       }
@@ -160,9 +163,8 @@ export class RegistrationPatientComponent implements OnInit {
     }
   }
 
-  saveProvince(province: LocationModel) {
-    console.log(province);
-    this.provinceField.patchValue(province);
+  saveProvince() {
+    // this.provinceField.patchValue(province);
     if (this.provinceField.valid) {
       this.progressBarAnswer = true;
       this.progressBarAnswerOut.emit(true);
@@ -236,6 +238,13 @@ export class RegistrationPatientComponent implements OnInit {
 
   selectCanton(canton: LocationModel) {
     this.cantonField.patchValue(canton);
+  }
+
+  search(event: any) {
+    console.log(event);
+    this.provinces = this.provincesClone.filter(province => {
+      return (province.name?.toLowerCase())?.startsWith(event.query.toLowerCase());
+    });
   }
 
   get usernameField() {

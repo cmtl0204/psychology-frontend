@@ -14,7 +14,7 @@
   <div *ngIf="steps===1" class="formgrid grid">
     <div class="field col-12">
       <div class="p-inputgroup">
-        <input type="text" pInputText formControlName="username" pKeyFilter="pint" maxlength="10">
+        <input type="text" pInputText formControlName="username" pKeyFilter="alphanum" maxlength="20">
         <button *ngIf="usernameField.valid" type="button" pButton pRipple
                 class="p-button-rounded ml-1 button-send"
                 icon="pi pi-send"
@@ -230,14 +230,24 @@
   </div>
   <!--Input-->
   <div *ngIf="steps===7" class="formgrid grid">
-        <div *ngFor="let province of provinces" class="field col-6">
-          <p pButton [label]="province?.name!" class="p-button-text panel-answer"
-                  [loading]="progressBarAnswer"
-                  (click)="saveProvince(province)"></p>
-        </div>
-<!--    <p-dropdown [options]="provinces" (onChange)="saveProvince($event)" optionLabel="name"></p-dropdown>-->
-    <div class="field col-2">
+    <!--        <div *ngFor="let province of provinces" class="field col-6">-->
+    <!--          <p pButton [label]="province?.name!" class="p-button-text panel-answer"-->
+    <!--                  [loading]="progressBarAnswer"-->
+    <!--                  (click)="saveProvince(province)"></p>-->
+    <!--        </div>-->
+    <div class="field col-10">
+        <p-autoComplete [suggestions]="provinces" (completeMethod)="search($event)" field="name"
+                        formControlName="province"></p-autoComplete>
     </div>
+    <div class="field col-2">
+      <button *ngIf="provinceField.value?.id" type="button" pButton pRipple
+              class="p-button-rounded ml-1 button-send"
+              icon="pi pi-send"
+              (click)="saveProvince()"
+              [loading]="progressBarAnswer"></button>
+    </div>
+
+    <!--    <p-dropdown [options]="provinces" (onChange)="saveProvince($event)" optionLabel="name"></p-dropdown>-->
   </div>
   <!--Result-->
   <div *ngIf="steps>7" class="formgrid grid">
